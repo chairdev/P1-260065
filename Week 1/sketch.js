@@ -9,21 +9,23 @@ const roffaGreen = "#00811f"
 const houseWidth = 60;
 const houseHeight = 50;
 
-const circleSize = 35;
+const signalSize = 35;
+
+const diceCircleSize = 20;
 
 //web dev more like LAME dev
 
 function setup() 
 {
   createCanvas(800, 800);
-  noLoop(); //running this every frame isn't really that necessary... and besides, it made using noStroke() kinda annoying
+  noLoop(); //running this every frame isn't really that necessary...
 }
  
 function draw() 
 {
   background(220);
-  
   textSize(15);
+
   //#region Name
   fill("black");
   text("1", xAnchor, calculateYAnchor(1), 70, 80);
@@ -36,7 +38,7 @@ function draw()
   text("2", xAnchor, calculateYAnchor(2), 70, 80);
 
   //green white green
-  noStroke()
+  noStroke();
   fill(roffaGreen);
   rect(calculateXAnchor(2), calculateYAnchor(2) + stripeHeight, 100, stripeHeight)
   fill("white");
@@ -50,8 +52,8 @@ function draw()
   text("3", xAnchor, calculateYAnchor(5), 70, 80);
   
   // Black squares
-  stroke(1)
-  strokeWeight(2)
+  stroke(1);
+  strokeWeight(2);
 
   //Drawing them using offsets (math blegh) because its ez
   fill("black");
@@ -73,7 +75,7 @@ function draw()
   // i forgot how nice it is to pass time this way
 
   //#region Transparent house
-  strokeWeight(0)
+  strokeWeight(0);
   fill("black");
   text("4", xAnchor, calculateYAnchor(7), 70, 80);
 
@@ -84,8 +86,8 @@ function draw()
   //#endregion
 
   //#region Traffic Light
-  strokeWeight(0)
-  fill("black")
+  strokeWeight(0);
+  fill("black");
   text("5", calculateXAnchor(200), calculateYAnchor(1), 70, 80);
 
   noStroke()
@@ -93,19 +95,40 @@ function draw()
   rect(calculateXAnchor(210), calculateYAnchor(2), 50, 140);
 
   fill("red")
-  circle(calculateXAnchor(200)+circleSize, calculateYAnchor(2)+circleSize/1.5, circleSize);
+  circle(calculateXAnchor(200)+signalSize, calculateYAnchor(2)+signalSize/1.5, signalSize);
 
   fill("orange")
-  circle(calculateXAnchor(200)+circleSize, calculateYAnchor(3.5)+circleSize/1.5, circleSize);
+  circle(calculateXAnchor(200)+signalSize, calculateYAnchor(3.5)+signalSize/1.5, signalSize);
 
   fill("green")
-  circle(calculateXAnchor(200)+circleSize, calculateYAnchor(5)+circleSize/1.5, circleSize);
+  circle(calculateXAnchor(200)+signalSize, calculateYAnchor(5)+signalSize/1.5, signalSize);
 
   fill("gray");
-  rect(calculateXAnchor(200)+circleSize/1.5, calculateYAnchor(6.5), 25, 40); 
+  rect(calculateXAnchor(200)+signalSize/1.5, calculateYAnchor(6.5), 25, 40); 
   //#endregion
 
-  
+  //#region Dice
+  fill("black");
+  text("6", calculateXAnchor(200), calculateYAnchor(8), 70, 80);
+
+  stroke(1);
+  strokeWeight(3);
+  fill("white");
+  square(calculateXAnchor(210), calculateYAnchor(9), 100, 10);
+
+  stroke(1)
+  strokeWeight(3)
+  fill("black")
+
+  //This'll draw a 6. Yes, I'm lazy. How'd you know?
+  circle(calculateXAnchor(210)+diceCircleSize, calculateYAnchor(9)+diceCircleSize, diceCircleSize);
+  circle(calculateXAnchor(210)+diceCircleSize, calculateYAnchor(10)+diceCircleSize, diceCircleSize);
+  circle(calculateXAnchor(210)+diceCircleSize, calculateYAnchor(11)+diceCircleSize, diceCircleSize);
+
+  circle(calculateXAnchor(270)+diceCircleSize, calculateYAnchor(9)+diceCircleSize, diceCircleSize);
+  circle(calculateXAnchor(270)+diceCircleSize, calculateYAnchor(10)+diceCircleSize, diceCircleSize);
+  circle(calculateXAnchor(270)+diceCircleSize, calculateYAnchor(11)+diceCircleSize, diceCircleSize);
+  //#endregion
 }
 
 function calculateXAnchor(num)
