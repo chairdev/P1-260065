@@ -1,18 +1,6 @@
 const xAnchor = 10;
 const yAnchor = 10;
 
-const stripeHeight = 60 / 3;
-const checkerboardSize = 18;
-
-const roffaGreen = "#00811f"
-
-const houseWidth = 60;
-const houseHeight = 50;
-
-const signalSize = 35;
-
-const diceCircleSize = 20;
-
 //web dev more like LAME dev
 
 function setup() 
@@ -32,6 +20,33 @@ function draw()
   DrawTransparentHouse();
   DrawTrafficLight();
   DrawDice();
+  DrawMario();
+}
+
+function CalcXAnchor(num)
+{
+  return xAnchor + (num + 15);
+}
+
+function CalcYAnchor(num)
+{
+  return yAnchor + (num * 30);
+}
+
+function DrawBitmap(bitmap, width, colors, xPos, yPos)
+{
+  const pixelSize = 10;
+  noStroke()
+
+  //Drawing this with a for loop so it's easier later
+  for (let i = 0; i < bitmap.length; i++) {
+    const element = bitmap[i];
+    
+    fill(colors[bitmap[i]]);
+    //Use modulo so it wraps around to the next row when it exceeds the width of the bitmap
+    //Math.floor is used to get the row number using the index and width
+    rect(xPos + (i % width) * pixelSize, yPos + Math.floor(i / width) * pixelSize, pixelSize, pixelSize);
+  }
 }
 
 function DrawName()
@@ -44,6 +59,9 @@ function DrawName()
 
 function DrawFlag()
 {
+  const stripeHeight = 60 / 3;
+  const roffaGreen = "#00811f";
+
   fill("black");
   text("2", xAnchor, CalcYAnchor(2), 70, 80);
 
@@ -59,6 +77,8 @@ function DrawFlag()
 
 function DrawCheckerboard()
 {
+  const checkerboardSize = 18;
+
   // this is insufferable and i dont feel like doing it rn so im writing comments
   // i forgot how nice it is to pass time this way
 
@@ -87,6 +107,9 @@ function DrawCheckerboard()
 
 function DrawTransparentHouse()
 {
+  const houseWidth = 60;
+  const houseHeight = 50;
+
   strokeWeight(0);
   fill("black");
   text("4", xAnchor, CalcYAnchor(7), 70, 80);
@@ -99,6 +122,8 @@ function DrawTransparentHouse()
 
 function DrawTrafficLight()
 {
+  const signalSize = 35;
+  
   strokeWeight(0);
   fill("black");
   text("5", CalcXAnchor(200), CalcYAnchor(1), 70, 80);
@@ -122,6 +147,8 @@ function DrawTrafficLight()
 
 function DrawDice()
 {
+  const diceCircleSize = 20;
+
   fill("black");
   text("6", CalcXAnchor(200), CalcYAnchor(8), 70, 80);
 
@@ -144,12 +171,30 @@ function DrawDice()
   circle(CalcXAnchor(270)+diceCircleSize, CalcYAnchor(11)+diceCircleSize, diceCircleSize);
 }
 
-function CalcXAnchor(num)
+function DrawMario()
 {
-  return xAnchor + (num + 15);
-}
+  const colors = ["clear", "red", "brown", "LightSalmon", "black"]
+  //0: transparent
+  //1: red
+  //2: brown
+  //3: peach
+  //4: black
 
-function CalcYAnchor(num)
-{
-  return yAnchor + (num * 30);
+  const marioBitMap = [
+    0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0,
+    0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+    0, 0, 2, 2, 2, 3, 3, 4, 3, 0, 0, 0,
+    0, 2, 3, 2, 3, 3, 3, 4, 3, 3, 3, 0,
+    0, 2, 3, 2, 2, 3, 3, 3, 4, 3, 3, 3,
+    0, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 0,
+    0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 0, 0,
+
+  ]
+
+  strokeWeight(0);
+  fill("black");
+  text("7", CalcXAnchor(200), CalcYAnchor(13), 70, 80);
+  text("Mario", CalcXAnchor(220), CalcYAnchor(13), 70, 80);
+
+  DrawBitmap(marioBitMap, 12, colors, CalcXAnchor(210), CalcYAnchor(14))
 }
