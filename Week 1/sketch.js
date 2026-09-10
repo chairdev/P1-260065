@@ -21,6 +21,7 @@ function draw()
   DrawTrafficLight();
   DrawDice();
   DrawMario();
+  DrawRockman();
 }
 
 function CalcXAnchor(num)
@@ -44,7 +45,7 @@ function DrawBitmap(bitmap, width, colors, xPos, yPos)
     
     fill(colors[bitmap[i]]);
     //Use modulo so it wraps around to the next row when it exceeds the width of the bitmap
-    //Math.floor is used to get the row number using the index and width
+    //Math.floor is used to make sure we dont have mixels!!!
     rect(xPos + (i % width) * pixelSize, yPos + Math.floor(i / width) * pixelSize, pixelSize, pixelSize);
   }
 }
@@ -203,8 +204,46 @@ function DrawMario()
 
   strokeWeight(0);
   fill("black");
-  text("7", CalcXAnchor(200), CalcYAnchor(13), 70, 80);
-  text("Mario", CalcXAnchor(220), CalcYAnchor(13), 70, 80);
+  text("7", CalcXAnchor(400), CalcYAnchor(0), 70, 80);
+  text("Mario", CalcXAnchor(420), CalcYAnchor(0), 70, 80);
 
-  DrawBitmap(marioBitMap, 12, colors, CalcXAnchor(210), CalcYAnchor(14))
+  DrawBitmap(marioBitMap, 12, colors, CalcXAnchor(410), CalcYAnchor(2))
+}
+
+function DrawRockman()
+{
+  const colors = ["clear", "#383838", "#6068b8", "#f8d820", "#20c0e8", "#2858c0", "#3888e0", "#e0a048", "#f8d0a8", "#f0e8f8"]
+  //0: transparent
+  //1: black
+  //2: navy
+  //3: gold
+  //4: light blue
+  //5: darker blue
+  //6: darkest blue
+  //7: dark gold
+  //8: peach
+  //9: white
+
+  const rockmanBitMap = [
+    0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 1, 2, 2, 3, 3, 2, 2, 1, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 1, 4, 2, 2, 3, 3, 2, 2, 4, 1, 0, 0, 0, 0,
+    0, 0, 0, 1, 5, 4, 2, 2, 2, 2, 2, 2, 4, 5, 1, 0, 0, 0,
+    0, 0, 0, 1, 5, 6, 2, 2, 3, 3, 2, 2, 6, 5, 1, 0, 0, 0, 
+    0, 0, 0, 1, 5, 6, 2, 2, 3, 3, 2, 2, 6, 5, 1, 0, 0, 0,  
+    0, 0, 1, 3, 5, 5, 2, 2, 2, 2, 2, 2, 5, 5, 3, 1, 0, 0,  
+    0, 0, 1, 3, 3, 7, 4, 5, 2, 2, 5, 4, 7, 3, 3, 1, 0, 0,
+    0, 0, 1, 7, 7, 7, 9, 5, 8, 8, 5, 9, 7, 7, 7, 1, 0, 0,
+    1, 1, 1, 1, 1, 7, 8, 8, 8, 8, 8, 8, 7, 1, 1, 1, 1, 1,
+    0, 0, 0, 1, 1, 1, 8, 8, 7, 7, 8, 8, 1, 1, 1, 0, 0, 0,
+    0, 0, 1, 1, 1, 1, 1, 7, 8, 8, 7, 1, 1, 1, 1, 1, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+  ]
+
+  strokeWeight(0);
+  fill("black");
+  text("7", CalcXAnchor(200), CalcYAnchor(13), 70, 80);
+  text("Rockman.EXE", CalcXAnchor(220), CalcYAnchor(13), 70, 80);
+
+  DrawBitmap(rockmanBitMap, 18, colors, CalcXAnchor(210), CalcYAnchor(14))
 }
