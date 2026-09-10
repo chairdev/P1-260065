@@ -173,12 +173,14 @@ function DrawDice()
 
 function DrawMario()
 {
-  const colors = ["clear", "red", "brown", "LightSalmon", "black"]
+  const colors = ["clear", "red", "brown", "LightSalmon", "black", "blue", "gold"]
   //0: transparent
   //1: red
   //2: brown
   //3: peach
   //4: black
+  //5: blue
+  //6: gold
 
   const marioBitMap = [
     0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0,
@@ -188,7 +190,15 @@ function DrawMario()
     0, 2, 3, 2, 2, 3, 3, 3, 4, 3, 3, 3,
     0, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 0,
     0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 0, 0,
-
+    0, 0, 1, 1, 5, 1, 1, 1, 0, 0, 0, 0,
+    0, 1, 1, 1, 5, 1, 1, 5, 1, 1, 1, 0,
+    1, 1, 1, 1, 5, 5, 5, 5, 1, 1, 1, 1,
+    3, 3, 1, 5, 6, 5, 5, 6, 5, 1, 3, 3,
+    3, 3, 3, 5, 5, 5, 5, 5, 5, 3, 3, 3,
+    3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 3, 3,
+    0, 0, 5, 5, 5, 0, 0, 5, 5, 5, 0, 0,
+    0, 2, 2, 2, 0, 0, 0, 0, 2, 2, 2, 0,
+    2, 2, 2, 2, 0, 0, 0, 0, 2, 2, 2, 2
   ]
 
   strokeWeight(0);
