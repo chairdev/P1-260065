@@ -242,8 +242,8 @@ function DrawRockman()
 
   strokeWeight(0);
   fill("black");
-  text("7", CalcXAnchor(200), CalcYAnchor(13), 70, 80);
-  text("Rockman.EXE", CalcXAnchor(220), CalcYAnchor(13), 70, 80);
+  text("8", CalcXAnchor(400), CalcYAnchor(8), 70, 80);
+  text("Rockman.EXE", CalcXAnchor(420), CalcYAnchor(8), 70, 80);
 
-  DrawBitmap(rockmanBitMap, 18, colors, CalcXAnchor(210), CalcYAnchor(14))
+  DrawBitmap(rockmanBitMap, 18, colors, CalcXAnchor(410), CalcYAnchor(9))
 }
