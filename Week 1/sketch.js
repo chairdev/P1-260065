@@ -6,7 +6,7 @@ const yAnchor = 10;
 function setup() 
 {
   createCanvas(800, 800);
-  noLoop(); //running this every frame isn't really that necessary...
+  noLoop(); //running draw every frame isn't really that necessary...
 }
  
 function draw() 
@@ -14,6 +14,7 @@ function draw()
   background(220);
   textSize(15);
 
+  //doesnt this look so pretty and organized
   DrawName();
   DrawFlag();
   DrawCheckerboard();
@@ -183,6 +184,8 @@ function DrawMario()
   //5: blue
   //6: gold
 
+  //defining all the colors using ints
+  //i feel like im larping an art programmer in the 90s that uses asm... cool
   const marioBitMap = [
     0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0,
     0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0,
