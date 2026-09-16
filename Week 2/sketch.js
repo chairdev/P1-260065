@@ -7,8 +7,8 @@ function setup() {
 
 function draw() {
   background("skyblue");
+    DrawMountains();
   DrawGrass();
-  DrawMountains();
   DrawRoad()
 }
 
@@ -27,7 +27,14 @@ function DrawGrass()
 
 function DrawMountains()
 {
+  //coding to ayesha erotica songs is so young ho coded
 
+  fill("gray");
+  triangle(100, 400, 300, 100, 500, 400);
+  fill("lightgray");
+  triangle(300, 400, 400, 200, 500, 400);
+  fill("darkgray");
+  triangle(500, 400, 600, 250, 700, 400);
 }
 
 function DrawRoad()
