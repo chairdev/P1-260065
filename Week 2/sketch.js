@@ -1,15 +1,50 @@
 const canvasWidth = 800;
 const canvasHeight = 600;
+
+let cloudX = 100;
+
 //wow week 2!! aren't we all so excited to work with p5.js more
 function setup() {
   createCanvas(canvasWidth, canvasHeight);
+  frameRate(30);
 }
 
 function draw() {
   background("skyblue");
-    DrawMountains();
+  DrawClouds();
+  DrawMountains();
   DrawGrass();
   DrawRoad()
+}
+
+function DrawClouds()
+{
+  const cloudY = 100;
+  const cloudSpeed = 0.1;
+
+  if (cloudX > canvasWidth + 100)
+  {
+    cloudX = -150;
+  }
+
+  cloudX += cloudSpeed * deltaTime;
+
+  InitCloud(cloudX-75, cloudY);
+  InitCloud(cloudX, 100);
+  InitCloud(cloudX + 200, 150);
+  InitCloud(cloudX + 400, 75);
+  InitCloud(cloudX + 425, 90);
+}
+
+function InitCloud(x, y)
+{
+  //Draw a cloud using ellipses
+  //i must re-iterate, listening to hyper pop is a great way to feel myself while getting this work done!!
+  noStroke();
+  fill("white");
+  ellipse(x, y, 100, 50);
+  ellipse(x + 50, y, 100, 50);
+  ellipse(x + 5, y - 25, 100, 50);
 }
 
 function DrawGrass() 
