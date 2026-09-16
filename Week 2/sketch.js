@@ -6,13 +6,33 @@ function setup() {
 }
 
 function draw() {
-  background(220);
-  //DrawBackground();
+  background("skyblue");
+  DrawGrass();
+  DrawMountains();
   DrawRoad()
+}
+
+function DrawGrass() 
+{
+  const grassY = 400;
+  const grassHeight = 25;
+  const grassColor = ["#6E8649", "#2D531A"] 
+
+  //Draw grass
+  fill(grassColor[0]);
+  rect(0, grassY-grassHeight/2, canvasWidth, grassHeight/2)
+  fill(grassColor[1]);
+  rect(0, grassY-grassHeight, canvasWidth, grassHeight/2)
+}
+
+function DrawMountains()
+{
+
 }
 
 function DrawRoad()
 {
+  const roadY = 400;
   const roadHeight = 200;
   const numStripes = 10;
   const stripeWidth = 50;
@@ -20,7 +40,7 @@ function DrawRoad()
   const stripeY = roadHeight + 290;
 
   fill("gray");
-  rect(0, roadHeight*2, canvasWidth, roadHeight)
+  rect(0, roadY, canvasWidth, roadHeight)
 
   //use a for loop to draw the stripes with an offset
   fill("white");
