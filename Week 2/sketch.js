@@ -6,6 +6,7 @@ const numCars = 15;
 let cars = InitCars(numCars);
 let clouds = InitClouds();
 let sun = { x: 100, y: 75, speed: 0.05 };
+let trees = InitTrees();
 
 //wow week 2!! aren't we all so excited to work with p5.js more
 function setup() {
@@ -20,34 +21,36 @@ function draw() {
   DrawClouds();
   DrawMountains();
   DrawGrass();
+  DrawTrees(true);
   DrawRoad();
 
   UpdateCar();
   UpdateClouds();
-  //DrawTrees();
+  DrawTrees(false);
 }
 
 function InitClouds()
 {
   return [
-  { x: 25, y: -250},
-  { x: 100, y: 100},
-  { x: 300, y: 150},
-  { x: 500, y: 75},
-  { x: 525, y: 90},
-  { x: 600, y: 100},
-  { x: 800, y: 100}]
+  { x: 25, y: -250 },
+  { x: 100, y: 100 },
+  { x: 300, y: 150 },
+  { x: 500, y: 75 },
+  { x: 525, y: 90 },
+  { x: 600, y: 100 },
+  { x: 800, y: 100 }]
 }
 
 function UpdateClouds()
 {
-  const cloudSpeed = 0.0001;
+  const cloudSpeed = 0.00005;
   for (let i = 0; i < clouds.length; i++)
   {
 
     //Move the clouds froms right to left
+    //The higher up the cloud is, the faster it moves
     let cloud = clouds[i];
-    cloud.x -= (Math.sqrt(cloudSpeed *cloud.y)) * deltaTime;
+    cloud.x -= (Math.sqrt(cloudSpeed * cloud.y)) * deltaTime;
 
     //reset the cloud's position when it goes off screen
     if (cloud.x < -200)
@@ -93,8 +96,6 @@ function DrawSun()
   {
     sun.x = -50
   }
-
-
 }
 
 function DrawGrass() 
@@ -113,7 +114,6 @@ function DrawGrass()
 function DrawMountains()
 {
   //coding to ayesha erotica songs is so young ho coded
-
   fill("gray");
   triangle(100, 400, 300, 100, 500, 400);
   fill("lightgray");
@@ -213,5 +213,45 @@ function DrawRoad()
     let stripeX = stripeWidth * 2 * i;
     rect(stripeX, stripeY, stripeWidth, stripeHeight, 20)
     
+  }
+}
+
+function InitTrees()
+{
+  let trees = [
+    { x: 50, isBG: true},
+    { x: 200, isBG: false},
+    { x: 350, isBG: true},
+    { x: 500, y: 315, isBG: false },
+    { x: 650, y: 315, isBG: true },
+    { x: 800, y: 315, isBG: false }
+  ]
+  return trees;
+}
+
+function InitTree(x, y)
+{
+  //Draw a tree using a rectangle for the trunk and an ellipse for the leaves
+  fill("brown");
+  rect(x, y, 20, 80);
+  fill("green");
+  ellipse(x + 10, y - 20, 80, 80);
+}
+
+function DrawTrees(drawMode)
+{
+  // finally.... im almost done!!!!!!!!!!!!
+  // i locked in 2day tho lowk
+  for (let i = 0; i < trees.length; i++)
+  {
+    //if drawMode is false and the tree is a background tree, skip drawing it
+    if(drawMode == false && trees[i].isBG)
+    {
+      continue;
+    }
+    let tree = trees[i];
+    //if the tree is a background tree, draw it at a higher position
+    let yPos = tree.isBG ? 315: 585;
+    InitTree(tree.x, yPos);
   }
 }
