@@ -1,12 +1,16 @@
 const canvasWidth = 800;
 const canvasHeight = 600;
 
+const numCars = 5;
+
 let cloudX = 100;
+let cars = InitCars(numCars)
 
 //wow week 2!! aren't we all so excited to work with p5.js more
 function setup() {
   createCanvas(canvasWidth, canvasHeight);
   frameRate(30);
+  
 }
 
 function draw() {
@@ -15,16 +19,18 @@ function draw() {
   DrawMountains();
   DrawGrass();
   DrawRoad()
+
+  UpdateCar();
 }
 
 function DrawClouds()
 {
-  const cloudY = 100;
+  const cloudY = -250;
   const cloudSpeed = 0.1;
 
   if (cloudX > canvasWidth + 100)
   {
-    cloudX = -150;
+    cloudX = -650;
   }
 
   cloudX += cloudSpeed * deltaTime;
@@ -70,6 +76,73 @@ function DrawMountains()
   triangle(300, 400, 400, 200, 500, 400);
   fill("darkgray");
   triangle(500, 400, 600, 250, 700, 400);
+}
+
+function InstantiateCar(x, y, color)
+{
+  //Draw a car using rectangles and ellipses
+  fill(color);
+  rect(x, y, 130, 90);
+  rect(x + 120, y + 30, 60, 60);
+
+  //window
+  fill("lightblue");
+  rect(x + 10, y + 10, 50, 30);
+  rect(x + 70, y + 10, 50, 30);
+
+  //wheels
+  fill("black");
+  ellipse(x + 40, y + 90, 35, 35);
+  ellipse(x + 140, y + 90, 35, 35);
+  fill("gray");
+  ellipse(x + 40, y + 90, 25, 25);
+  ellipse(x + 140, y + 90, 25, 25);
+}
+
+//populate car object array
+function InitCars(numCars)
+{
+  let cars = [];
+  for (let i = 0; i < numCars; i++) {
+    //every other car is on the other lane, so we can use the modulus operator to determine which lane to put the car in
+    cars.push({ x: 0-(200*i), y: (i % 2) * 125 + 350, color: GetRandomColor(), speed: 0.1  })
+  }
+
+  return cars;
+}
+
+function GetRandomColor()
+{
+  const colors = ["red", "blue", "green", "yellow", "orange", "purple"];
+  const randomIndex = GetRandomInt(colors.length);
+  return colors[randomIndex];
+}
+
+function GetRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
+
+function UpdateCar()
+{
+  for (let i = 0; i < numCars; i++) 
+  {
+    //use a car object to keep things 
+    car = cars[i];
+    
+    car.x += car.speed * deltaTime
+    InstantiateCar(car.x, car.y, car.color);
+
+    //reset the car's position, randomize its lane and color when it drives off screen
+    if (car.x > canvasWidth + 100)
+    {
+      car.x = -250;
+      car.y = (GetRandomInt(5) % 2) * 100 + 350;
+      car.color = GetRandomColor();
+    }
+  }
+
+  //cloudX += cloudSpeed * deltaTime;
+  
 }
 
 function DrawRoad()
