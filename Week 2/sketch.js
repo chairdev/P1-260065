@@ -3,8 +3,9 @@ const canvasHeight = 600;
 
 const numCars = 15;
 
-let cloudX = 100;
-let cars = InitCars(numCars)
+let cars = InitCars(numCars);
+let clouds = InitClouds();
+let sun = { x: 100, y: 75, speed: 0.05 };
 
 //wow week 2!! aren't we all so excited to work with p5.js more
 function setup() {
@@ -15,31 +16,57 @@ function setup() {
 
 function draw() {
   background("skyblue");
+  DrawSun();
   DrawClouds();
   DrawMountains();
   DrawGrass();
-  DrawRoad()
+  DrawRoad();
 
   UpdateCar();
+  UpdateClouds();
+  //DrawTrees();
+}
+
+function InitClouds()
+{
+  return [
+  { x: 25, y: -250},
+  { x: 100, y: 100},
+  { x: 300, y: 150},
+  { x: 500, y: 75},
+  { x: 525, y: 90},
+  { x: 600, y: 100},
+  { x: 800, y: 100}]
+}
+
+function UpdateClouds()
+{
+  const cloudSpeed = 0.0001;
+  for (let i = 0; i < clouds.length; i++)
+  {
+
+    //Move the clouds froms right to left
+    let cloud = clouds[i];
+    cloud.x -= (Math.sqrt(cloudSpeed *cloud.y)) * deltaTime;
+
+    //reset the cloud's position when it goes off screen
+    if (cloud.x < -200)
+    {
+      //randomize the cloud's y position
+      cloud.x = canvasWidth + 200;
+      cloud.y = 100 + GetRandomInt(25);
+      
+    }
+  }
 }
 
 function DrawClouds()
 {
-  const cloudY = -250;
-  const cloudSpeed = 0.1;
-
-  if (cloudX > canvasWidth + 100)
+  for (let i = 0; i < clouds.length; i++)
   {
-    cloudX = -650;
+    let cloud = clouds[i];
+    InitCloud(cloud.x, cloud.y);
   }
-
-  cloudX += cloudSpeed * deltaTime;
-
-  InitCloud(cloudX-75, cloudY);
-  InitCloud(cloudX, 100);
-  InitCloud(cloudX + 200, 150);
-  InitCloud(cloudX + 400, 75);
-  InitCloud(cloudX + 425, 90);
 }
 
 function InitCloud(x, y)
@@ -51,6 +78,23 @@ function InitCloud(x, y)
   ellipse(x, y, 100, 50);
   ellipse(x + 50, y, 100, 50);
   ellipse(x + 5, y - 25, 100, 50);
+}
+
+function DrawSun()
+{
+  fill("yellow");
+  ellipse(sun.x, sun.y, 100, 100);
+  fill("gold")
+
+  //Sun goes from left to right
+  sun.x += sun.speed * deltaTime;
+
+  if(sun.x > canvasWidth + 100)
+  {
+    sun.x = -50
+  }
+
+
 }
 
 function DrawGrass() 
@@ -146,10 +190,7 @@ function UpdateCar()
       car.y = (GetRandomInt(2)) * 125 + 350;
       car.color = GetRandomColor();
     }
-  }
-
-  //cloudX += cloudSpeed * deltaTime;
-  
+  }  
 }
 
 function DrawRoad()
