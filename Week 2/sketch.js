@@ -1,7 +1,7 @@
 const canvasWidth = 800;
 const canvasHeight = 600;
 
-const numCars = 5;
+const numCars = 15;
 
 let cloudX = 100;
 let cars = InitCars(numCars)
@@ -105,7 +105,7 @@ function InitCars(numCars)
   let cars = [];
   for (let i = 0; i < numCars; i++) {
     //every other car is on the other lane, so we can use the modulus operator to determine which lane to put the car in
-    cars.push({ x: 0-(200*i), y: (i % 2) * 125 + 350, color: GetRandomColor(), speed: 0.1  })
+    cars.push({ x: 0-(200*i), y: (i % 2) * 125 + 350, color: GetRandomColor(), speed: 0.9  })
   }
 
   return cars;
@@ -124,10 +124,13 @@ function GetRandomInt(max) {
 
 function UpdateCar()
 {
+  const minSeparation = 210;
+  const maxSeparation = 280;
+
   for (let i = 0; i < numCars; i++) 
   {
     //use a car object to keep things 
-    car = cars[i];
+    let car = cars[i];
     
     car.x += car.speed * deltaTime
     InstantiateCar(car.x, car.y, car.color);
@@ -135,8 +138,12 @@ function UpdateCar()
     //reset the car's position, randomize its lane and color when it drives off screen
     if (car.x > canvasWidth + 100)
     {
-      car.x = -250;
-      car.y = (GetRandomInt(5) % 2) * 100 + 350;
+      // find the leftmost car and place this car  a random distance behind it
+      // thank you stackoverflow...
+      let leftmostX = Math.min(...cars.map(c => c.x));
+      car.x = leftmostX - Math.random() * (maxSeparation - minSeparation) - minSeparation;
+      // randomize lane (two lanes) and color
+      car.y = (GetRandomInt(2)) * 125 + 350;
       car.color = GetRandomColor();
     }
   }
