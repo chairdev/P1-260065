@@ -46,7 +46,6 @@ function UpdateClouds()
   const cloudSpeed = 0.00005;
   for (let i = 0; i < clouds.length; i++)
   {
-
     //Move the clouds froms right to left
     //The higher up the cloud is, the faster it moves
     let cloud = clouds[i];
@@ -57,7 +56,7 @@ function UpdateClouds()
     {
       //randomize the cloud's y position
       cloud.x = canvasWidth + 200;
-      cloud.y = 100 + GetRandomInt(25);
+      cloud.y = 50 + GetRandomInt(35);
       
     }
   }
