@@ -11,7 +11,7 @@ let trees = InitTrees();
 //wow week 2!! aren't we all so excited to work with p5.js more
 function setup() {
   createCanvas(canvasWidth, canvasHeight);
-  frameRate(30);
+  frameRate(60);
   
 }
 
