@@ -198,14 +198,39 @@ function UpdateCar()
     let car = cars[i];
     
     //Stop at traffic light when the light is red and its at it.
+    let currentSpeed = car.speed;
+    switch (lightState) {
+      case SIGNAL_STATE.GREEN:
+      case SIGNAL_STATE.YELLOW:
+        if(lightState == SIGNAL_STATE.YELLOW)
+        {
+          //planga gas when past the yellow light
+          if(car.x >= signalXPos)
+          {
+            currentSpeed *= 2;
+          }
+          else
+          {
+            currentSpeed /= 2;
+          }
+         
+        }
+        car.x += currentSpeed * deltaTime;
+        break;
+      default:
+        if(car.x >= signalXPos-100)
+        {
+          //speed off when the light is red because the young hos are driving
+          currentSpeed *= 1.2;
+          car.x += currentSpeed * deltaTime;
+        }
+          
+        break;
+    }
     if(lightState != SIGNAL_STATE.RED)
     {
-      let currentSpeed = car.speed;
-      if(lightState == SIGNAL_STATE.YELLOW)
-      {
-        currentSpeed /= 2;
-      }
-      car.x += currentSpeed * deltaTime;
+     
+      
     }
     
     InstantiateCar(car.x, car.y, car.color);
