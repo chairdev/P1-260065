@@ -5,8 +5,18 @@ const numCars = 15;
 
 let cars = InitCars(numCars);
 let clouds = InitClouds();
-let sun = { x: 100, y: 75, speed: 0.05 };
+let sun = { x: 100, y: 75, speed: 0.02 };
 let trees = InitTrees();
+
+const SIGNAL_STATE = {
+  RED: 0,
+  YELLOW: 1,
+  GREEN: 2
+}
+
+let lightState = SIGNAL_STATE.GREEN;
+
+
 
 //wow week 2!! aren't we all so excited to work with p5.js more
 function setup() {
@@ -23,11 +33,22 @@ function draw() {
   DrawGrass();
   DrawTrees(true);
   DrawRoad();
+  DrawTrafficLight();
 
   UpdateCar();
   UpdateClouds();
   DrawTrees(false);
 }
+
+function keyPressed()
+{
+  //If enter is pressed, cycle through the traffic light states
+  if (keyCode === ENTER)
+  {
+    lightState = (lightState + 1) % 3;
+  }
+}
+
 
 function InitClouds()
 {
@@ -253,4 +274,55 @@ function DrawTrees(drawMode)
     let yPos = tree.isBG ? 315: 585;
     InitTree(tree.x, yPos);
   }
+}
+
+function DrawTrafficLight()
+{
+  const xPos = 500;
+  const yPos = 220;
+  const signalSize = 35;
+  const boxWidth = 50;
+  const boxHeight = 140;
+  const centerX = xPos + boxWidth / 2 + 10;
+  const lightSpacing = 42;
+
+  const lightColors = ["#343434", "#5f5f5f", "#cc3232","#e7b416", "#99c140"];
+
+  noStroke();
+  fill(lightColors[0]);
+  rect(xPos + 10, yPos, boxWidth, boxHeight);
+
+  if(lightState == SIGNAL_STATE.RED)
+  {
+    fill(lightColors[2]);
+  }
+  else
+  {
+    fill(lightColors[1]);
+  }
+  
+  circle(centerX, yPos + 22, signalSize);
+
+  if(lightState == SIGNAL_STATE.YELLOW)
+  {
+    fill(lightColors[3]);
+  }
+  else
+  {
+    fill(lightColors[1]);
+  }
+  circle(centerX, yPos + 22 + lightSpacing, signalSize);
+
+  if(lightState == SIGNAL_STATE.GREEN)
+  {
+    fill(lightColors[4]);
+  }
+  else
+  {
+    fill(lightColors[1]);
+  }
+  circle(centerX, yPos + 22 + lightSpacing * 2, signalSize);
+
+  fill(lightColors[0]);
+  rect(xPos + 26, yPos + boxHeight, 20, 40);
 }
