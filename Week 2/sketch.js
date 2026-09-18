@@ -2,6 +2,7 @@ const canvasWidth = 800;
 const canvasHeight = 600;
 
 const numCars = 15;
+const signalXPos = 500;
 
 let cars = InitCars(numCars);
 let clouds = InitClouds();
@@ -9,9 +10,9 @@ let sun = { x: 100, y: 75, speed: 0.02 };
 let trees = InitTrees();
 
 const SIGNAL_STATE = {
-  RED: 0,
+  GREEN: 0,
   YELLOW: 1,
-  GREEN: 2
+  RED: 2
 }
 
 let lightState = SIGNAL_STATE.GREEN;
@@ -196,8 +197,20 @@ function UpdateCar()
     //use a car object to keep things 
     let car = cars[i];
     
-    car.x += car.speed * deltaTime
+    //Stop at traffic light when the light is red and its at it.
+    if(lightState != SIGNAL_STATE.RED)
+    {
+      let currentSpeed = car.speed;
+      if(lightState == SIGNAL_STATE.YELLOW)
+      {
+        currentSpeed /= 2;
+      }
+      car.x += currentSpeed * deltaTime;
+    }
+    
     InstantiateCar(car.x, car.y, car.color);
+
+    
 
     //reset the car's position, randomize its lane and color when it drives off screen
     if (car.x > canvasWidth + 100)
@@ -278,20 +291,20 @@ function DrawTrees(drawMode)
 
 function DrawTrafficLight()
 {
-  const xPos = 500;
   const yPos = 220;
   const signalSize = 35;
   const boxWidth = 50;
   const boxHeight = 140;
-  const centerX = xPos + boxWidth / 2 + 10;
+  const centerX = signalXPos + boxWidth / 2 + 10;
   const lightSpacing = 42;
 
   const lightColors = ["#343434", "#5f5f5f", "#cc3232","#e7b416", "#99c140"];
 
   noStroke();
   fill(lightColors[0]);
-  rect(xPos + 10, yPos, boxWidth, boxHeight);
+  rect(signalXPos + 10, yPos, boxWidth, boxHeight);
 
+  //Draw the traffic light signals based on the current light state
   if(lightState == SIGNAL_STATE.RED)
   {
     fill(lightColors[2]);
@@ -324,5 +337,5 @@ function DrawTrafficLight()
   circle(centerX, yPos + 22 + lightSpacing * 2, signalSize);
 
   fill(lightColors[0]);
-  rect(xPos + 26, yPos + boxHeight, 20, 40);
+  rect(signalXPos + 26, yPos + boxHeight, 20, 40);
 }
