@@ -9,7 +9,7 @@ let field = [
   0, 0, 0
 ];
 
-let isMouseMoving = false;
+let gameIsOver = false;
 
 function setup() {
   createCanvas(400, 400);
@@ -35,7 +35,7 @@ function DrawSquares()
         let fieldIndex = GetFieldIndex([x, y]);
 
         //Set the square color
-        if(clickedSquare != false && clickedSquare[0] == x && clickedSquare[1] == y)
+        if(clickedSquare != false && clickedSquare[0] == x && clickedSquare[1] == y && !gameIsOver)
         {
           fill(selectedColor[field[fieldIndex]]);
         }
@@ -52,7 +52,7 @@ function mousePressed()
 {
   let clickedSquare = FindClickedSquare();
   
-  if(clickedSquare != false)
+  if(clickedSquare != false && !gameIsOver)
   {
     let fieldIndex = GetFieldIndex(clickedSquare);
     if(!IsTileAlreadyOwned(fieldIndex))
@@ -75,15 +75,36 @@ function CheckFieldState()
   if (HasThreeInAColumn(1) || HasThreeInARow(1) || HasThreeDiagonally(1))
   {
     console.log("Player 1 wins!");
+    gameIsOver = true;
   }
   else if(HasThreeInAColumn(2) || HasThreeInARow(2) || HasThreeDiagonally(2))
   {
     console.log("Player 2 wins!");
+    gameIsOver = true;
+  }
+  else if(IsBoardFull())
+  {
+    console.log("All tiles are full! It's a draw!!")
+    gameIsOver = true;
   }
   else
   {
     NextTurn();
   }
+}
+
+function IsBoardFull()
+{
+  //Loop through the board and check if there are any zeroes (empty) left
+  for (let i = 0; i < field.length; i++)
+  {
+    if (field[i] == 0)
+    {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 function HasThreeDiagonally(player)
@@ -145,10 +166,12 @@ function NextTurn()
 {
   //Next player's turn (0 or 1)
   currentTurn = (currentTurn + 1) % 2;
+  console.log("Player " + currentTurn + "'s turn!")
 }
 
 function GetFieldIndex(square)
 {
+  //turn the 2D positions into a 1D array index using MAAAAAAAAAATH
   return square[1] * 3 + square[0];
 }
 
