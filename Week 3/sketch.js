@@ -4,9 +4,9 @@ const squarePadding = 10;
 
 let currentTurn = 0;
 let field = [
-  -1, -1, -1,
-  -1, -1, -1,
-  -1, -1, -1
+  0, 0, 0,
+  0, 0, 0,
+  0, 0, 0
 ];
 
 let isMouseMoving = false;
@@ -22,6 +22,9 @@ function draw() {
 
 function DrawSquares()
 {
+  const selectedColor = ["#6d758d", "#143464", "#73172d"];
+  const deselectedColor = ["#dae0ea", "#285cc4", "#b4202a"]
+
   let clickedSquare = FindClickedSquare();
 
   //Draw a padded game board
@@ -29,13 +32,16 @@ function DrawSquares()
   {
       for (let y = 0; y < 3; y++) 
       {        
-        if (clickedSquare != false && clickedSquare[0] == x && clickedSquare[1] == y)
+        let fieldIndex = GetFieldIndex([x, y]);
+        
+        //Set the square color
+         if (clickedSquare != false && clickedSquare[0] == x && clickedSquare[1] == y)
         {
-          fill("gray");
+          fill(selectedColor[field[fieldIndex]]);
         }
         else
         {
-          fill("white");
+          fill(deselectedColor[field[fieldIndex]]);
         }
         square(squarePadding + x * (squareSize + squarePadding), squarePadding + y * (squareSize + squarePadding), squareSize, squareRadius);
       }
@@ -52,7 +58,7 @@ function mousePressed()
     if(!IsTileAlreadyOwned(fieldIndex))
     {
       //Set the square on the field to the current player's index
-      field[fieldIndex] = currentTurn;
+      field[fieldIndex] = currentTurn+1;
       console.log("Claimed by player " + currentTurn)
       NextTurn();
     }
@@ -61,7 +67,7 @@ function mousePressed()
 
 function IsTileAlreadyOwned(index)
 {
-  return (field[index] != -1);
+  return (field[index] != 0);
 }
 
 function NextTurn()
