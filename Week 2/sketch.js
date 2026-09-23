@@ -17,8 +17,6 @@ const SIGNAL_STATE = {
 
 let lightState = SIGNAL_STATE.GREEN;
 
-
-
 //wow week 2!! aren't we all so excited to work with p5.js more
 function setup() {
   createCanvas(canvasWidth, canvasHeight);
@@ -204,7 +202,7 @@ function UpdateCar()
       case SIGNAL_STATE.YELLOW:
         if(lightState == SIGNAL_STATE.YELLOW)
         {
-          //planga gas when past the yellow light
+          //planga gas when past the yellow light, otherwise half speed
           if(car.x >= signalXPos)
           {
             currentSpeed *= 2;
@@ -234,8 +232,6 @@ function UpdateCar()
     }
     
     InstantiateCar(car.x, car.y, car.color);
-
-    
 
     //reset the car's position, randomize its lane and color when it drives off screen
     if (car.x > canvasWidth + 100)
