@@ -61,7 +61,6 @@ function mousePressed()
       field[fieldIndex] = currentTurn+1;
       console.log("Claimed by player " + currentTurn)
       CheckFieldState();
-      NextTurn();
     }
   }
 }
@@ -73,10 +72,41 @@ function IsTileAlreadyOwned(index)
 
 function CheckFieldState()
 {
-  if (HasThreeInAColumn(1) || HasThreeInARow(1))
+  if (HasThreeInAColumn(1) || HasThreeInARow(1) || HasThreeDiagonally(1))
   {
-
+    console.log("Player 1 wins!");
   }
+  else if(HasThreeInAColumn(2) || HasThreeInARow(2) || HasThreeDiagonally(2))
+  {
+    console.log("Player 2 wins!");
+  }
+  else
+  {
+    NextTurn();
+  }
+}
+
+function HasThreeDiagonally(player)
+{
+  // Top left to bottom right
+  let tLbR = [ field[GetFieldIndex([0, 0])], field[GetFieldIndex([1, 1])], field[GetFieldIndex([2, 2])]];
+  let tRbL = [ field[GetFieldIndex([2, 0])], field[GetFieldIndex([1, 1])], field[GetFieldIndex([0, 2])]];
+  
+  
+  if(tLbR[0] == player && tLbR[1] == player && tLbR[2] == player)
+  {
+    console.log("Player " + player + " has three diagonally!");
+    return true;
+  }
+
+  // Top right to bottom left
+  if (tRbL == player && tRbL == player && tRbL == player)
+  {
+    console.log("Player " + player + " has three diagonally!");
+    return true;
+  }
+
+  return false;
 }
 
 function HasThreeInAColumn(player)
