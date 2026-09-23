@@ -73,10 +73,26 @@ function IsTileAlreadyOwned(index)
 
 function CheckFieldState()
 {
-  if (HasThreeInARow(1) || HasThreeInARow(2))
+  if (HasThreeInAColumn(1) || HasThreeInARow(1))
   {
 
   }
+}
+
+function HasThreeInAColumn(player)
+{
+  //check if a player has three in a row
+  for (let column = 0; column < 3; column++) 
+  {
+    let tiles = [field[GetFieldIndex([column, 0])], field[GetFieldIndex([column, 1])], field[GetFieldIndex([column, 2])]];
+
+     if (tiles[0] == player && tiles[1] == player && tiles[2] == player)
+      {
+        console.log("Player " + player + " has three in a column!!")
+        return true;
+      } 
+  }
+  return false;
 }
 
 function HasThreeInARow(player)
@@ -86,9 +102,9 @@ function HasThreeInARow(player)
   {
     let tiles = [field[GetFieldIndex([0, row])], field[GetFieldIndex([1, row])], field[GetFieldIndex([2, row])]];
 
-     if (tiles[0] == player && tiles[0] == player && tiles[0] == player)
+     if (tiles[0] == player && tiles[1] == player && tiles[2] == player)
       {
-        console.log("Player " + player + " has won!!")
+        console.log("Player " + player + " has three in a row!!")
         return true;
       } 
   }
