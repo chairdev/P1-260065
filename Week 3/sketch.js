@@ -33,9 +33,9 @@ function DrawSquares()
       for (let y = 0; y < 3; y++) 
       {        
         let fieldIndex = GetFieldIndex([x, y]);
-        
+
         //Set the square color
-         if (clickedSquare != false && clickedSquare[0] == x && clickedSquare[1] == y)
+        if(clickedSquare != false && clickedSquare[0] == x && clickedSquare[1] == y)
         {
           fill(selectedColor[field[fieldIndex]]);
         }
@@ -60,6 +60,7 @@ function mousePressed()
       //Set the square on the field to the current player's index
       field[fieldIndex] = currentTurn+1;
       console.log("Claimed by player " + currentTurn)
+      CheckFieldState();
       NextTurn();
     }
   }
@@ -68,6 +69,30 @@ function mousePressed()
 function IsTileAlreadyOwned(index)
 {
   return (field[index] != 0);
+}
+
+function CheckFieldState()
+{
+  if (HasThreeInARow(1) || HasThreeInARow(2))
+  {
+
+  }
+}
+
+function HasThreeInARow(player)
+{
+  //check if a player has three in a row
+  for (let row = 0; row < 3; row++) 
+  {
+    let tiles = [field[GetFieldIndex([0, row])], field[GetFieldIndex([1, row])], field[GetFieldIndex([2, row])]];
+
+     if (tiles[0] == player && tiles[0] == player && tiles[0] == player)
+      {
+        console.log("Player " + player + " has won!!")
+        return true;
+      } 
+  }
+  return false;
 }
 
 function NextTurn()
