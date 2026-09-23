@@ -9,6 +9,8 @@ let field = [
   -1, -1, -1
 ];
 
+let isMouseMoving = false;
+
 function setup() {
   createCanvas(400, 400);
 }
@@ -20,30 +22,53 @@ function draw() {
 
 function DrawSquares()
 {
+  let clickedSquare = FindClickedSquare();
+
   //Draw a padded game board
   for (let x = 0; x < 3; x++) 
   {
       for (let y = 0; y < 3; y++) 
-      {
-        let clickedSquare = FindClickedSquare();
-        
-        if(clickedSquare != false)
+      {        
+        if (clickedSquare != false && clickedSquare[0] == x && clickedSquare[1] == y)
         {
-          //Change the color of the square to show that it's currently being hovered over
-          if(clickedSquare[0] == x && clickedSquare[1] == y)
-          {
-
-          }
+          fill("gray");
+        }
+        else
+        {
+          fill("white");
         }
         square(squarePadding + x * (squareSize + squarePadding), squarePadding + y * (squareSize + squarePadding), squareSize, squareRadius);
       }
   }
 }
 
-
 function mousePressed() 
 {
+  let clickedSquare = FindClickedSquare();
   
+  if(clickedSquare != false)
+  {
+    //Set the square on the field to the current player's index
+    field[GetFieldIndex(clickedSquare)] = currentTurn;
+    console.log("Claimed by player " + currentTurn)
+    NextTurn();
+  }
+}
+
+function IsTileAlreadyOwned(index)
+{
+  return (field[index] != -1);
+}
+
+function NextTurn()
+{
+  //Next player's turn (0 or 1)
+  currentTurn = (currentTurn + 1) % 2;
+}
+
+function GetFieldIndex(square)
+{
+  return square[1] * 3 + square[0];
 }
 
 function FindClickedSquare()
@@ -57,7 +82,7 @@ function FindClickedSquare()
 
       //Return the square's id
       if (MouseIsWithinBounds(mouseX, mouseY, squareX, squareY)) {
-        console.log("Square clicked:", x, y);
+        console.log("Square detected", x, y);
         return [x, y];
       }
     }
