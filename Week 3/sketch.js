@@ -48,10 +48,14 @@ function mousePressed()
   
   if(clickedSquare != false)
   {
-    //Set the square on the field to the current player's index
-    field[GetFieldIndex(clickedSquare)] = currentTurn;
-    console.log("Claimed by player " + currentTurn)
-    NextTurn();
+    let fieldIndex = GetFieldIndex(clickedSquare);
+    if(!IsTileAlreadyOwned(fieldIndex))
+    {
+      //Set the square on the field to the current player's index
+      field[fieldIndex] = currentTurn;
+      console.log("Claimed by player " + currentTurn)
+      NextTurn();
+    }
   }
 }
 
