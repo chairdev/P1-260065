@@ -4,6 +4,7 @@ const squareSize = 100;
 const squareRadius = 20;
 const squarePadding = 10;
 
+let announcerText = "Player 1's Turn!";
 let currentTurn = 0;
 let field = [
   0, 0, 0,
@@ -20,10 +21,19 @@ function setup() {
 function draw() {
   background(220);
   // Board background
+  DrawText();
+
   fill("black");
   square(squareXOffset, squareYOffset, 330, 30);
 
   DrawSquares();
+}
+
+function DrawText() {
+  fill("black");
+  textAlign(CENTER, CENTER);
+  textSize(24);
+  text(announcerText, 245, 60);
 }
 
 function DrawSquares()
@@ -82,16 +92,19 @@ function CheckFieldState()
   if (HasThreeInAColumn(1) || HasThreeInARow(1) || HasThreeDiagonally(1))
   {
     console.log("Player 1 wins!");
+    announcerText = "Player's 1 wins!\nClick to restart...";
     gameIsOver = true;
   }
   else if(HasThreeInAColumn(2) || HasThreeInARow(2) || HasThreeDiagonally(2))
   {
     console.log("Player 2 wins!");
+    announcerText = "Player's 2 wins!\nClick to restart...";
     gameIsOver = true;
   }
   else if(IsBoardFull())
   {
     console.log("All tiles are full! It's a draw!!")
+    announcerText = "It's a draw!!\nClick to restart..."
     gameIsOver = true;
   }
   else
@@ -173,6 +186,7 @@ function NextTurn()
 {
   //Next player's turn (0 or 1)
   currentTurn = (currentTurn + 1) % 2;
+  announcerText = "Player "+ (currentTurn + 1) + "'s Turn!";
   console.log("Player " + currentTurn + "'s turn!")
 }
 
