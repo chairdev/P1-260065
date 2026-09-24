@@ -1,3 +1,5 @@
+const squareXOffset = 75;
+const squareYOffset = 100;
 const squareSize = 100;
 const squareRadius = 20;
 const squarePadding = 10;
@@ -12,7 +14,7 @@ let field = [
 let gameIsOver = false;
 
 function setup() {
-  createCanvas(400, 400);
+  createCanvas(500, 510);
 }
 
 function draw() {
@@ -43,7 +45,7 @@ function DrawSquares()
         {
           fill(deselectedColor[field[fieldIndex]]);
         }
-        square(squarePadding + x * (squareSize + squarePadding), squarePadding + y * (squareSize + squarePadding), squareSize, squareRadius);
+        square(squareXOffset + x * (squareSize + squarePadding), squareYOffset + y * (squareSize + squarePadding), squareSize, squareRadius);
       }
   }
 }
@@ -181,8 +183,8 @@ function FindClickedSquare()
   {
     for (let y = 0; y < 3; y++) 
     {
-      let squareX = x * (squareSize + squarePadding);
-      let squareY = y * (squareSize + squarePadding);
+      let squareX = squareXOffset + x * (squareSize + squarePadding);
+      let squareY = squareYOffset + y * (squareSize + squarePadding);
 
       //Return the square's id
       if (MouseIsWithinBounds(mouseX, mouseY, squareX, squareY)) {
