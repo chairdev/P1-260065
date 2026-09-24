@@ -114,6 +114,12 @@ function keyPressed() {
 
 function ResetBoard()
 {
+  //Stop all sounds
+  click_sound.stop();
+  buzzer_sound.stop();
+  applause_sound.stop();
+  draw_sound.stop();
+  
   //Set all variables to their initial values
   gameIsOver = false;
   announcerText = "Player 1's Turn!";
