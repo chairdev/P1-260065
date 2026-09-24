@@ -14,19 +14,37 @@ let field = [
 
 let gameIsOver = false;
 
+let click_sound;
+let buzzer_sound;
+let applause_sound;
+let draw_sound;
+
 function setup() {
+  click_sound = loadSound('metallic_click.wav');
+  buzzer_sound = loadSound('deny.wav');
+  applause_sound = loadSound('applause.mp3');
+  draw_sound = loadSound('aww.wav')
+
   createCanvas(500, 510);
 }
 
 function draw() {
-  background(220);
-  // Board background
+  DrawBackground();
   DrawText();
 
+  //Board background
   fill("black");
   square(squareXOffset, squareYOffset, 330, 30);
 
   DrawSquares();
+}
+
+function DrawBackground()
+{
+  //The background changes according who's turn it currently is
+  const playerColors = ["#2789cd", "#e43b44"]
+  background(playerColors[currentTurn]);
+
 }
 
 function DrawText() {
@@ -74,12 +92,37 @@ function mousePressed()
     let fieldIndex = GetFieldIndex(clickedSquare);
     if(!IsTileAlreadyOwned(fieldIndex))
     {
+      click_sound.play();
       //Set the square on the field to the current player's index
       field[fieldIndex] = currentTurn+1;
       console.log("Claimed by player " + currentTurn)
       CheckFieldState();
     }
+    else
+    {
+      buzzer_sound.play();
+    }
   }
+}
+
+function keyPressed() {
+  if(gameIsOver)
+  {
+    ResetBoard();
+  }
+}
+
+function ResetBoard()
+{
+  //Set all variables to their initial values
+  gameIsOver = false;
+  announcerText = "Player 1's Turn!";
+  currentTurn = 0;
+  field = [
+    0, 0, 0,
+    0, 0, 0,
+    0, 0, 0
+  ];
 }
 
 function IsTileAlreadyOwned(index)
@@ -92,19 +135,22 @@ function CheckFieldState()
   if (HasThreeInAColumn(1) || HasThreeInARow(1) || HasThreeDiagonally(1))
   {
     console.log("Player 1 wins!");
-    announcerText = "Player's 1 wins!\nClick to restart...";
+    applause_sound.play();
+    announcerText = "Player's 1 wins!\nPress any key to restart...";
     gameIsOver = true;
   }
   else if(HasThreeInAColumn(2) || HasThreeInARow(2) || HasThreeDiagonally(2))
   {
+    applause_sound.play();
     console.log("Player 2 wins!");
-    announcerText = "Player's 2 wins!\nClick to restart...";
+    announcerText = "Player's 2 wins!\nPress any key to restart...";
     gameIsOver = true;
   }
   else if(IsBoardFull())
   {
+    draw_sound.play();
     console.log("All tiles are full! It's a draw!!")
-    announcerText = "It's a draw!!\nClick to restart..."
+    announcerText = "It's a draw!!\nPress any key to restart..."
     gameIsOver = true;
   }
   else
