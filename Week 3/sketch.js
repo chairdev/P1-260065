@@ -187,7 +187,7 @@ function HasThreeDiagonally(player)
   }
 
   // Top right to bottom left
-  if (tRbL == player && tRbL == player && tRbL == player)
+  if (tRbL[0] == player && tRbL[1] == player && tRbL[2] == player)
   {
     console.log("Player " + player + " has three diagonally!");
     return true;
