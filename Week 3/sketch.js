@@ -19,6 +19,10 @@ function setup() {
 
 function draw() {
   background(220);
+  // Board background
+  fill("black");
+  square(squareXOffset, squareYOffset, 330, 30);
+
   DrawSquares();
 }
 
@@ -45,6 +49,7 @@ function DrawSquares()
         {
           fill(deselectedColor[field[fieldIndex]]);
         }
+
         square(squareXOffset + x * (squareSize + squarePadding), squareYOffset + y * (squareSize + squarePadding), squareSize, squareRadius);
       }
   }
