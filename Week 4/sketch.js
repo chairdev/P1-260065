@@ -1,4 +1,6 @@
 let shapes = [];
+const canvasWidth = 800;
+const canvasHeight = 600;
 const loopCount = 105;
 
 const GEOMETRY_SHAPE = {
@@ -8,8 +10,9 @@ const GEOMETRY_SHAPE = {
   LENGTH: 3
 }
 
-function setup() {
-  createCanvas(800, 600);
+function setup() 
+{
+  createCanvas(canvasWidth, canvasHeight);
 }
 
 function keyPressed()
@@ -24,35 +27,44 @@ function keyPressed()
   }
 }
 
-function draw() {
-  background(220);
+function draw()
+{
+  background(255);
     noStroke();
 
   //Iterate through the shapes array and draw each shape
-  shapes.forEach(shape => {
+
+  for (let i = 0; i < shapes.length; i++) {
+    let shape = shapes[i];
     shape.angle += shape.rotationSpeed * (deltaTime / 1000);
-    DrawShape(shape.x, shape.y, shape.shape, shape.size, shape.color, shape.angle);
-  });
+    DrawShape(i, shape.shape, shape.size, shape.color, shape.angle);
+  }
 }
 
-function CreateRandomShape() {
+function CreateRandomShape() 
+{
   // Randomly generate shape properties
-  let x = getRandomInt(width);
-  let y = getRandomInt(height);
-  let size = [90 + getRandomInt(150), getRandomInt(150)];
+  let size = [40 + getRandomInt(40), 40 + getRandomInt(40)];
   let shape = getRandomInt(GEOMETRY_SHAPE.LENGTH);
   let shapeColor = color(getRandomInt(256), getRandomInt(256), getRandomInt(256));
   let angle = random(360);
   let rotationSpeed = random(-5, 5);
 
   //Push the new shape
-  shapes.push({ x: x, y: y, size: size, shape: shape, color: shapeColor, angle: angle, rotationSpeed: rotationSpeed });
+  shapes.push({ size: size, shape: shape, color: shapeColor, angle: angle, rotationSpeed: rotationSpeed });
 }
 
-function DrawShape(x, y, shape, size, color, angle) {
+function DrawShape(index, shape, size, color, angle) 
+{
+  const columns = 10;
+  const padding = 50;
+  const cellSize = 60;
+
   fill(color);
   // Begin the drawing group.
   push();
+  let x = (index % columns) * cellSize + padding;
+  let y = Math.floor(index / columns) * cellSize + padding;
   translate(x, y);
   rotate(angle);
 
