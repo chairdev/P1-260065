@@ -16,6 +16,18 @@ function setup() {
   }
 }
 
+function keyPressed()
+{
+  //If backspace is pressed, generate the shapes
+  if (keyCode === BACKSPACE)
+  {
+    shapes = [];
+    for (let i = 0; i < loopCount; i++) {
+      CreateRandomShape();
+    }
+  }
+}
+
 function draw() {
   background(220);
 
