@@ -3,7 +3,7 @@
   "Data": [
     {
       "Question": "Sample Question 1",
-      "CorrectAnswer": "Sample Answer 1",
+      "CorrectAnswer": 0,
       "Options": ["Sample Option 1", "Sample Option 2", "Sample Option 3"]
     }
   ]
