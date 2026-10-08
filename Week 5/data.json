@@ -5,6 +5,16 @@
       "Question": "Sample Question 1",
       "CorrectAnswer": 0,
       "Options": ["Sample Option 1", "Sample Option 2", "Sample Option 3"]
+    },
+    {
+      "Question": "Sample Question 2",
+      "CorrectAnswer": 1,
+      "Options": ["Sample Option A", "Sample Option B", "Sample Option C"]
+    },
+    {
+      "Question": "Sample Question 3",
+      "CorrectAnswer": 2,
+      "Options": ["Sample Option X", "Sample Option Y", "Sample Option Z"]
     }
   ]
 }

@@ -9,6 +9,17 @@ const startY = 150;
 let currentQuestionIndex = 0;
 let quiz;
 
+const QUIZ_STATE = {
+  START: 0,
+  QUESTION: 1,
+  ANSWER: 2,
+  END: 3
+}
+
+let state = QUIZ_STATE.START;
+let quizResults = [];
+
+
 function preload()
 {
   // Load the JSON data from the file
@@ -24,13 +35,39 @@ function setup()
 function draw()
 {
   background(220);
-  DrawQuestionText();
-  DrawOptions();
+  switch (state) {
+    case QUIZ_STATE.START:
+      DrawStartScreen();
+      break;
+    case QUIZ_STATE.QUESTION:
+      DrawQuestionText();
+      DrawOptions();
+      break;
+    case QUIZ_STATE.ANSWER:
+        DrawQuestionText();
+        DrawOptions(true);
+      break;
+    case quiz.STATE.END:
+      break;
+  }
 }
 
 function mousePressed()
 {
+  switch (state) {
+    case QUIZ_STATE.START:
+      state = QUIZ_STATE.QUESTION;
+      break;
+    case QUIZ_STATE.QUESTION:
+      CheckClickedOption();
+      break;
+  }
+}
+
+function CheckClickedOption()
+{
   const options = quiz.Data[currentQuestionIndex].Options;
+
   for (let i = 0; i < options.length; i++)
   {
     console.log("Checking option " + i);
@@ -39,16 +76,33 @@ function mousePressed()
     if (mouseX >= optionX && mouseX <= optionX + optionWidth && mouseY >= optionY && mouseY <= optionY + optionHeight) 
     {
       console.log("Option " + i + " clicked.");
+      state = QUIZ_STATE.ANSWER;
       // Check if the clicked option is correct
-      if (i == quiz.Data[currentQuestionIndex].CorrectAnswer)
-      {
-        console.log("Correct answer!");
-        // Move to the next question
-        currentQuestionIndex++;
-      }
+      quizResults.push(i == quiz.Data[currentQuestionIndex].CorrectAnswer);
+      console.log("Quiz results: " + quizResults);
+      
+      // Move to the next question after a short delay
+      setTimeout(() => {
+          currentQuestionIndex++;
+          if (currentQuestionIndex >= quiz.Data.length) {
+            state = QUIZ_STATE.END;
+          } else {
+            state = QUIZ_STATE.QUESTION;
+          }
+        }, 1000); // 1 second delays
+      return; // Exit the loop after finding the clicked option
     }
-    console.log("Option " + i + " is not the correct answer.");
   }
+}
+
+function DrawStartScreen()
+{
+  fill("black");
+  textAlign(CENTER, CENTER);
+  textSize(32);
+  text(quiz.Title, canvasWidth / 2, canvasHeight / 2 - 50);
+  textSize(24);
+  text("Click to Start", canvasWidth / 2, canvasHeight / 2 + 20);
 }
 
 
@@ -61,15 +115,32 @@ function DrawQuestionText()
   text(quiz.Data[currentQuestionIndex].Question, canvasWidth / 2, 60);
 }
 
-function DrawOptions()
+function DrawOptions(showAnswer = false)
 {
   const options = quiz.Data[currentQuestionIndex].Options;
   const optionColor = ["#fa6a0a", "#143464", "#793a80", "#e86a73"];
-
-  for (let i = 0; i < options.length; i++) {
+  const optionHighlightCol = ["#14a02e", "#b4202a"];
+  let correctAnswerIndex = quiz.Data[currentQuestionIndex].CorrectAnswer;
+  for (let i = 0; i < options.length; i++) 
+  {
     let optionX = (canvasWidth - optionWidth) / 2;
     let optionY = startY + i * (optionHeight + optionSpacing);
-    fill(optionColor[i % optionColor.length]); //Make sure this loops around if there are more than 4 options
+    if (showAnswer) 
+    {
+      if (i == correctAnswerIndex) 
+      {
+        fill(optionHighlightCol[0]); // Highlight the correct answer in green
+      }
+      else 
+      {
+        fill(optionHighlightCol[1]); // Highlight the incorrect answers in red
+      }
+    }
+    else
+    {
+      fill(optionColor[i % optionColor.length]); //Make sure this loops around if there are more than 4 options
+    }
+
     rect(optionX, optionY, optionWidth, optionHeight);
     fill("white");
     textAlign(CENTER, CENTER);
