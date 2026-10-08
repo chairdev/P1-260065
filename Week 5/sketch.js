@@ -6,6 +6,9 @@ const optionWidth = 300;
 const optionSpacing = 20;
 const startY = 150;
 
+const questionTime = 10; // Time in seconds for each question
+const answerCooldown = 1; // Time in seconds to show the answer before moving to the next question
+
 let currentQuestionIndex = 0;
 let quiz;
 
@@ -18,6 +21,7 @@ const QUIZ_STATE = {
 
 let state = QUIZ_STATE.START;
 let quizResults = [];
+let countDown = 10; // Countdown timer in seconds
 
 
 function preload()
@@ -42,6 +46,7 @@ function draw()
     case QUIZ_STATE.QUESTION:
       DrawQuestionText();
       DrawOptions();
+      UpdateCountdown();
       break;
     case QUIZ_STATE.ANSWER:
         DrawQuestionText();
@@ -64,6 +69,20 @@ function mousePressed()
   }
 }
 
+function UpdateCountdown()
+{
+  // Decrease the countdown timer every second
+  if (frameCount % 60 == 0 && countDown > 0) {
+    countDown--;
+  }
+
+  if(countDown <= 0) {
+    state = QUIZ_STATE.ANSWER;
+    quizResults.push(false);
+    setTimeout(() => { GoToNextQuestion(); }, answerCooldown * 1000); // 1 second delays
+  }
+}
+
 function CheckClickedOption()
 {
   const options = quiz.Data[currentQuestionIndex].Options;
@@ -82,16 +101,23 @@ function CheckClickedOption()
       console.log("Quiz results: " + quizResults);
       
       // Move to the next question after a short delay
-      setTimeout(() => {
-          currentQuestionIndex++;
-          if (currentQuestionIndex >= quiz.Data.length) {
-            state = QUIZ_STATE.END;
-          } else {
-            state = QUIZ_STATE.QUESTION;
-          }
-        }, 1000); // 1 second delays
+      setTimeout(() => { GoToNextQuestion(); }, answerCooldown * 1000); // 1 second delays
       return; // Exit the loop after finding the clicked option
     }
+  }
+}
+
+function GoToNextQuestion()
+{
+  countDown = questionTime; // Reset the countdown timer for the next question
+  currentQuestionIndex++;
+  if (currentQuestionIndex >= quiz.Data.length)
+  {
+    state = QUIZ_STATE.END;
+  } 
+  else 
+  {
+    state = QUIZ_STATE.QUESTION;
   }
 }
 
