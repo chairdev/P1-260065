@@ -1,20 +1,55 @@
 {
-  "Title": "Sample Quiz",
+  "Title": "MegaMan Battle Network Quiz",
   "Data": [
     {
-      "Question": "Sample Question 1",
-      "CorrectAnswer": 0,
-      "Options": ["Sample Option 1", "Sample Option 2", "Sample Option 3"]
-    },
-    {
-      "Question": "Sample Question 2",
+      "Question": "Who is MegaMan.EXE's operator in the main Battle Network series?",
       "CorrectAnswer": 1,
-      "Options": ["Sample Option A", "Sample Option B", "Sample Option C"]
+      "Options": ["Dex Oyama", "Lan Hikari", "Chaud Blaze", "Hub Hikari"]
     },
     {
-      "Question": "Sample Question 3",
+      "Question": "Which Navi is operated by Chaud Blaze?",
       "CorrectAnswer": 2,
-      "Options": ["Sample Option X", "Sample Option Y", "Sample Option Z"]
+      "Options": ["Roll.EXE", "WoodMan.EXE", "ProtoMan.EXE", "GutsMan.EXE"]
+    },
+    {
+      "Question": "What is the name of the organization\nthat serves as a major enemy in Mega Man Battle Network 2?",
+      "CorrectAnswer": 3,
+      "Options": ["Dealer", "Nebula", "WWW (World Three)", "Gospel"]
+    },
+    {
+      "Question": "Which of the following is NOT a type of\nBattle Chip in the Mega Man Battle Network series?",
+      "CorrectAnswer": 3,
+      "Options": ["Standard", "Mega", "Giga", "Support"]
+    },
+    {
+      "Question": "In the Battle Network battle system,\nwhat does the Custom Gauge allow you to do when it fills?",
+      "CorrectAnswer": 2,
+      "Options": ["Restore all HP", "Upgrade your Navi permanently", "To provide emotional support", "To Slot-In Battle Chips"]
+    },
+    {
+      "Question": "Which Battle Network game features the\nDarkChip system as a major gameplay mechanic?",
+      "CorrectAnswer": 3,
+      "Options": ["MegaMan Battle Network 1", "MegaMan Battle Chip Challenge", "MegaMan Battle Network 6", "MegaMan Battle Network 4"]
+    },
+    {
+      "Question": "From Battle Network 3 onwards,\ngames are divided into two versions.",
+      "CorrectAnswer": 0,
+      "Options": ["True", "False"]
+    },
+    {
+      "Question": "What is the name of MegaMan in\nthe original Japanese version?",
+      "CorrectAnswer": 1,
+      "Options": ["MegaMan", "RockMan", "BlueBomber", "NetNavi"]
+    },
+    {
+      "Question": "Battle Network is the most popular\nseries in the Mega Man franchise.",
+      "CorrectAnswer": 0,
+      "Options": ["True", "False"]
+    },
+        {
+      "Question": "When does its next series,\nMega Man Star Force, take place?",
+      "CorrectAnswer": 1,
+      "Options": ["20 years after Battle Network", "200 years after Battle Network", "2000 years after Battle Network", "20000 years after Battle Network"]
     }
   ]
 }

@@ -20,7 +20,7 @@ const QUIZ_STATE = {
 }
 
 let state = QUIZ_STATE.START;
-let quizResults = [];
+let correctAnswers = 0;
 let countDown = 10; // Countdown timer in seconds
 
 
@@ -39,6 +39,8 @@ function setup()
 function draw()
 {
   background(220);
+
+  //Check the current state of the quiz and draw the appropriate objects
   switch (state) {
     case QUIZ_STATE.START:
       DrawStartScreen();
@@ -52,7 +54,9 @@ function draw()
         DrawQuestionText();
         DrawOptions(true);
       break;
-    case quiz.STATE.END:
+    case QUIZ_STATE.END:
+      // Display the final results
+      DrawFinalResults();
       break;
   }
 }
@@ -66,6 +70,13 @@ function mousePressed()
     case QUIZ_STATE.QUESTION:
       CheckClickedOption();
       break;
+    case QUIZ_STATE.END:
+      // Reset the quiz to start over
+      currentQuestionIndex = 0;
+      correctAnswers = 0;
+      countDown = questionTime;
+      state = QUIZ_STATE.START;
+      break;
   }
 }
 
@@ -78,7 +89,6 @@ function UpdateCountdown()
 
   if(countDown <= 0) {
     state = QUIZ_STATE.ANSWER;
-    quizResults.push(false);
     setTimeout(() => { GoToNextQuestion(); }, answerCooldown * 1000); // 1 second delays
   }
 }
@@ -97,9 +107,9 @@ function CheckClickedOption()
       console.log("Option " + i + " clicked.");
       state = QUIZ_STATE.ANSWER;
       // Check if the clicked option is correct
-      quizResults.push(i == quiz.Data[currentQuestionIndex].CorrectAnswer);
-      console.log("Quiz results: " + quizResults);
-      
+      if (i == quiz.Data[currentQuestionIndex].CorrectAnswer) {
+        correctAnswers++;
+      }
       // Move to the next question after a short delay
       setTimeout(() => { GoToNextQuestion(); }, answerCooldown * 1000); // 1 second delays
       return; // Exit the loop after finding the clicked option
@@ -131,6 +141,15 @@ function DrawStartScreen()
   text("Click to Start", canvasWidth / 2, canvasHeight / 2 + 20);
 }
 
+function DrawFinalResults()
+{
+  fill("black");
+  textAlign(CENTER, CENTER);
+  textSize(32);
+  text("Quiz Completed!", canvasWidth / 2, canvasHeight / 2 - 50);
+  textSize(24);
+  text(`You answered ${correctAnswers} out of ${quiz.Data.length} questions correctly.\nClick to restart.`, canvasWidth / 2, canvasHeight / 2 + 20);
+}
 
 function DrawQuestionText()
 {
