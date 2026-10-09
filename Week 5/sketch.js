@@ -49,6 +49,7 @@ function draw()
       DrawQuestionText();
       DrawOptions();
       UpdateCountdown();
+      DrawCountdownBar();
       break;
     case QUIZ_STATE.ANSWER:
         DrawQuestionText();
@@ -204,5 +205,26 @@ function DrawOptions(showAnswer = false)
     // Draw the option text
     text(options[i], optionX + optionWidth / 2, optionY + optionHeight / 2);
   }
+}
+
+function DrawCountdownBar()
+{
+  const barWidth = canvasWidth - 80;
+  const barHeight = 18;
+  const barX = 40;
+  const barY = canvasHeight - 40;
+  const progress = constrain(countDown / questionTime, 0, 1);
+
+  noStroke();
+  fill(180);
+  rect(barX, barY, barWidth, barHeight, 9);
+
+  fill(progress > 0.3 ? "#14a02e" : "#b4202a");
+  rect(barX, barY, barWidth * progress, barHeight, 9);
+
+  fill("black");
+  textAlign(CENTER, CENTER);
+  textSize(20);
+  text(`Time left: ${countDown}s`, canvasWidth / 2, barY - 14);
 }
 
