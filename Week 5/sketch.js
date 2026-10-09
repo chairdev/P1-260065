@@ -41,9 +41,14 @@ function setup()
 function draw()
 {
   background(220);
-  
-  //draw background image
+
+  // Draw the background image with a subtle blur, then add a dark overlay
+  // so the quiz text remains easy to read against the image.
   image(bgImage, 0, 0, canvasWidth, canvasHeight);
+  filter(BLUR, 2);
+  noStroke();
+  fill(20, 20, 20, 80);
+  rect(0, 0, canvasWidth, canvasHeight);
 
   //Check the current state of the quiz and draw the appropriate objects
   switch (state) {
