@@ -155,7 +155,7 @@ function GoToNextQuestion()
 
 function DrawStartScreen()
 {
-  fill("black");
+  fill("#f5f7ff");
   textAlign(CENTER, CENTER);
   textSize(32);
   text(quiz.Title, canvasWidth / 2, canvasHeight / 2 - 50);
@@ -165,7 +165,7 @@ function DrawStartScreen()
 
 function DrawFinalResults()
 {
-  fill("black");
+  fill("#f5f7ff");
   textAlign(CENTER, CENTER);
   textSize(32);
   text("Quiz Completed!", canvasWidth / 2, canvasHeight / 2 - 50);
@@ -176,7 +176,7 @@ function DrawFinalResults()
 function DrawQuestionText()
 {
   //Draw the current question text at the top of the canvas
-  fill("black");
+  fill("#f5f7ff");
   textAlign(CENTER, CENTER);
   textSize(24);
   text(quiz.Data[currentQuestionIndex].Question, canvasWidth / 2, 60);
