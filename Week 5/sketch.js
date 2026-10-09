@@ -208,7 +208,10 @@ function DrawOptions(showAnswer = false)
       fill(optionColor[i % optionColor.length]); //Make sure this loops around if there are more than 4 options
     }
 
-    rect(optionX, optionY, optionWidth, optionHeight);
+    stroke("black");
+    strokeWeight(3);
+    rect(optionX, optionY, optionWidth, optionHeight, 18);
+    noStroke();
     fill("white");
     textAlign(CENTER, CENTER);
     textSize(20);
