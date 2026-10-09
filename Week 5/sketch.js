@@ -11,6 +11,7 @@ const answerCooldown = 1; // Time in seconds to show the answer before moving to
 
 let currentQuestionIndex = 0;
 let quiz;
+let bgImage;
 
 const QUIZ_STATE = {
   START: 0,
@@ -29,6 +30,7 @@ function preload()
   // Load the JSON data from the file
   // No way am I gonna hardcode the questions and clutter up my source code
   quiz = loadJSON('data.json');
+  bgImage = loadImage('background.jpg'); // Load the background image
 }
 
 function setup() 
@@ -39,6 +41,9 @@ function setup()
 function draw()
 {
   background(220);
+  
+  //draw background image
+  image(bgImage, 0, 0, canvasWidth, canvasHeight);
 
   //Check the current state of the quiz and draw the appropriate objects
   switch (state) {
@@ -213,12 +218,15 @@ function DrawCountdownBar()
   const barHeight = 18;
   const barX = 40;
   const barY = canvasHeight - 40;
+
+  // Calculate the progress of the countdown (0 to 1)
   const progress = constrain(countDown / questionTime, 0, 1);
 
   noStroke();
   fill(180);
   rect(barX, barY, barWidth, barHeight, 9);
 
+  //Color changes to red when time is running out, green when there is still plenty of time
   fill(progress > 0.3 ? "#14a02e" : "#b4202a");
   rect(barX, barY, barWidth * progress, barHeight, 9);
 
