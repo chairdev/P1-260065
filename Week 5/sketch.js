@@ -55,7 +55,6 @@ function draw()
         DrawOptions(true);
       break;
     case QUIZ_STATE.END:
-      // Display the final results
       DrawFinalResults();
       break;
   }
@@ -65,6 +64,7 @@ function mousePressed()
 {
   switch (state) {
     case QUIZ_STATE.START:
+      RandomizeQuestionOrder();
       state = QUIZ_STATE.QUESTION;
       break;
     case QUIZ_STATE.QUESTION:
@@ -116,6 +116,17 @@ function CheckClickedOption()
     }
   }
 }
+
+function RandomizeQuestionOrder()
+{
+  // Use the Fisher-Yates shuffle algorithm to randomize the order of questions (thank you stack overflow!)
+  for (let i = quiz.Data.length - 1; i > 0; i--) 
+  {
+    let j = Math.floor(Math.random() * (i + 1));
+    [quiz.Data[i], quiz.Data[j]] = [quiz.Data[j], quiz.Data[i]];
+  }
+}
+
 
 function GoToNextQuestion()
 {
