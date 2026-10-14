@@ -11,6 +11,9 @@ const LIFE_STAGE = {
 };
 
 let monster;
+let careMistakes = 0;
+let hunger = 100;
+
 let monsterImages = {};
 
 const SPRITE_SIZE = 16;
