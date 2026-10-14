@@ -1,0 +1,13 @@
+[
+    {
+        "name": "EGG1",
+        "lifeStage": "EGG",
+        "spritesheet": "Graphics/Monster/egg1_sheet.png"
+    },
+
+    {
+        "name": "Blobby",
+        "lifeStage": "BABY",
+        "spritesheet": "Graphics/Monster/blobby_sheet.png"
+    }
+]
