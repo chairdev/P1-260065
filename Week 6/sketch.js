@@ -7,7 +7,9 @@ function setup() {
   imageMode(CORNER);
   noSmooth();
 
-  monster = monsterData?.[MONSTER_ID.BLOBBY] || null;
+  currentLifeStage = LIFE_STAGE.EGG;
+  currentMonsterIndex = MONSTER_ID.EGG1;
+  monster = monsterData?.[currentMonsterIndex] || null;
 }
 
 function draw() {
@@ -19,7 +21,8 @@ function draw() {
 
 function DrawMonster()
 {
-  let monsterImage = monsterImages[MONSTER_ID.BLOBBY];
+  const activeMonsterIndex = currentMonsterIndex ?? MONSTER_ID.EGG1;
+  let monsterImage = monsterImages[activeMonsterIndex];
 
   if (!monsterImage) {
     return;

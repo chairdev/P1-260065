@@ -2,12 +2,25 @@
     {
         "name": "EGG1",
         "lifeStage": "EGG",
-        "image_path": "Graphics/Monster/egg1_sheet.png"
+        "image_path": "Graphics/Monster/egg1_sheet.png",
+        "evolution": [
+        {
+            "to": "BLOBBY",
+            "condition": "none",
+            "careMistakes": 0
+        }]
     },
 
     {
         "name": "Blobby",
         "lifeStage": "BABY",
-        "image_path": "Graphics/Monster/blobby_sheet.png"
+        "image_path": "Graphics/Monster/blobby_sheet.png",
+        "evolution": [
+        {
+            "to": "BLOBBY",
+            "happiness": 0,
+            "hunger": 0,
+            "careMistakes": 100
+        }]
     }
 ]

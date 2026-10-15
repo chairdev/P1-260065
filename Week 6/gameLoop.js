@@ -1,6 +1,8 @@
 
 const TICK_INTERVAL = 1 * 1000 // Minutes to milliseconds
 const UNFED_TICKS_BEFORE_CARE_MISTAKE = 5;
+const EGG_EVOLUTION_TICK = 5;
+const BABY_EVOLUTION_TICK = 65;
 
 let currentTickTime = TICK_INTERVAL;
 let elapsedTicks = 0;
@@ -40,14 +42,18 @@ function OnTick()
         hunger -= 1; // Decrease hunger by 1 unit per tick
     }
 
-
     CheckHunger();
-    //CheckEvolution();
+    CheckEvolution();
     //CheckDeath();
 }
 
 function CheckHunger()
 {
+    if (currentLifeStage === LIFE_STAGE.EGG)
+    {
+        return;
+    }
+
     // If you starve your monster for too long, you gain a care mistake. 
     // If you gain too many care mistakes, your monster will die.
     if (hunger <= 0) 
@@ -65,4 +71,19 @@ function CheckHunger()
     }
 }
 
+function CheckEvolution()
+{
+    if (currentLifeStage === LIFE_STAGE.EGG && elapsedTicks >= EGG_EVOLUTION_TICK)
+    {
+        currentLifeStage = LIFE_STAGE.BABY;
+        currentMonsterIndex = MONSTER_ID.BLOBBY;
+        monster = monsterData?.[currentMonsterIndex] || null;
+        console.log("Egg evolved into Blobby at tick " + elapsedTicks);
+        return;
+    }
 
+    if (currentLifeStage === LIFE_STAGE.BABY && elapsedTicks >= BABY_EVOLUTION_TICK)
+    {
+        console.log("Baby evolved at tick " + elapsedTicks);
+    }
+}
