@@ -21,9 +21,6 @@ let isSick = false;
 
 let monsterImages = {};
 
-const SPRITE_SIZE = 16;
-const RENDER_SCALE = 8;
-
 let monsterData;
 
 function InitMonsterData() 

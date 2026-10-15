@@ -10,6 +10,8 @@ let elapsedTicks = 0;
 let ticksUnfed = 0;
 let ticksSick = 0;
 
+let attentionSignal = false;
+
 function GameLoop()
 {
     UpdateTickTime();
@@ -47,6 +49,8 @@ function OnTick()
     CheckEvolution();
     CheckSickness();
     //CheckDeath();
+
+    attentionSignal = SetAttentionSignal();
 }
 
 function NeedDecay()
@@ -56,6 +60,16 @@ function NeedDecay()
     {
         hunger -= 1; // Decrease hunger by 1 unit per tick
     }
+}
+
+function SetAttentionSignal()
+{
+    if(happiness < 30 || hunger < 30 || isSick)
+    {
+        return true;
+    }
+
+    return false;
 }
 
 function CheckHunger()
