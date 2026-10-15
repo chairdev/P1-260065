@@ -36,15 +36,24 @@ function OnTick()
         console.log("Monster aged! Current age: " + age);
     }
 
-    // Update the monster's hunger level
-    if(hunger > 0)
+    // An egg's needs do not decay, so we only do it if the monster is not an egg.
+    if(currentLifeStage !== LIFE_STAGE.EGG)
     {
-        hunger -= 1; // Decrease hunger by 1 unit per tick
+        NeedDecay();
     }
 
     CheckHunger();
     CheckEvolution();
     //CheckDeath();
+}
+
+function NeedDecay()
+{
+    // Update the monster's hunger level
+    if(hunger > 0)
+    {
+        hunger -= 1; // Decrease hunger by 1 unit per tick
+    }
 }
 
 function CheckHunger()
@@ -73,17 +82,30 @@ function CheckHunger()
 
 function CheckEvolution()
 {
-    if (currentLifeStage === LIFE_STAGE.EGG && elapsedTicks >= EGG_EVOLUTION_TICK)
+    evos = GetEvolutionCandidates();
+
+    if(evos.length == 0)
     {
-        currentLifeStage = LIFE_STAGE.BABY;
-        currentMonsterIndex = MONSTER_ID.BLOBBY;
-        monster = monsterData?.[currentMonsterIndex] || null;
-        console.log("Egg evolved into Blobby at tick " + elapsedTicks);
         return;
     }
 
-    if (currentLifeStage === LIFE_STAGE.BABY && elapsedTicks >= BABY_EVOLUTION_TICK)
+    // Monsters evolve based on their life stage and the number of ticks that have passed.
+    switch (currentLifeStage)
     {
-        console.log("Baby evolved at tick " + elapsedTicks);
+        case LIFE_STAGE.EGG:
+            if (elapsedTicks >= EGG_EVOLUTION_TICK)
+            {
+                currentLifeStage = LIFE_STAGE.BABY;
+                // Evolve into the first candidate
+                SetMonsterID(evos[0].to); // Evolve into the first candidate
+                console.log("Egg evolved into " + GetMonsterName() + " at tick " + elapsedTicks);
+            }
+            break;
+        case LIFE_STAGE.BABY:
+            if (elapsedTicks >= BABY_EVOLUTION_TICK)
+            {
+                console.log("Baby evolved at tick " + elapsedTicks);
+            }
+            break;
     }
 }

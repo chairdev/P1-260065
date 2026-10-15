@@ -3,9 +3,9 @@
         "name": "EGG1",
         "lifeStage": "EGG",
         "image_path": "Graphics/Monster/egg1_sheet.png",
-        "evolution": [
+        "evolutions": [
         {
-            "to": "BLOBBY",
+            "to": 1,
             "condition": "none",
             "careMistakes": 0
         }]

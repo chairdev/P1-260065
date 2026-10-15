@@ -39,36 +39,23 @@ function InitMonsterData()
   });
 }
 
-function GetEvolutionCandidates()
+function SetMonsterID(monsterId)
 {
-    // Get the evolution candidates for the current monster
-    if (!monster) {
-        return [];
-    }
-
-    const currentMonsterData = monsterData[monster.id];
-    if (!currentMonsterData || !currentMonsterData.evolutions) {
-        return [];
-    }
-
-    return currentMonsterData.evolutions;
+    console.log("Setting monster ID to: " + monsterId);
+    currentMonsterIndex = monsterId;
+    monster = monsterData?.[currentMonsterIndex] || null;
 }
 
-function ProcessMonsterEvolution()
+function GetMonsterName()
 {
-    const candidates = GetEvolutionCandidates();
-    if (candidates.length === 0) {
-        console.log("No evolution candidates available.");
-        return;
+    return monster?.name || "Unknown Monster";
+}
+
+function GetEvolutionCandidates()
+{
+    if (!monster || !monster.evolutions) {
+        return [];
     }
 
-    candidates.forEach((candidate) => {
-        if(candidate.condition == "none")
-        {
-            // Evolve to the first candidate with no conditions
-            monster = monsterData[candidate.id];
-            console.log("Monster evolved to: " + monster.name);
-            return;
-        }
-    });
+    return monster.evolutions;
 }
