@@ -11,7 +11,9 @@ const LIFE_STAGE = {
 };
 
 let monster;
+let age = 0;
 let careMistakes = 0;
+let happiness = 30;
 let hunger = 100;
 
 let monsterImages = {};
@@ -21,7 +23,10 @@ const RENDER_SCALE = 8;
 
 let monsterData;
 
-function InitMonsterData() {
+function InitMonsterData() 
+{
+    // Load the monster data from the JSON file
+    // Then, load the corresponding images for each monster entry
   monsterData = loadJSON('Data/monster.json', function (json) {
     monsterData = json;
 
