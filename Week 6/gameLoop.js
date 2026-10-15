@@ -1,13 +1,14 @@
 
 const TICK_INTERVAL = 1 * 1000 // Minutes to milliseconds
-const UNFED_TICKS_BEFORE_CARE_MISTAKE = 5;
-const EGG_EVOLUTION_TICK = 5;
-const BABY_EVOLUTION_TICK = 65;
+const UNFED_TICKS_BEFORE_CARE_MISTAKE = 15;
+
+const EVOLUTION_TICKS = [5, 65];
 
 let currentTickTime = TICK_INTERVAL;
 let elapsedTicks = 0;
 
 let ticksUnfed = 0;
+let ticksSick = 0;
 
 function GameLoop()
 {
@@ -44,6 +45,7 @@ function OnTick()
 
     CheckHunger();
     CheckEvolution();
+    CheckSickness();
     //CheckDeath();
 }
 
@@ -73,18 +75,23 @@ function CheckHunger()
         {
             careMistakes++;
             ticksUnfed = 0;
+             alert("Your monster is hungry! Feed it soon or it will die!");
         }
         // 
         console.log("Monster is hungry!");
-        alert("Your monster is hungry! Feed it soon or it will die!");
     }
+}
+
+function CheckSickness()
+{
+    //if(isSick )
 }
 
 function CheckEvolution()
 {
-    evos = GetEvolutionCandidates();
+    evolutionCandidates = GetEvolutionCandidates();
 
-    if(evos.length == 0)
+    if(evolutionCandidates.length == 0)
     {
         return;
     }
@@ -93,16 +100,17 @@ function CheckEvolution()
     switch (currentLifeStage)
     {
         case LIFE_STAGE.EGG:
-            if (elapsedTicks >= EGG_EVOLUTION_TICK)
+            if (elapsedTicks >= EVOLUTION_TICKS[0])
             {
                 currentLifeStage = LIFE_STAGE.BABY;
                 // Evolve into the first candidate
-                SetMonsterID(evos[0].to); // Evolve into the first candidate
-                console.log("Egg evolved into " + GetMonsterName() + " at tick " + elapsedTicks);
+                SetMonsterID(evolutionCandidates[0].to); // Evolve into the first candidate
+                alert("Your egg has hatched into " + GetMonsterName() + "!");
+                console.log("Egg hatched into " + GetMonsterName() + " at tick " + elapsedTicks);
             }
             break;
         case LIFE_STAGE.BABY:
-            if (elapsedTicks >= BABY_EVOLUTION_TICK)
+            if (elapsedTicks >= EVOLUTION_TICKS[1])
             {
                 console.log("Baby evolved at tick " + elapsedTicks);
             }

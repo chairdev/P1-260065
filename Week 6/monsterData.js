@@ -17,6 +17,7 @@ let careMistakes = 0;
 let currentLifeStage = LIFE_STAGE.EGG;
 let happiness = 30;
 let hunger = 100;
+let isSick = false;
 
 let monsterImages = {};
 
