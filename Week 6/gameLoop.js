@@ -1,6 +1,6 @@
 
 const TICK_INTERVAL = 1 * 1000 // Minutes to milliseconds
-const UNFED_TICKS_BEFORE_CARE_MISTAKE = 15;
+const NEGLECT_TICK_THRESHOLD = 15;
 
 const EVOLUTION_TICKS = [5, 65];
 
@@ -8,6 +8,7 @@ let currentTickTime = TICK_INTERVAL;
 let elapsedTicks = 0;
 
 let ticksUnfed = 0;
+let ticksUnhappy = 0;
 let ticksSick = 0;
 
 let attentionSignal = false;
@@ -43,9 +44,10 @@ function OnTick()
     if(currentLifeStage !== LIFE_STAGE.EGG)
     {
         NeedDecay();
+        CheckHunger();
+        CheckHappiness();
     }
 
-    CheckHunger();
     CheckEvolution();
     CheckSickness();
     //CheckDeath();
@@ -55,16 +57,20 @@ function OnTick()
 
 function NeedDecay()
 {
-    // Update the monster's hunger level
     if(hunger > 0)
     {
         hunger -= 1; // Decrease hunger by 1 unit per tick
+    }
+
+    if(happiness > 0)
+    {
+        happiness -= 1; // Decrease happiness by 1 unit per tick
     }
 }
 
 function SetAttentionSignal()
 {
-    if(happiness < 30 || hunger < 30 || isSick)
+    if(happiness < 5 || hunger < 5 || isSick)
     {
         return true;
     }
@@ -74,26 +80,45 @@ function SetAttentionSignal()
 
 function CheckHunger()
 {
-    if (currentLifeStage === LIFE_STAGE.EGG)
-    {
-        return;
-    }
-
     // If you starve your monster for too long, you gain a care mistake. 
     // If you gain too many care mistakes, your monster will die.
     if (hunger <= 0) 
     {
         ticksUnfed++;
         //If you don't feed your monster for 5 ticks and it's super hungry, you gain a care mistake.
-        if(ticksUnfed >= UNFED_TICKS_BEFORE_CARE_MISTAKE)
+        if(ticksUnfed >= NEGLECT_TICK_THRESHOLD)
         {
             isSick = true;
-            careMistakes++;
+            physicalCareMistakes++;
             ticksUnfed = 0;
             alert("Your monster is hungry! Feed it soon or it will die!");
         }
         // 
         console.log("Monster is hungry!");
+    }
+    else
+    {
+        ticksUnfed = 0; // Reset the counter if the monster is fed
+    }
+}
+
+function CheckHappiness()
+{
+    // If you neglect your monster's happiness for too long, you gain a mental care mistake.
+    if (happiness <= 0)
+    {
+        ticksUnhappy++;
+        if(ticksUnhappy >= NEGLECT_TICK_THRESHOLD)
+        {
+            isSick = true;
+            mentalCareMistakes++;
+            ticksUnhappy = 0;
+            alert("Your monster is unhappy! Play with it soon or it will die!");
+        }
+    }
+    else
+    {
+        ticksUnhappy = 0; // Reset the counter if the monster is happy
     }
 }
 
