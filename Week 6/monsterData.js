@@ -11,6 +11,7 @@ const LIFE_STAGE = {
 };
 
 let monster;
+let nickname = "";
 let currentMonsterIndex = MONSTER_ID.EGG1;
 let age = 0;
 let careMistakes = 0;
@@ -37,6 +38,15 @@ function InitMonsterData()
   });
 }
 
+function SetMonsterName()
+{
+    let newName = prompt("Enter a name for your monster:");
+    if (newName) {
+        nickname = newName;
+        console.log("Monster named: " + nickname);
+    }
+}
+
 function SetMonsterID(monsterId)
 {
     console.log("Setting monster ID to: " + monsterId);
@@ -44,8 +54,14 @@ function SetMonsterID(monsterId)
     monster = monsterData?.[currentMonsterIndex] || null;
 }
 
-function GetMonsterName()
+function GetMonsterName(isSpeciesName = false)
 {
+    // If the user has set a nickname, return that.
+    // Otherwise, return the default name from the monster data.
+    if (nickname && nickname.trim() !== "" && !isSpeciesName) {
+        return nickname;
+    }
+
     return monster?.name || "Unknown Monster";
 }
 

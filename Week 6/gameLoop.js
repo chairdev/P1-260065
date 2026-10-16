@@ -120,7 +120,9 @@ function CheckEvolution()
                 currentLifeStage = LIFE_STAGE.BABY;
                 // Evolve into the first candidate
                 SetMonsterID(evolutionCandidates[0].to); // Evolve into the first candidate
-                alert("Your egg has hatched into " + GetMonsterName() + "!");
+                alert("Your egg has hatched into " + GetMonsterName(false) + "!");
+                SetMonsterName();
+                
                 console.log("Egg hatched into " + GetMonsterName() + " at tick " + elapsedTicks);
             }
             break;
