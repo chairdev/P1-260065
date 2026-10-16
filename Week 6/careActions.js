@@ -6,3 +6,14 @@ function FeedMonster()
         gameState.happiness += 10;
     }
 }
+
+function GiveMedicine()
+{
+    if(gameState.isSick)
+    {
+        gameState.isSick = false;
+        gameState.happiness += 15; // Increase happiness when cured
+
+        alert("Your monster has been cured!");
+    }
+}

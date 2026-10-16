@@ -16,7 +16,8 @@ function UpdateTickTime()
     // Update the tick time based on the frame rate
     gameState.currentTickTime -= deltaTime;
 
-    if (gameState.currentTickTime <= 0) {
+    if (gameState.currentTickTime <= 0) 
+    {
         gameState.elapsedTicks++;
         gameState.currentTickTime = TICK_INTERVAL;
         console.log("Tick");
@@ -41,9 +42,10 @@ function OnTick()
         CheckHappiness();
     }
 
+    //Maybe they should become feverish (like in mother 3) if theyre close to evolving 
     CheckEvolution();
     CheckSickness();
-    //CheckDeath();
+    CheckDeath();
 
     gameState.attentionSignal = SetAttentionSignal();
 }
@@ -51,17 +53,7 @@ function OnTick()
 function ResetGame()
 {
     // Reset all game variables to their initial state
-    gameState.currentTickTime = TICK_INTERVAL;
-    gameState.isSick = false;
-    gameState.currentLifeStage = LIFE_STAGE.EGG;
-    gameState.currentMonsterIndex = MONSTER_ID.EGG1;
-    gameState.monster = monsterData?.[gameState.currentMonsterIndex] || null;
-    gameState.age = 0;
-    gameState.elapsedTicks = 0;
-    gameState.ticksUnfed = 0;
-    gameState.ticksUnhappy = 0;
-    gameState.ticksSick = 0;
-    gameState.attentionSignal = false;
+    gameState = { ...initGameState };
 }
 
 function NeedDecay()

@@ -12,7 +12,7 @@ const LIFE_STAGE = {
 
 // Game state object to hold the current state of the game
 // We on that OBJECT  object oriented programming cuh
-let gameState = {
+const initGameState = {
   monster: null,
   nickname: "",
   currentMonsterIndex: MONSTER_ID.EGG1,
@@ -30,6 +30,8 @@ let gameState = {
   ticksSick: 0,
   attentionSignal: false
 };
+
+let gameState = { ...initGameState }; // Initialize the game state with a copy of the initial state
 
 let monsterImages = {};
 
@@ -52,25 +54,27 @@ function InitMonsterData()
 function SetMonsterName()
 {
     let newName = prompt("Enter a name for your monster:");
-    if (newName) {
-    gameState.nickname = newName;
-    console.log("Monster named: " + gameState.nickname);
+    if (newName)
+    {
+        gameState.nickname = newName;
+        console.log("Monster named: " + gameState.nickname);
     }
 }
 
 function SetMonsterID(monsterId)
 {
     console.log("Setting monster ID to: " + monsterId);
-  gameState.currentMonsterIndex = monsterId;
-  gameState.monster = monsterData?.[gameState.currentMonsterIndex] || null;
+    gameState.currentMonsterIndex = monsterId;
+    gameState.monster = monsterData?.[gameState.currentMonsterIndex] || null; // If the monster entry or the data is missing, default to null
 }
 
 function GetMonsterName(isSpeciesName = false)
 {
     // If the user has set a nickname, return that.
     // Otherwise, return the default name from the monster data.
-  if (gameState.nickname && gameState.nickname.trim() !== "" && !isSpeciesName) {
-    return gameState.nickname;
+    if (gameState.nickname && gameState.nickname.trim() !== "" && !isSpeciesName) 
+    {
+        return gameState.nickname;
     }
 
   return gameState.monster?.name || "Unknown Monster";
@@ -78,7 +82,10 @@ function GetMonsterName(isSpeciesName = false)
 
 function GetEvolutionCandidates()
 {
-  if (!gameState.monster || !gameState.monster.evolutions) {
+    // Return the evolution candidates for the current monster based on its data.
+    // If the monster data or its evolutions are missing, return an empty array.
+    if (!gameState.monster || !gameState.monster.evolutions) 
+    {
         return [];
     }
 
