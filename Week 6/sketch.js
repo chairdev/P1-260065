@@ -50,8 +50,9 @@ function DrawMonster()
   const displayHeight = SPRITE_SIZE * RENDER_SCALE;
   const x = (width - displayWidth) / 2;
   const y = (height - displayHeight) / 2;
+  const sourceX = isSick ? SPRITE_SIZE : 0;
 
-  image(monsterImage, x, y, displayWidth, displayHeight, 0, 0, SPRITE_SIZE, SPRITE_SIZE);
+  image(monsterImage, x, y, displayWidth, displayHeight, sourceX, 0, SPRITE_SIZE, SPRITE_SIZE);
 }
 
 function DrawScreen()
@@ -61,7 +62,7 @@ function DrawScreen()
   rect(0, 0, width, 50);
   rect(0, height - 50, width, 50);
 
-  //draw attention signal if the monster needs attention its an italics exclamation mark in the bottom left corner of the screen. it should be red and big enough to be seen easily
+  //draw attention signal in the lower left corner of the screen if the monster needs attention
   if(attentionSignal)
   {
     textFont(fontCondensedBold);

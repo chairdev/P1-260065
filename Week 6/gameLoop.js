@@ -87,9 +87,10 @@ function CheckHunger()
         //If you don't feed your monster for 5 ticks and it's super hungry, you gain a care mistake.
         if(ticksUnfed >= UNFED_TICKS_BEFORE_CARE_MISTAKE)
         {
+            isSick = true;
             careMistakes++;
             ticksUnfed = 0;
-             alert("Your monster is hungry! Feed it soon or it will die!");
+            alert("Your monster is hungry! Feed it soon or it will die!");
         }
         // 
         console.log("Monster is hungry!");
