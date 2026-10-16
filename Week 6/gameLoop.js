@@ -55,6 +55,22 @@ function OnTick()
     attentionSignal = SetAttentionSignal();
 }
 
+function ResetGame()
+{
+    // Reset all game variables to their initial state
+    currentTickTime = TICK_INTERVAL;
+    isSick = false;
+    currentLifeStage = LIFE_STAGE.EGG;
+    currentMonsterIndex = MONSTER_ID.EGG1;
+    monster = monsterData?.[currentMonsterIndex] || null;
+    age = 0;
+    elapsedTicks = 0;
+    ticksUnfed = 0;
+    ticksUnhappy = 0;
+    ticksSick = 0;
+    attentionSignal = false;
+}
+
 function NeedDecay()
 {
     if(hunger > 0)
@@ -124,7 +140,29 @@ function CheckHappiness()
 
 function CheckSickness()
 {
-    //if(isSick )
+    // If your monster is sick for too long, you gain a care mistake.
+    if (isSick)
+    {
+        ticksSick++;
+        if(ticksSick >= NEGLECT_TICK_THRESHOLD)
+        {
+            physicalCareMistakes++;
+        }
+    }
+}
+
+function CheckDeath()
+{
+    if(physicalCareMistakes >= 3)
+    {
+        alert("Your monster has died due to neglect! Game will reset.");
+        ResetGame();
+    }
+    if(mentalCareMistakes >= 3)
+    {
+        alert("Your monster has run away due to neglect! Game will reset.");
+        ResetGame();
+    }
 }
 
 function CheckEvolution()
