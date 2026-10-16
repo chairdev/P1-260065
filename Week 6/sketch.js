@@ -27,6 +27,8 @@ function setup() {
   gameState.currentLifeStage = LIFE_STAGE.EGG;
   gameState.currentMonsterIndex = MONSTER_ID.EGG1;
   gameState.monster = monsterData?.[gameState.currentMonsterIndex] || null;
+
+  createDebugButtons();
 }
 
 function draw() {
@@ -35,6 +37,7 @@ function draw() {
 
   GameLoop();
   DrawMonster();
+  updateDebugStateDisplay();
 }
 
 function DrawMonster()
