@@ -4,14 +4,7 @@ const NEGLECT_TICK_THRESHOLD = 15;
 
 const EVOLUTION_TICKS = [5, 65];
 
-let currentTickTime = TICK_INTERVAL;
-let elapsedTicks = 0;
-
-let ticksUnfed = 0;
-let ticksUnhappy = 0;
-let ticksSick = 0;
-
-let attentionSignal = false;
+gameState.currentTickTime = TICK_INTERVAL;
 
 function GameLoop()
 {
@@ -21,11 +14,11 @@ function GameLoop()
 function UpdateTickTime()
 {
     // Update the tick time based on the frame rate
-    currentTickTime -= deltaTime;
+    gameState.currentTickTime -= deltaTime;
 
-    if (currentTickTime <= 0) {
-        elapsedTicks++;
-        currentTickTime = TICK_INTERVAL;
+    if (gameState.currentTickTime <= 0) {
+        gameState.elapsedTicks++;
+        gameState.currentTickTime = TICK_INTERVAL;
         console.log("Tick");
 
         OnTick();
@@ -34,14 +27,14 @@ function UpdateTickTime()
 
 function OnTick()
 {
-    if(elapsedTicks % 12 === 0) // Every 12 ticks
+    if(gameState.elapsedTicks % 12 === 0) // Every 12 ticks
     {
-        age++;
-        console.log("Monster aged! Current age: " + age);
+        gameState.age++;
+        console.log("Monster aged! Current age: " + gameState.age);
     }
 
     // An egg's needs do not decay, so we only do it if the monster is not an egg.
-    if(currentLifeStage !== LIFE_STAGE.EGG)
+    if(gameState.currentLifeStage !== LIFE_STAGE.EGG)
     {
         NeedDecay();
         CheckHunger();
@@ -52,41 +45,41 @@ function OnTick()
     CheckSickness();
     //CheckDeath();
 
-    attentionSignal = SetAttentionSignal();
+    gameState.attentionSignal = SetAttentionSignal();
 }
 
 function ResetGame()
 {
     // Reset all game variables to their initial state
-    currentTickTime = TICK_INTERVAL;
-    isSick = false;
-    currentLifeStage = LIFE_STAGE.EGG;
-    currentMonsterIndex = MONSTER_ID.EGG1;
-    monster = monsterData?.[currentMonsterIndex] || null;
-    age = 0;
-    elapsedTicks = 0;
-    ticksUnfed = 0;
-    ticksUnhappy = 0;
-    ticksSick = 0;
-    attentionSignal = false;
+    gameState.currentTickTime = TICK_INTERVAL;
+    gameState.isSick = false;
+    gameState.currentLifeStage = LIFE_STAGE.EGG;
+    gameState.currentMonsterIndex = MONSTER_ID.EGG1;
+    gameState.monster = monsterData?.[gameState.currentMonsterIndex] || null;
+    gameState.age = 0;
+    gameState.elapsedTicks = 0;
+    gameState.ticksUnfed = 0;
+    gameState.ticksUnhappy = 0;
+    gameState.ticksSick = 0;
+    gameState.attentionSignal = false;
 }
 
 function NeedDecay()
 {
-    if(hunger > 0)
+    if(gameState.hunger > 0)
     {
-        hunger -= 1; // Decrease hunger by 1 unit per tick
+        gameState.hunger -= 1; // Decrease hunger by 1 unit per tick
     }
 
-    if(happiness > 0)
+    if(gameState.happiness > 0)
     {
-        happiness -= 1; // Decrease happiness by 1 unit per tick
+        gameState.happiness -= 1; // Decrease happiness by 1 unit per tick
     }
 }
 
 function SetAttentionSignal()
 {
-    if(happiness < 5 || hunger < 5 || isSick)
+    if(gameState.happiness < 5 || gameState.hunger < 5 || gameState.isSick)
     {
         return true;
     }
@@ -98,15 +91,15 @@ function CheckHunger()
 {
     // If you starve your monster for too long, you gain a care mistake. 
     // If you gain too many care mistakes, your monster will die.
-    if (hunger <= 0) 
+    if (gameState.hunger <= 0) 
     {
-        ticksUnfed++;
+        gameState.ticksUnfed++;
         //If you don't feed your monster for 5 ticks and it's super hungry, you gain a care mistake.
-        if(ticksUnfed >= NEGLECT_TICK_THRESHOLD)
+        if(gameState.ticksUnfed >= NEGLECT_TICK_THRESHOLD)
         {
-            isSick = true;
-            physicalCareMistakes++;
-            ticksUnfed = 0;
+            gameState.isSick = true;
+            gameState.physicalCareMistakes++;
+            gameState.ticksUnfed = 0;
             alert("Your monster is hungry! Feed it soon or it will die!");
         }
         // 
@@ -114,51 +107,51 @@ function CheckHunger()
     }
     else
     {
-        ticksUnfed = 0; // Reset the counter if the monster is fed
+        gameState.ticksUnfed = 0; // Reset the counter if the monster is fed
     }
 }
 
 function CheckHappiness()
 {
     // If you neglect your monster's happiness for too long, you gain a mental care mistake.
-    if (happiness <= 0)
+    if (gameState.happiness <= 0)
     {
-        ticksUnhappy++;
-        if(ticksUnhappy >= NEGLECT_TICK_THRESHOLD)
+        gameState.ticksUnhappy++;
+        if(gameState.ticksUnhappy >= NEGLECT_TICK_THRESHOLD)
         {
-            isSick = true;
-            mentalCareMistakes++;
-            ticksUnhappy = 0;
+            gameState.isSick = true;
+            gameState.mentalCareMistakes++;
+            gameState.ticksUnhappy = 0;
             alert("Your monster is unhappy! Play with it soon or it will die!");
         }
     }
     else
     {
-        ticksUnhappy = 0; // Reset the counter if the monster is happy
+        gameState.ticksUnhappy = 0; // Reset the counter if the monster is happy
     }
 }
 
 function CheckSickness()
 {
     // If your monster is sick for too long, you gain a care mistake.
-    if (isSick)
+    if (gameState.isSick)
     {
-        ticksSick++;
-        if(ticksSick >= NEGLECT_TICK_THRESHOLD)
+        gameState.ticksSick++;
+        if(gameState.ticksSick >= NEGLECT_TICK_THRESHOLD)
         {
-            physicalCareMistakes++;
+            gameState.physicalCareMistakes++;
         }
     }
 }
 
 function CheckDeath()
 {
-    if(physicalCareMistakes >= 3)
+    if(gameState.physicalCareMistakes >= 3)
     {
         alert("Your monster has died due to neglect! Game will reset.");
         ResetGame();
     }
-    if(mentalCareMistakes >= 3)
+    if(gameState.mentalCareMistakes >= 3)
     {
         alert("Your monster has run away due to neglect! Game will reset.");
         ResetGame();
@@ -175,24 +168,24 @@ function CheckEvolution()
     }
 
     // Monsters evolve based on their life stage and the number of ticks that have passed.
-    switch (currentLifeStage)
+    switch (gameState.currentLifeStage)
     {
         case LIFE_STAGE.EGG:
-            if (elapsedTicks >= EVOLUTION_TICKS[0])
+            if (gameState.elapsedTicks >= EVOLUTION_TICKS[0])
             {
-                currentLifeStage = LIFE_STAGE.BABY;
+                gameState.currentLifeStage = LIFE_STAGE.BABY;
                 // Evolve into the first candidate
                 SetMonsterID(evolutionCandidates[0].to); // Evolve into the first candidate
                 alert("Your egg has hatched into " + GetMonsterName(false) + "!");
                 SetMonsterName();
                 
-                console.log("Egg hatched into " + GetMonsterName() + " at tick " + elapsedTicks);
+                console.log("Egg hatched into " + GetMonsterName() + " at tick " + gameState.elapsedTicks);
             }
             break;
         case LIFE_STAGE.BABY:
-            if (elapsedTicks >= EVOLUTION_TICKS[1])
+            if (gameState.elapsedTicks >= EVOLUTION_TICKS[1])
             {
-                console.log("Baby evolved at tick " + elapsedTicks);
+                console.log("Baby evolved at tick " + gameState.elapsedTicks);
             }
             break;
     }

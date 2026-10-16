@@ -10,16 +10,26 @@ const LIFE_STAGE = {
   ADULT: 3
 };
 
-let monster;
-let nickname = "";
-let currentMonsterIndex = MONSTER_ID.EGG1;
-let age = 0;
-let physicalCareMistakes = 0;
-let mentalCareMistakes = 0;
-let currentLifeStage = LIFE_STAGE.EGG;
-let happiness = 30;
-let hunger = 100;
-let isSick = false;
+// Game state object to hold the current state of the game
+// We on that OBJECT  object oriented programming cuh
+let gameState = {
+  monster: null,
+  nickname: "",
+  currentMonsterIndex: MONSTER_ID.EGG1,
+  age: 0,
+  physicalCareMistakes: 0,
+  mentalCareMistakes: 0,
+  currentLifeStage: LIFE_STAGE.EGG,
+  happiness: 30,
+  hunger: 100,
+  isSick: false,
+  currentTickTime: null,
+  elapsedTicks: 0,
+  ticksUnfed: 0,
+  ticksUnhappy: 0,
+  ticksSick: 0,
+  attentionSignal: false
+};
 
 let monsterImages = {};
 
@@ -31,7 +41,7 @@ function InitMonsterData()
     // Then, load the corresponding images for each monster entry
   monsterData = loadJSON('Data/monster.json', function (json) {
     monsterData = json;
-    monster = monsterData[currentMonsterIndex] || monsterData[0] || null;
+    gameState.monster = monsterData[gameState.currentMonsterIndex] || monsterData[0] || null;
 
     monsterData.forEach((monsterEntry, index) => {
       monsterImages[index] = loadImage(monsterEntry.image_path);
@@ -43,34 +53,34 @@ function SetMonsterName()
 {
     let newName = prompt("Enter a name for your monster:");
     if (newName) {
-        nickname = newName;
-        console.log("Monster named: " + nickname);
+    gameState.nickname = newName;
+    console.log("Monster named: " + gameState.nickname);
     }
 }
 
 function SetMonsterID(monsterId)
 {
     console.log("Setting monster ID to: " + monsterId);
-    currentMonsterIndex = monsterId;
-    monster = monsterData?.[currentMonsterIndex] || null;
+  gameState.currentMonsterIndex = monsterId;
+  gameState.monster = monsterData?.[gameState.currentMonsterIndex] || null;
 }
 
 function GetMonsterName(isSpeciesName = false)
 {
     // If the user has set a nickname, return that.
     // Otherwise, return the default name from the monster data.
-    if (nickname && nickname.trim() !== "" && !isSpeciesName) {
-        return nickname;
+  if (gameState.nickname && gameState.nickname.trim() !== "" && !isSpeciesName) {
+    return gameState.nickname;
     }
 
-    return monster?.name || "Unknown Monster";
+  return gameState.monster?.name || "Unknown Monster";
 }
 
 function GetEvolutionCandidates()
 {
-    if (!monster || !monster.evolutions) {
+  if (!gameState.monster || !gameState.monster.evolutions) {
         return [];
     }
 
-    return monster.evolutions;
+  return gameState.monster.evolutions;
 }
