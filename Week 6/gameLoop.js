@@ -3,6 +3,7 @@ const TICK_INTERVAL = 1 * 1000 // Minutes to milliseconds
 const NEGLECT_TICK_THRESHOLD = 15;
 
 const EVOLUTION_TICKS = [5, 65];
+const NEED_DECAY_RATE = [13, 9, 5, 3];
 
 gameState.currentTickTime = TICK_INTERVAL;
 
@@ -60,12 +61,12 @@ function NeedDecay()
 {
     if(gameState.hunger > 0)
     {
-        gameState.hunger -= 1; // Decrease hunger by 1 unit per tick
+        gameState.hunger -= constrain(NEED_DECAY_RATE[gameState.currentLifeStage], 0, gameState.hunger); // Decrease hunger by the appropriate amount per tick
     }
 
     if(gameState.happiness > 0)
     {
-        gameState.happiness -= 1; // Decrease happiness by 1 unit per tick
+        gameState.happiness -= constrain(NEED_DECAY_RATE[gameState.currentLifeStage], 0, gameState.happiness); // Decrease happiness by the appropriate amount per tick
     }
 }
 
@@ -92,7 +93,8 @@ function CheckHunger()
             gameState.isSick = true;
             gameState.physicalCareMistakes++;
             gameState.ticksUnfed = 0;
-            alert("Your monster is hungry! Feed it soon or it will die!");
+            AttentionBeep();
+            console.log("Your monster is hungry! Feed it soon or it will die!");
         }
         // 
         console.log("Monster is hungry!");
@@ -108,13 +110,20 @@ function CheckHappiness()
     // If you neglect your monster's happiness for too long, you gain a mental care mistake.
     if (gameState.happiness <= 0)
     {
+        if(gameState.ticksUnhappy == 0)
+        {
+            AttentionBeep();
+            //AttentionBeep();
+        }
         gameState.ticksUnhappy++;
         if(gameState.ticksUnhappy >= NEGLECT_TICK_THRESHOLD)
         {
             gameState.isSick = true;
             gameState.mentalCareMistakes++;
             gameState.ticksUnhappy = 0;
-            alert("Your monster is unhappy! Play with it soon or it will die!");
+            
+           
+            console.log("Your monster is unhappy! Play with it soon or it will die!");
         }
     }
     else

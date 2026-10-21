@@ -7,20 +7,45 @@
         {
             "to": 1,
             "condition": "none",
-            "careMistakes": 0
+            "totalCareMistakes": 0
         }]
     },
-
     {
-        "name": "Blobby",
+        "name": "Totbit",
+        "lifeStage": "BABY",
+        "image_path": "Graphics/Monster/totling_sheet.png",
+        "evolution": [
+        {
+            "to": 2,
+            "totalCareMistakes": 3
+        },
+        {
+            "to": 3,
+            "totalCareMistakes": 0
+        }]
+        },
+      {
+        "name": "Blobling",
         "lifeStage": "BABY",
         "image_path": "Graphics/Monster/blobby_sheet.png",
         "evolution": [
         {
-            "to": "BLOBBY",
+            "to": 3,
             "happiness": 0,
             "hunger": 0,
-            "careMistakes": 100
+            "totalCareMistakes": 100
+        }]
+    },
+      {
+        "name": "Ghosling",
+        "lifeStage": "BABY",
+        "image_path": "Graphics/Monster/puckling_sheet.png",
+        "evolution": [
+        {
+            "to": 3,
+            "happiness": 0,
+            "hunger": 0,
+            "totalCareMistakes": 100
         }]
     }
 ]
