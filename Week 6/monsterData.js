@@ -28,7 +28,8 @@ const initGameState = {
   ticksUnfed: 0,
   ticksUnhappy: 0,
   ticksSick: 0,
-  attentionSignal: false
+  attentionSignal: false,
+  isJinglePlaying: false
 };
 
 let gameState = { ...initGameState }; // Initialize the game state with a copy of the initial state

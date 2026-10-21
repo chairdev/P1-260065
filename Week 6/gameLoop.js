@@ -53,7 +53,6 @@ function OnTick()
 
 function ResetGame()
 {
-    DeathJingle();
     // Reset all game variables to their initial state
     gameState = { ...initGameState };
 }
@@ -148,15 +147,30 @@ function CheckSickness()
 
 function CheckDeath()
 {
+    if (gameState.isJinglePlaying)
+    {
+        return;
+    }
+
     if(gameState.physicalCareMistakes >= 3)
     {
-        alert("Your monster has died due to neglect! Game will reset.");
-        ResetGame();
+        gameState.isJinglePlaying = true;
+        DeathJingle().then(() => {
+            gameState.isJinglePlaying = false;
+            alert("Your monster has died due to neglect! Game will reset.");
+            ResetGame();
+        });
+        return;
     }
     if(gameState.mentalCareMistakes >= 3)
     {
-        alert("Your monster has run away due to neglect! Game will reset.");
-        ResetGame();
+        gameState.isJinglePlaying = true;
+        DeathJingle().then(() => {
+            gameState.isJinglePlaying = false;
+            alert("Your monster has run away due to neglect! Game will reset.");
+            ResetGame();
+        });
+        return;
     }
 }
 
@@ -170,6 +184,11 @@ function CheckEvolution()
     }
 
     // Monsters evolve based on their life stage and the number of ticks that have passed.
+    if (gameState.isJinglePlaying)
+    {
+        return;
+    }
+
     switch (gameState.currentLifeStage)
     {
         case LIFE_STAGE.EGG:
@@ -182,12 +201,15 @@ function CheckEvolution()
                     return;
                 }
 
-                gameState.currentLifeStage = LIFE_STAGE.BABY;
-                SetMonsterID(eggCandidate.to);
-                alert("Your egg has hatched into " + GetMonsterName(false) + "!");
-                SetMonsterName();
-                
-                console.log("Egg hatched into " + GetMonsterName() + " at tick " + gameState.elapsedTicks);
+                gameState.isJinglePlaying = true;
+                EvolutionJingle().then(() => {
+                    gameState.isJinglePlaying = false;
+                    gameState.currentLifeStage = LIFE_STAGE.BABY;
+                    SetMonsterID(eggCandidate.to);
+                    SetMonsterName();
+                    alert("Your egg has hatched into " + GetMonsterName() + "!");
+                    console.log("Egg hatched into " + GetMonsterName() + " at tick " + gameState.elapsedTicks);
+                });
             }
             break;
         case LIFE_STAGE.BABY:
@@ -200,10 +222,14 @@ function CheckEvolution()
                     return;
                 }
 
-                gameState.currentLifeStage = Math.min(gameState.currentLifeStage + 1, LIFE_STAGE.ADULT);
-                SetMonsterID(validEvolution.to);
-                alert("Your baby has evolved into " + GetMonsterName(false) + "!");
-                console.log("Baby evolved into " + GetMonsterName() + " at tick " + gameState.elapsedTicks);
+                gameState.isJinglePlaying = true;
+                EvolutionJingle().then(() => {
+                    gameState.isJinglePlaying = false;
+                    gameState.currentLifeStage = Math.min(gameState.currentLifeStage + 1, LIFE_STAGE.ADULT);
+                    SetMonsterID(validEvolution.to);
+                    alert("Your baby has evolved into " + GetMonsterName() + "!");
+                    console.log("Baby evolved into " + GetMonsterName() + " at tick " + gameState.elapsedTicks);
+                });
             }
             break;
         case LIFE_STAGE.TEEN:
@@ -216,10 +242,14 @@ function CheckEvolution()
                     return;
                 }
 
-                gameState.currentLifeStage = Math.min(gameState.currentLifeStage + 1, LIFE_STAGE.ADULT);
-                SetMonsterID(validEvolution.to);
-                alert("Your teen has evolved into " + GetMonsterName(false) + "!");
-                console.log("Teen evolved into " + GetMonsterName() + " at tick " + gameState.elapsedTicks);
+                gameState.isJinglePlaying = true;
+                EvolutionJingle().then(() => {
+                    gameState.isJinglePlaying = false;
+                    gameState.currentLifeStage = Math.min(gameState.currentLifeStage + 1, LIFE_STAGE.ADULT);
+                    SetMonsterID(validEvolution.to);
+                    alert("Your teen has evolved into " + GetMonsterName() + "!");
+                    console.log("Teen evolved into " + GetMonsterName() + " at tick " + gameState.elapsedTicks);
+                });
             }
             break;
     }

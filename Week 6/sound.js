@@ -2,30 +2,59 @@ function PlayTone(frequency, duration = 0.12, volume = 0.04, waveform = 'square'
 {
     userStartAudio();
 
-    const oscillator = new p5.Oscillator(waveform);
-    const envelope = new p5.Envelope();
+    return new Promise((resolve) => {
+        const oscillator = new p5.Oscillator(waveform);
+        const envelope = new p5.Envelope();
 
-    oscillator.freq(frequency);
-    oscillator.amp(0);
-    oscillator.start();
+        oscillator.freq(frequency);
+        oscillator.amp(0);
+        oscillator.start();
 
-    envelope.setADSR(0.01, 0.08, 0.2, 0.12);
-    envelope.setRange(volume, 0);
-    envelope.play(oscillator, 0, duration);
+        envelope.setADSR(0.01, 0.08, 0.2, 0.12);
+        envelope.setRange(volume, 0);
+        envelope.play(oscillator, 0, duration);
 
-    oscillator.stop(duration + 0.06);
+        const fullDurationMs = (duration + 0.06) * 1000;
+        setTimeout(() => {
+            oscillator.stop();
+            resolve();
+        }, fullDurationMs);
+    });
+}
+
+function PlayJingle(notes)
+{
+    return (async () => {
+        for (const [frequency, duration] of notes)
+        {
+            await PlayTone(frequency, duration, 0.04, 'square');
+        }
+    })();
 }
 
 function AttentionBeep()
 {
-    const notes = [660, 880];
+     const notes = [880, 1175, 880, 1175, 880, 1175];
 
     notes.forEach((frequency, index) => {
         setTimeout(() => {
-            PlayTone(frequency, 0.12, 0.04, 'square');
-            PlayTone(frequency, 0.12, 0.04, 'square');
-        }, index * 150);
+            PlayTone(frequency, 0.10, 0.04, 'square');
+        }, index * 180);
     });
+}
+
+function EvolutionJingle()
+{
+    const notes = [
+        [523, 0.12],  // C5
+        [659, 0.12],  // E5
+        [784, 0.12],  // G5
+        [1047, 0.20], // C6
+        [784, 0.12],  // G5
+        [1047, 0.35]  // C6
+    ];
+
+    return PlayJingle(notes);
 }
 
 function DeathJingle()
@@ -43,9 +72,5 @@ function DeathJingle()
         [523, 0.5],  // C5
     ];
 
-    notes.forEach(([frequency, duration], index) => {
-        setTimeout(() => {
-            PlayTone(frequency, duration, 0.04, 'square');
-        }, index * 300);
-    });
+    return PlayJingle(notes);
 }
