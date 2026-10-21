@@ -37,6 +37,12 @@ function createDebugButtons() {
         ['Cure', () => {
         GiveMedicine();
         }],
+        ['Make Happy', () => {
+        gameState.happiness = 100;
+        }],
+        ['Evolve', () => {
+        EvolveMonster();
+        }],
         ['Starve', () => {
         gameState.hunger = 0;
         }],

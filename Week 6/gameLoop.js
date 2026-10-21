@@ -2,7 +2,7 @@
 const TICK_INTERVAL = 1 * 1000 // Minutes to milliseconds
 const NEGLECT_TICK_THRESHOLD = 15;
 
-const EVOLUTION_TICKS = [5, 65];
+const EVOLUTION_TICKS = [5, 15, 25, 35,/*65*/];
 const NEED_DECAY_RATE = [13, 9, 5, 3];
 
 gameState.currentTickTime = TICK_INTERVAL;
@@ -53,6 +53,7 @@ function OnTick()
 
 function ResetGame()
 {
+    DeathJingle();
     // Reset all game variables to their initial state
     gameState = { ...initGameState };
 }
@@ -161,7 +162,7 @@ function CheckDeath()
 
 function CheckEvolution()
 {
-    evolutionCandidates = GetEvolutionCandidates();
+    const evolutionCandidates = GetEvolutionCandidates();
 
     if(evolutionCandidates.length == 0)
     {
@@ -174,9 +175,15 @@ function CheckEvolution()
         case LIFE_STAGE.EGG:
             if (gameState.elapsedTicks >= EVOLUTION_TICKS[0])
             {
+                const eggCandidate = evolutionCandidates.find(candidate => MeetsEvolutionRequirements(candidate));
+
+                if (!eggCandidate)
+                {
+                    return;
+                }
+
                 gameState.currentLifeStage = LIFE_STAGE.BABY;
-                // Evolve into the first candidate
-                SetMonsterID(evolutionCandidates[0].to); // Evolve into the first candidate
+                SetMonsterID(eggCandidate.to);
                 alert("Your egg has hatched into " + GetMonsterName(false) + "!");
                 SetMonsterName();
                 
@@ -186,7 +193,33 @@ function CheckEvolution()
         case LIFE_STAGE.BABY:
             if (gameState.elapsedTicks >= EVOLUTION_TICKS[1])
             {
-                console.log("Baby evolved at tick " + gameState.elapsedTicks);
+                const validEvolution = evolutionCandidates.find(candidate => MeetsEvolutionRequirements(candidate));
+
+                if (!validEvolution)
+                {
+                    return;
+                }
+
+                gameState.currentLifeStage = Math.min(gameState.currentLifeStage + 1, LIFE_STAGE.ADULT);
+                SetMonsterID(validEvolution.to);
+                alert("Your baby has evolved into " + GetMonsterName(false) + "!");
+                console.log("Baby evolved into " + GetMonsterName() + " at tick " + gameState.elapsedTicks);
+            }
+            break;
+        case LIFE_STAGE.TEEN:
+            if (gameState.elapsedTicks >= EVOLUTION_TICKS[2])
+            {
+                const validEvolution = evolutionCandidates.find(candidate => MeetsEvolutionRequirements(candidate));
+
+                if (!validEvolution)
+                {
+                    return;
+                }
+
+                gameState.currentLifeStage = Math.min(gameState.currentLifeStage + 1, LIFE_STAGE.ADULT);
+                SetMonsterID(validEvolution.to);
+                alert("Your teen has evolved into " + GetMonsterName(false) + "!");
+                console.log("Teen evolved into " + GetMonsterName() + " at tick " + gameState.elapsedTicks);
             }
             break;
     }

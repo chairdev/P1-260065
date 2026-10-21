@@ -27,3 +27,25 @@ function AttentionBeep()
         }, index * 150);
     });
 }
+
+function DeathJingle()
+{
+    const notes = [
+        [784, 0.25], // G5
+        [784, 0.25], // G5
+        [784, 0.25], // G5
+        [659, 0.25], // E5
+        [698, 0.25], // F5
+        [698, 0.25], // F5
+        [698, 0.25], // F5
+        [587, 0.25], // D5
+        [659, 0.5],  // E5
+        [523, 0.5],  // C5
+    ];
+
+    notes.forEach(([frequency, duration], index) => {
+        setTimeout(() => {
+            PlayTone(frequency, duration, 0.04, 'square');
+        }, index * 300);
+    });
+}

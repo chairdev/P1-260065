@@ -66,6 +66,15 @@ function SetMonsterID(monsterId)
     console.log("Setting monster ID to: " + monsterId);
     gameState.currentMonsterIndex = monsterId;
     gameState.monster = monsterData?.[gameState.currentMonsterIndex] || null; // If the monster entry or the data is missing, default to null
+
+    if (gameState.monster?.lifeStage)
+    {
+        const mappedStage = LIFE_STAGE[gameState.monster.lifeStage.toUpperCase()];
+        if (mappedStage !== undefined)
+        {
+            gameState.currentLifeStage = mappedStage;
+        }
+    }
 }
 
 function GetMonsterName(isSpeciesName = false)
@@ -80,14 +89,62 @@ function GetMonsterName(isSpeciesName = false)
   return gameState.monster?.name || "Unknown Monster";
 }
 
+function GetTotalCareMistakes()
+{
+    return (gameState.physicalCareMistakes ?? 0) + (gameState.mentalCareMistakes ?? 0);
+}
+
+function MeetsEvolutionRequirements(candidate)
+{
+    if (!candidate)
+    {
+        return false;
+    }
+
+    const totalCareMistakes = GetTotalCareMistakes();
+
+    if (candidate.totalCareMistakes !== undefined)
+    {
+        if (candidate.totalCareMistakes === 0)
+        {
+            if (totalCareMistakes > 0)
+            {
+                return false;
+            }
+        }
+        else if (totalCareMistakes < candidate.totalCareMistakes)
+        {
+            return false;
+        }
+    }
+
+    if (candidate.physicalCareMistakes !== undefined && gameState.physicalCareMistakes > candidate.physicalCareMistakes)
+    {
+        return false;
+    }
+
+    if (candidate.mentalCareMistakes !== undefined && gameState.mentalCareMistakes >= candidate.mentalCareMistakes)
+    {
+        return false;
+    }
+
+    if (candidate.happiness !== undefined && gameState.happiness > candidate.happiness)
+    {
+        return false;
+    }
+
+    if (candidate.hunger !== undefined && gameState.hunger > candidate.hunger)
+    {
+        return false;
+    }
+
+    return true;
+}
+
 function GetEvolutionCandidates()
 {
     // Return the evolution candidates for the current monster based on its data.
     // If the monster data or its evolutions are missing, return an empty array.
-    if (!gameState.monster || !gameState.monster.evolutions) 
-    {
-        return [];
-    }
-
-  return gameState.monster.evolutions;
+    const evolutionData = gameState.monster?.evolutions ?? gameState.monster?.evolution ?? [];
+    return Array.isArray(evolutionData) ? evolutionData : [];
 }
