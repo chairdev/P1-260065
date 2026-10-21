@@ -40,7 +40,7 @@
   {
     "name": "Puckmo",
     "lifeStage": "ADULT",
-    "image_path": "Graphics/Monster/blobby_sheet.png",
+    "image_path": "Graphics/Monster/puckmo_sheet.png",
     "evolutions": [
       {
         "to": 3,
