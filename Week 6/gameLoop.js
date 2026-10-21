@@ -2,7 +2,7 @@
 const TICK_INTERVAL = 1 * 1000 // Minutes to milliseconds
 const NEGLECT_TICK_THRESHOLD = 15;
 
-const EVOLUTION_TICKS = [5, 15, 25, 35,/*65*/];
+const EVOLUTION_TICKS = [5, 15, 25, 35, 45/*65*/];
 const NEED_DECAY_RATE = [13, 9, 5, 3];
 
 gameState.currentTickTime = TICK_INTERVAL;
