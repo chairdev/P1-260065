@@ -1,0 +1,24 @@
+{
+  "animations": {
+    "idle": {
+      "frames": [0],
+      "frameDuration": 500,
+      "loop": true
+    },
+    "walking": {
+      "frames": [0, 1],
+      "frameDuration": 250,
+      "loop": true
+    },
+    "sick": {
+      "frames": [1, 2],
+      "frameDuration": 400,
+      "loop": true
+    },
+    "eating": {
+      "frames": [3, 4],
+      "frameDuration": 150,
+      "loop": true
+    }
+  }
+}
