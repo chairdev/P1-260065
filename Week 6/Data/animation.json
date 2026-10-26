@@ -7,12 +7,12 @@
     },
     "walking": {
       "frames": [0, 1],
-      "frameDuration": 250,
+      "frameDuration": 500,
       "loop": true
     },
     "sick": {
-      "frames": [1, 2],
-      "frameDuration": 400,
+      "frames": [2, 3],
+      "frameDuration": 1000,
       "loop": true
     },
     "eating": {

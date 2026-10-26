@@ -44,8 +44,7 @@ function setup() {
 
   gameState.currentLifeStage = LIFE_STAGE.EGG;
   gameState.currentMonsterIndex = MONSTER_ID.EGG1;
-  gameState.monster =
-    monsterData?.[gameState.currentMonsterIndex] || null;
+  gameState.monster = monsterData?.[gameState.currentMonsterIndex] || null;
 
   // Start the monster in the middle of the screen
   monsterX = (width - displayWidth) / 2;
@@ -75,6 +74,11 @@ function draw() {
   // Update movement and animation
   if (gameState.currentLifeStage !== LIFE_STAGE.EGG && !gameState.isSick) {
     UpdateMonsterMovement();
+  }
+  else
+  {
+    // If the monster is an egg or sick, keep it centered
+    monsterX = (width - displayWidth) / 2;
   }
 
   UpdateAnimation();
@@ -157,14 +161,12 @@ function UpdateAnimation() {
   }
 }
 
-// --------------------------------------------------
-// DRAW MONSTER
-// --------------------------------------------------
-
 function DrawMonster() {
+  // Get the current monster's image based on its index
   const activeMonsterIndex =
     gameState.currentMonsterIndex ?? MONSTER_ID.EGG1;
 
+  
   const monsterImage = monsterImages[activeMonsterIndex];
 
   if (!monsterImage) {
@@ -209,10 +211,6 @@ function DrawMonster() {
 
   pop();
 }
-
-// --------------------------------------------------
-// DRAW SCREEN
-// --------------------------------------------------
 
 function DrawScreen() {
   // Draw headers at the top and bottom of the screen
