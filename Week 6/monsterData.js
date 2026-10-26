@@ -68,6 +68,10 @@ function SetMonsterID(monsterId)
     gameState.currentMonsterIndex = monsterId;
     gameState.monster = monsterData?.[gameState.currentMonsterIndex] || null; // If the monster entry or the data is missing, default to null
 
+    //Reset care mistakes for the new monster
+    gameState.mentalCareMistakes = 0;
+    gameState.physicalCareMistakes = 0;
+
     if (gameState.monster?.lifeStage)
     {
         const mappedStage = LIFE_STAGE[gameState.monster.lifeStage.toUpperCase()];
