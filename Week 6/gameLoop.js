@@ -55,6 +55,9 @@ function ResetGame()
 {
     // Reset all game variables to their initial state
     gameState = { ...initGameState };
+
+    monsterX = (width - displayWidth) / 2;
+    monsterDirection = 1;
 }
 
 function NeedDecay()

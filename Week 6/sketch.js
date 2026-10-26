@@ -4,6 +4,7 @@ const CANVAS_HEIGHT = 400;
 
 const SPRITE_SIZE = 16;
 const RENDER_SCALE = 8;
+const displayWidth = SPRITE_SIZE * RENDER_SCALE;
 
 const MONSTER_MARGIN = 40;
 const MONSTER_SPEED = 1;
@@ -17,7 +18,8 @@ let fontBold;
 let fontCondensed;
 let fontCondensedBold;
 
-function preload() {
+function preload() 
+{
   fontRegular = loadFont('Fonts/ari-w9500.ttf');
   fontBold = loadFont('Fonts/ari-w9500-bold.ttf');
   fontCondensed = loadFont('Fonts/ari-w9500-condensed.ttf');
@@ -26,7 +28,8 @@ function preload() {
   InitMonsterData();
 }
 
-function setup() {
+function setup() 
+{
   createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
   imageMode(CORNER);
   noSmooth();
@@ -38,20 +41,20 @@ function setup() {
     monsterData?.[gameState.currentMonsterIndex] || null;
 
   // Start the monster in the middle of the screen
-  const displayWidth = SPRITE_SIZE * RENDER_SCALE;
   monsterX = (width - displayWidth) / 2;
   monsterDirection = 1;
 
   createDebugButtons();
 }
 
-function draw() {
+function draw() 
+{
   background(220);
 
   DrawScreen();
 
   GameLoop();
-  
+
   if(gameState.currentLifeStage != LIFE_STAGE.EGG)
   {
     UpdateMonsterMovement();
@@ -61,7 +64,8 @@ function draw() {
   updateDebugStateDisplay();
 }
 
-function UpdateMonsterMovement() {
+function UpdateMonsterMovement() 
+{
   const displayWidth = SPRITE_SIZE * RENDER_SCALE;
 
   const minX = MONSTER_MARGIN;
@@ -82,7 +86,8 @@ function UpdateMonsterMovement() {
   }
 }
 
-function DrawMonster() {
+function DrawMonster() 
+{
   const activeMonsterIndex =
     gameState.currentMonsterIndex ?? MONSTER_ID.EGG1;
 
@@ -101,10 +106,7 @@ function DrawMonster() {
   push();
 
   // Position the monster
-  translate(
-    Math.round(monsterX + displayWidth / 2),
-    MONSTER_Y
-  );
+  translate(Math.round(monsterX + displayWidth / 2), MONSTER_Y);
 
   // Flip the sprite when facing left
   scale(monsterDirection, 1);
