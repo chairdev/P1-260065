@@ -41,7 +41,7 @@ function createDebugButtons() {
         gameState.happiness = 100;
         }],
         ['Evolve', () => {
-        EvolveMonster();
+            gameState.elapsedTicks = EVOLUTION_TICKS[gameState.currentLifeStage]-1;
         }],
         ['Starve', () => {
         gameState.hunger = 0;
