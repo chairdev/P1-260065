@@ -1,5 +1,5 @@
 
-const TICK_INTERVAL = 1 * 1000 // Minutes to milliseconds
+const TICK_INTERVAL = 3 * 1000 // Seconds to milliseconds
 const NEGLECT_TICK_THRESHOLD = 15;
 
 const EVOLUTION_TICKS = [65, 195, 295, 395, 495]; // Ticks required for each evolution stage
@@ -155,7 +155,7 @@ function CheckDeath()
         return;
     }
 
-    if(gameState.physicalCareMistakes >= 3)
+    if(gameState.physicalCareMistakes >= 6)
     {
         gameState.isJinglePlaying = true;
         DeathJingle().then(() => {
@@ -165,7 +165,7 @@ function CheckDeath()
         });
         return;
     }
-    if(gameState.mentalCareMistakes >= 3)
+    if(gameState.mentalCareMistakes >= 6)
     {
         gameState.isJinglePlaying = true;
         DeathJingle().then(() => {
