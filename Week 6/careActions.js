@@ -21,3 +21,13 @@ function GiveMedicine()
         alert("Your monster has been cured!");
     }
 }
+
+function CleanPoop()
+{
+    if(gameState.poopCount > 0)
+    {
+        gameState.poopCount = 0;
+        gameState.ticksPooped = 0;
+        gameState.happiness = constrain(gameState.happiness + 1, 0, MAX_STAT_CAP); // Increase happiness when cleaned
+    }
+}

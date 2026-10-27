@@ -4,6 +4,9 @@ const NEGLECT_TICK_THRESHOLD = 15;
 
 const EVOLUTION_TICKS = [65, 195, 295, 395, 495]; // Ticks required for each evolution stage
 const NEED_DECAY_INTERVAL = [5, 20, 30, 50]; // Ticks between need decay for each life stage (egg, baby, teen, adult)
+const POOP_INTERVAL = [0, 10, 30, 50]; // Ticks between pooping for each life stage (egg, baby, teen, adult)
+const SICKNESS_CHANCE = [0, 0, 60, 40, 30]; // Chance of getting sick for each life stage (egg, baby, teen, adult)
+
 
 gameState.currentTickTime = TICK_INTERVAL;
 
@@ -29,7 +32,7 @@ function UpdateTickTime()
 
 function OnTick()
 {
-    if(gameState.elapsedTicks % 12 === 0) // Every 12 ticks
+    if(gameState.elapsedTicks % 24 === 0) // Every 24 ticks
     {
         gameState.age++;
         console.log("Monster aged! Current age: " + gameState.age);
@@ -39,6 +42,7 @@ function OnTick()
     if(gameState.currentLifeStage !== LIFE_STAGE.EGG)
     {
         NeedDecay();
+        CheckPoop();
         CheckHunger();
         CheckHappiness();
     }
@@ -92,6 +96,61 @@ function SetAttentionSignal()
     return false;
 }
 
+function TrySickness(isMentalNeglect = false)
+{
+    let chance = SICKNESS_CHANCE[gameState.currentLifeStage];
+
+    if (chance === undefined || chance <= 0)
+    {
+        return;
+    }
+
+    if(isMentalNeglect)
+    {
+        chance /= 2; // Reduce the chance of sickness if it's due to mental neglect
+    }
+
+    // Generate a random number between 0 and 100 to determine if the monster becomes sick
+    const randomValue = Math.random() * 100;
+
+    if (randomValue < chance)
+    {
+        gameState.isSick = true;
+        console.log("Your monster has become sick!");
+    }
+}
+
+function CheckPoop()
+{
+    const poopInterval = POOP_INTERVAL[gameState.currentLifeStage];
+
+    // If the monster has pooped, increment the ticksPooped counter and check if it exceeds the neglect threshold
+    if(gameState.poopCount > 0)
+    {
+        gameState.ticksPooped++;
+
+        if(gameState.ticksPooped >= NEGLECT_TICK_THRESHOLD)
+        {
+            gameState.physicalCareMistakes++;
+            gameState.ticksPooped = 0;
+            console.log("Your monster is neglected! Clean up its poop soon or it will die!");
+        }
+    }
+
+    console.log(gameState.elapsedTicks % poopInterval);
+
+    //If the poop interval is undefined or the current tick is not a multiple of the poop interval, ain't nothin to do here
+    if (poopInterval === undefined || gameState.elapsedTicks % poopInterval !== 0)
+    {
+        return;
+    }
+
+    gameState.poopCount++;
+    gameState.hunger = constrain(gameState.hunger - 1, 0, MAX_STAT_CAP); // Decrease hunger by 1 unit when the monster poops
+
+    console.log("Monster pooped! Total poop count: " + gameState.poopCount);
+}
+
 function CheckHunger()
 {
     // If you starve your monster for too long, you gain a care mistake. 
@@ -102,7 +161,7 @@ function CheckHunger()
         //If you don't feed your monster for 5 ticks and it's super hungry, you gain a care mistake.
         if(gameState.ticksUnfed >= NEGLECT_TICK_THRESHOLD)
         {
-            gameState.isSick = true;
+            TrySickness();
             gameState.physicalCareMistakes++;
             gameState.ticksUnfed = 0;
             AttentionBeep();
@@ -125,12 +184,11 @@ function CheckHappiness()
         if(gameState.ticksUnhappy == 0)
         {
             AttentionBeep();
-            //AttentionBeep();
         }
         gameState.ticksUnhappy++;
         if(gameState.ticksUnhappy >= NEGLECT_TICK_THRESHOLD)
         {
-            gameState.isSick = true;
+            TrySickness(true);
             gameState.mentalCareMistakes++;
             gameState.ticksUnhappy = 0;
             

@@ -43,6 +43,9 @@ function createDebugButtons() {
         ['Evolve', () => {
             gameState.elapsedTicks = EVOLUTION_TICKS[gameState.currentLifeStage]-1;
         }],
+        ['Clean Poop', () => {
+            CleanPoop();
+        }],
         ['Starve', () => {
         gameState.hunger = 0;
         }],
@@ -92,6 +95,8 @@ function updateDebugStateDisplay()
         `ticksUnfed: ${gameState.ticksUnfed}`,
         `ticksUnhappy: ${gameState.ticksUnhappy}`,
         `ticksSick: ${gameState.ticksSick}`,
+        `poopCount: ${gameState.poopCount}`,
+        `ticksPooped: ${gameState.ticksPooped}`,
         `attention: ${gameState.attentionSignal}`,
         `age: ${gameState.age}`,
         `stage: ${gameState.currentLifeStage}`,

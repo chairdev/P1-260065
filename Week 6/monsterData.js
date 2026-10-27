@@ -15,23 +15,25 @@ const MAX_STAT_CAP = 4;
 // Game state object to hold the current state of the game
 // We on that OBJECT  object oriented programming cuh
 const initGameState = {
-  monster: null,
-  nickname: "",
-  currentMonsterIndex: MONSTER_ID.EGG1,
-  age: 0,
-  physicalCareMistakes: 0,
-  mentalCareMistakes: 0,
-  currentLifeStage: LIFE_STAGE.EGG,
-  happiness: 4,
-  hunger: 4,
-  isSick: false,
-  currentTickTime: null,
-  elapsedTicks: 0,
-  ticksUnfed: 0,
-  ticksUnhappy: 0,
-  ticksSick: 0,
-  attentionSignal: false,
-  isJinglePlaying: false
+    monster: null,
+    nickname: "",
+    currentMonsterIndex: MONSTER_ID.EGG1,
+    age: 0,
+    physicalCareMistakes: 0,
+    mentalCareMistakes: 0,
+    currentLifeStage: LIFE_STAGE.EGG,
+    happiness: 4,
+    hunger: 4,
+    isSick: false,
+    currentTickTime: null,
+    elapsedTicks: 0,
+    ticksUnfed: 0,
+    ticksUnhappy: 0,
+    ticksSick: 0,
+    ticksPooped: 0,
+    poopCount: 0,
+    attentionSignal: false,
+    isJinglePlaying: false
 };
 
 let gameState = { ...initGameState }; // Initialize the game state with a copy of the initial state
