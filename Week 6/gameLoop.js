@@ -3,7 +3,7 @@ const TICK_INTERVAL = 3 * 1000 // Seconds to milliseconds
 const NEGLECT_TICK_THRESHOLD = 15;
 
 const EVOLUTION_TICKS = [65, 195, 295, 395, 495]; // Ticks required for each evolution stage
-const NEED_DECAY_RATE = [10, 5, 3, 1];
+const NEED_DECAY_INTERVAL = [5, 20, 30, 50]; // Ticks between need decay for each life stage (egg, baby, teen, adult)
 
 gameState.currentTickTime = TICK_INTERVAL;
 
@@ -62,20 +62,29 @@ function ResetGame()
 
 function NeedDecay()
 {
+    const decayInterval = NEED_DECAY_INTERVAL[gameState.currentLifeStage];
+
+    //If the decay interval is undefined or the current tick is not a multiple of the decay interval, ain't nothin to do here
+    if (decayInterval === undefined || gameState.elapsedTicks % decayInterval !== 0)
+    {
+        return;
+    }
+
     if(gameState.hunger > 0)
     {
-        gameState.hunger -= constrain(NEED_DECAY_RATE[gameState.currentLifeStage], 0, gameState.hunger); // Decrease hunger by the appropriate amount per tick
+        gameState.hunger = constrain(gameState.hunger - 1, 0, MAX_STAT_CAP);
     }
 
     if(gameState.happiness > 0)
     {
-        gameState.happiness -= constrain(NEED_DECAY_RATE[gameState.currentLifeStage], 0, gameState.happiness); // Decrease happiness by the appropriate amount per tick
+        gameState.happiness = constrain(gameState.happiness - 1, 0, MAX_STAT_CAP);
     }
 }
 
 function SetAttentionSignal()
 {
-    if(gameState.happiness < 5 || gameState.hunger < 5 || gameState.isSick)
+    //Show the attention signal if the monster is super hungry or unhappy
+    if(gameState.happiness < 1 || gameState.hunger < 1)
     {
         return true;
     }
@@ -150,7 +159,7 @@ function CheckSickness()
 
 function CheckDeath()
 {
-    if (gameState.isJinglePlaying)
+    if (gameState.isJinglePlaying || gameState.currentLifeStage === LIFE_STAGE.EGG  || gameState.currentLifeStage === LIFE_STAGE.BABY)
     {
         return;
     }

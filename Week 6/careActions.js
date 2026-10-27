@@ -1,9 +1,12 @@
 function FeedMonster()
 {
-    if(gameState.hunger < 100)
+    if(gameState.hunger < MAX_STAT_CAP)
     {
-        gameState.hunger += 25; //Increase hunger by 25 units (1/4th of the maximum) when fed
-        gameState.happiness += 10;
+        //Increase hunger by 2 units when fed
+        gameState.hunger = constrain(gameState.hunger + 2, 0, MAX_STAT_CAP);
+        gameState.happiness = constrain(gameState.happiness + 1, 0, MAX_STAT_CAP); // Increase happiness when fed
+        gameState.ticksUnfed = 0;
+        gameState.ticksUnhappy = 0;
     }
 }
 
@@ -12,7 +15,8 @@ function GiveMedicine()
     if(gameState.isSick)
     {
         gameState.isSick = false;
-        gameState.happiness += 15; // Increase happiness when cured
+        gameState.happiness = constrain(gameState.happiness + 1, 0, MAX_STAT_CAP); // Increase happiness when cured
+        gameState.ticksSick = 0;
 
         alert("Your monster has been cured!");
     }

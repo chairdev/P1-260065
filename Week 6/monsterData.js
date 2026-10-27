@@ -10,6 +10,8 @@ const LIFE_STAGE = {
   ADULT: 3
 };
 
+const MAX_STAT_CAP = 4;
+
 // Game state object to hold the current state of the game
 // We on that OBJECT  object oriented programming cuh
 const initGameState = {
@@ -20,8 +22,8 @@ const initGameState = {
   physicalCareMistakes: 0,
   mentalCareMistakes: 0,
   currentLifeStage: LIFE_STAGE.EGG,
-  happiness: 30,
-  hunger: 100,
+  happiness: 4,
+  hunger: 4,
   isSick: false,
   currentTickTime: null,
   elapsedTicks: 0,
