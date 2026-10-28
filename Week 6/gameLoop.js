@@ -2,10 +2,50 @@
 const TICK_INTERVAL = 3 * 1000 // Seconds to milliseconds
 const NEGLECT_TICK_THRESHOLD = 15;
 
-const EVOLUTION_TICKS = [65, 195, 295, 395, 495]; // Ticks required for each evolution stage
-const NEED_DECAY_INTERVAL = [5, 20, 30, 50]; // Ticks between need decay for each life stage (egg, baby, teen, adult)
-const POOP_INTERVAL = [0, 10, 30, 50]; // Ticks between pooping for each life stage (egg, baby, teen, adult)
-const SICKNESS_CHANCE = [0, 0, 60, 40, 30]; // Chance of getting sick for each life stage (egg, baby, teen, adult)
+const LIFE_STAGE_CONFIG = {
+    [LIFE_STAGE.EGG]: {
+        evolutionTick: 65,
+        needDecayInterval: 5,
+        poopInterval: 0,
+        sicknessChance: 0,
+        evolution: {
+            nextStage: LIFE_STAGE.BABY,
+            label: "egg",
+            action: "hatched",
+            animation: "egg_hatch",
+            setName: true
+        }
+    },
+    [LIFE_STAGE.BABY]: {
+        evolutionTick: 195,
+        needDecayInterval: 20,
+        poopInterval: 10,
+        sicknessChance: 0,
+        evolution: {
+            nextStage: LIFE_STAGE.TEEN,
+            label: "baby",
+            action: "evolved"
+        }
+    },
+    [LIFE_STAGE.TEEN]: {
+        evolutionTick: 295,
+        needDecayInterval: 30,
+        poopInterval: 30,
+        sicknessChance: 60,
+        evolution: {
+            nextStage: LIFE_STAGE.ADULT,
+            label: "teen",
+            action: "evolved"
+        }
+    },
+    [LIFE_STAGE.ADULT]: {
+        evolutionTick: 395,
+        needDecayInterval: 50,
+        poopInterval: 50,
+        sicknessChance: 40
+    }
+};
+
 
 gameState.currentTickTime = TICK_INTERVAL;
 
@@ -66,7 +106,7 @@ function ResetGame()
 
 function NeedDecay()
 {
-    const decayInterval = NEED_DECAY_INTERVAL[gameState.currentLifeStage];
+    const decayInterval = LIFE_STAGE_CONFIG[gameState.currentLifeStage]?.needDecayInterval;
 
     //If the decay interval is undefined or the current tick is not a multiple of the decay interval, ain't nothin to do here
     if (decayInterval === undefined || gameState.elapsedTicks % decayInterval !== 0)
@@ -98,7 +138,7 @@ function SetAttentionSignal()
 
 function TrySickness(isMentalNeglect = false)
 {
-    let chance = SICKNESS_CHANCE[gameState.currentLifeStage];
+    let chance = LIFE_STAGE_CONFIG[gameState.currentLifeStage]?.sicknessChance;
 
     if (chance === undefined || chance <= 0)
     {
@@ -122,7 +162,7 @@ function TrySickness(isMentalNeglect = false)
 
 function CheckPoop()
 {
-    const poopInterval = POOP_INTERVAL[gameState.currentLifeStage];
+    const poopInterval = LIFE_STAGE_CONFIG[gameState.currentLifeStage]?.poopInterval;
 
     // If the monster has pooped, increment the ticksPooped counter and check if it exceeds the neglect threshold
     if(gameState.poopCount > 0)
@@ -247,20 +287,17 @@ function CheckDeath()
 function CheckEvolution()
 {
     const evolutionCandidates = GetEvolutionCandidates();
-    const evolutionStage = EVOLUTION_STAGES[gameState.currentLifeStage];
+    const stageConfig = LIFE_STAGE_CONFIG[gameState.currentLifeStage];
+    const evolutionStage = stageConfig?.evolution;
 
-    // If there are no evolution candidates, 
-    // the evolution stage is undefined, the jingle is playing, 
-    // or the elapsed ticks are less than the required ticks for evolution
-    // exit the function early
     if (evolutionCandidates.length === 0 ||
         !evolutionStage ||
         gameState.isJinglePlaying ||
-        gameState.elapsedTicks < evolutionStage.tick)
+        gameState.elapsedTicks < stageConfig.evolutionTick)
     {
         return;
     }
-``
+
     const evolution = evolutionCandidates.find(candidate => MeetsEvolutionRequirements(candidate));
     if (!evolution)
     {
@@ -286,7 +323,7 @@ function CheckEvolution()
         }
 
         gameState.isJinglePlaying = false;
-        alert("Your monster has " + evolutionStage.action + " into " + GetMonsterName() + "!");
+        alert("Your " + evolutionStage.label + " has " + evolutionStage.action + " into " + GetMonsterName() + "!");
         console.log(
             evolutionStage.label + " " + evolutionStage.action + " into " + GetMonsterName() +
             " at tick " + gameState.elapsedTicks
