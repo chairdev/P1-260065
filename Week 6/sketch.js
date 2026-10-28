@@ -19,11 +19,14 @@ let fontCondensedBold;
 
 // Animation data loaded from JSON
 let animationData = {};
+let poopImage;
 
 // Current animation state
 let currentAnimation = "idle";
 let animationFrameIndex = 0;
 let lastAnimationFrameTime = 0;
+let poopAnimationFrameIndex = 0;
+let lastPoopAnimationFrameTime = 0;
 
 function preload() {
   fontRegular = loadFont('Fonts/ari-w9500.ttf');
@@ -32,6 +35,7 @@ function preload() {
   fontCondensedBold = loadFont('Fonts/ari-w9500-condensed-bold.ttf');
 
   animationData = loadJSON('Data/animation.json');
+  poopImage = loadImage('Graphics/Monster/poop.png');
 
   InitMonsterData();
 }
@@ -51,6 +55,7 @@ function setup() {
   monsterDirection = 1;
 
   PlayAnimation("egg_idle");
+  PlayPoopAnimation();
 
   createDebugButtons();
 }
@@ -76,6 +81,8 @@ function draw() {
 
   UpdateAnimation();
   DrawMonster();
+  UpdatePoopAnimation();
+  DrawPoop();
 
   updateDebugStateDisplay();
 }
@@ -206,6 +213,69 @@ function UpdateAnimation() {
 
     lastAnimationFrameTime = millis();
   }
+}
+
+function PlayPoopAnimation() {
+  const animation = animationData?.animations?.poop;
+
+  if (!animation || !Array.isArray(animation.frames)) {
+    return;
+  }
+
+  poopAnimationFrameIndex = 0;
+  lastPoopAnimationFrameTime = millis();
+}
+
+function UpdatePoopAnimation() {
+  const animation = animationData?.animations?.poop;
+
+  if (!animation || !Array.isArray(animation.frames) ||
+      animation.frames.length <= 1) {
+    return;
+  }
+
+  const frameDuration = animation.frameDuration ?? 250;
+
+  if (millis() - lastPoopAnimationFrameTime >= frameDuration) {
+    poopAnimationFrameIndex =
+      (poopAnimationFrameIndex + 1) % animation.frames.length;
+    lastPoopAnimationFrameTime = millis();
+  }
+}
+
+function DrawPoop() {
+  const animation = animationData?.animations?.poop;
+
+  if (!poopImage || !animation || !Array.isArray(animation.frames)) {
+    return;
+  }
+
+  const frame = animation.frames[poopAnimationFrameIndex];
+  const poopWidth = SPRITE_SIZE * RENDER_SCALE;
+  const poopHeight = SPRITE_SIZE * RENDER_SCALE;
+
+  image(
+    poopImage,
+    0,
+    MONSTER_Y - poopHeight / 2,
+    poopWidth,
+    poopHeight,
+    frame * SPRITE_SIZE,
+    0,
+    SPRITE_SIZE,
+    SPRITE_SIZE
+  );
+  image(
+    poopImage,
+    width - poopWidth,
+    MONSTER_Y - poopHeight / 2,
+    poopWidth,
+    poopHeight,
+    frame * SPRITE_SIZE,
+    0,
+    SPRITE_SIZE,
+    SPRITE_SIZE
+  );
 }
 
 function DrawMonster() {

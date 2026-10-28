@@ -24,6 +24,11 @@
       "frames": [3, 4],
       "frameDuration": 150,
       "loop": true
+    },
+    "poop": {
+      "frames": [0, 1],
+      "frameDuration": 250,
+      "loop": true
     }
   }
 }

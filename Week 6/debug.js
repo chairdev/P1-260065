@@ -41,7 +41,7 @@ function createDebugButtons() {
         gameState.happiness = 100;
         }],
         ['Evolve', () => {
-            gameState.elapsedTicks = EVOLUTION_TICKS[gameState.currentLifeStage]-1;
+            gameState.elapsedTicks = LIFE_STAGE_CONFIG[gameState.currentLifeStage].evolutionTick - 1;
         }],
         ['Clean Poop', () => {
             CleanPoop();
