@@ -7,7 +7,6 @@ const NEED_DECAY_INTERVAL = [5, 20, 30, 50]; // Ticks between need decay for eac
 const POOP_INTERVAL = [0, 10, 30, 50]; // Ticks between pooping for each life stage (egg, baby, teen, adult)
 const SICKNESS_CHANCE = [0, 0, 60, 40, 30]; // Chance of getting sick for each life stage (egg, baby, teen, adult)
 
-
 gameState.currentTickTime = TICK_INTERVAL;
 
 function GameLoop()
@@ -32,6 +31,7 @@ function UpdateTickTime()
 
 function OnTick()
 {
+    CheckEvolution();
     if(gameState.elapsedTicks % 24 === 0) // Every 24 ticks
     {
         gameState.age++;
@@ -247,83 +247,49 @@ function CheckDeath()
 function CheckEvolution()
 {
     const evolutionCandidates = GetEvolutionCandidates();
+    const evolutionStage = EVOLUTION_STAGES[gameState.currentLifeStage];
 
-    if(evolutionCandidates.length == 0)
+    // If there are no evolution candidates, 
+    // the evolution stage is undefined, the jingle is playing, 
+    // or the elapsed ticks are less than the required ticks for evolution
+    // exit the function early
+    if (evolutionCandidates.length === 0 ||
+        !evolutionStage ||
+        gameState.isJinglePlaying ||
+        gameState.elapsedTicks < evolutionStage.tick)
+    {
+        return;
+    }
+``
+    const evolution = evolutionCandidates.find(candidate => MeetsEvolutionRequirements(candidate));
+    if (!evolution)
     {
         return;
     }
 
-    // Monsters evolve based on their life stage and the number of ticks that have passed.
-    if (gameState.isJinglePlaying)
-    {
-        return;
-    }
+    gameState.isJinglePlaying = true;
+    EvolutionJingle().then(() => {
+        if (!evolutionStage.animation)
+        {
+            return;
+        }
 
-    switch (gameState.currentLifeStage)
-    {
-        case LIFE_STAGE.EGG:
-            if (gameState.elapsedTicks >= EVOLUTION_TICKS[0])
-            {
-                const eggCandidate = evolutionCandidates.find(candidate => MeetsEvolutionRequirements(candidate));
+        PlayAnimation(evolutionStage.animation);
+        return WaitForAnimationToFinish(evolutionStage.animation);
+    }).then(() => {
+        gameState.currentLifeStage = evolutionStage.nextStage;
+        SetMonsterID(evolution.to);
 
-                if (!eggCandidate)
-                {
-                    return;
-                }
+        if (evolutionStage.setName)
+        {
+            SetMonsterName();
+        }
 
-                gameState.isJinglePlaying = true;
-                EvolutionJingle().then(() => {
-                    PlayAnimation("egg_hatch");
-                    return WaitForAnimationToFinish("egg_hatch");
-                }).then(() => {
-                    gameState.currentLifeStage = LIFE_STAGE.BABY;
-                    SetMonsterID(eggCandidate.to);
-                    SetMonsterName();
-                    gameState.isJinglePlaying = false;
-                    alert("Your egg has hatched into " + GetMonsterName() + "!");
-                    console.log("Egg hatched into " + GetMonsterName() + " at tick " + gameState.elapsedTicks);
-                });
-            }
-            break;
-        case LIFE_STAGE.BABY:
-            if (gameState.elapsedTicks >= EVOLUTION_TICKS[1])
-            {
-                const validEvolution = evolutionCandidates.find(candidate => MeetsEvolutionRequirements(candidate));
-
-                if (!validEvolution)
-                {
-                    return;
-                }
-
-                gameState.isJinglePlaying = true;
-                EvolutionJingle().then(() => {
-                    gameState.isJinglePlaying = false;
-                    gameState.currentLifeStage = Math.min(gameState.currentLifeStage + 1, LIFE_STAGE.ADULT);
-                    SetMonsterID(validEvolution.to);
-                    alert("Your baby has evolved into " + GetMonsterName() + "!");
-                    console.log("Baby evolved into " + GetMonsterName() + " at tick " + gameState.elapsedTicks);
-                });
-            }
-            break;
-        case LIFE_STAGE.TEEN:
-            if (gameState.elapsedTicks >= EVOLUTION_TICKS[2])
-            {
-                const validEvolution = evolutionCandidates.find(candidate => MeetsEvolutionRequirements(candidate));
-
-                if (!validEvolution)
-                {
-                    return;
-                }
-
-                gameState.isJinglePlaying = true;
-                EvolutionJingle().then(() => {
-                    gameState.isJinglePlaying = false;
-                    gameState.currentLifeStage = Math.min(gameState.currentLifeStage + 1, LIFE_STAGE.ADULT);
-                    SetMonsterID(validEvolution.to);
-                    alert("Your teen has evolved into " + GetMonsterName() + "!");
-                    console.log("Teen evolved into " + GetMonsterName() + " at tick " + gameState.elapsedTicks);
-                });
-            }
-            break;
-    }
+        gameState.isJinglePlaying = false;
+        alert("Your monster has " + evolutionStage.action + " into " + GetMonsterName() + "!");
+        console.log(
+            evolutionStage.label + " " + evolutionStage.action + " into " + GetMonsterName() +
+            " at tick " + gameState.elapsedTicks
+        );
+    });
 }
