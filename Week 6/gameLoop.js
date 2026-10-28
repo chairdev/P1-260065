@@ -273,10 +273,13 @@ function CheckEvolution()
 
                 gameState.isJinglePlaying = true;
                 EvolutionJingle().then(() => {
-                    gameState.isJinglePlaying = false;
+                    PlayAnimation("egg_hatch");
+                    return WaitForAnimationToFinish("egg_hatch");
+                }).then(() => {
                     gameState.currentLifeStage = LIFE_STAGE.BABY;
                     SetMonsterID(eggCandidate.to);
                     SetMonsterName();
+                    gameState.isJinglePlaying = false;
                     alert("Your egg has hatched into " + GetMonsterName() + "!");
                     console.log("Egg hatched into " + GetMonsterName() + " at tick " + gameState.elapsedTicks);
                 });

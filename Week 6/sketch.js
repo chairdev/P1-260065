@@ -50,7 +50,7 @@ function setup() {
   monsterX = (width - displayWidth) / 2;
   monsterDirection = 1;
 
-  PlayAnimation("idle");
+  PlayAnimation("egg_idle");
 
   createDebugButtons();
 }
@@ -62,14 +62,7 @@ function draw() {
 
   GameLoop();
 
-  // Choose the animation based on the monster's state
-  if (gameState.isSick) {
-    PlayAnimation("sick");
-  } else if (gameState.currentLifeStage !== LIFE_STAGE.EGG) {
-    PlayAnimation("walking");
-  } else {
-    PlayAnimation("idle");
-  }
+  SetAnimationState();
 
   // Update movement and animation
   if (gameState.currentLifeStage !== LIFE_STAGE.EGG && !gameState.isSick) {
@@ -85,6 +78,60 @@ function draw() {
   DrawMonster();
 
   updateDebugStateDisplay();
+}
+
+function SetAnimationState()
+{
+  // Keep the egg hatch animation from being replaced until it finishes.
+  if (gameState.currentLifeStage === LIFE_STAGE.EGG &&
+      currentAnimation === "egg_hatch")
+  {
+    return;
+  }
+
+  // Choose the animation based on the monster's state
+  if (gameState.isSick)
+  {
+    PlayAnimation("sick");
+  }
+  else if (gameState.currentLifeStage !== LIFE_STAGE.EGG)
+  {
+    PlayAnimation("walking");
+  }
+  else
+  {
+    PlayAnimation("egg_idle");
+  }
+}
+
+function WaitForAnimationToFinish(animationName) {
+  return new Promise((resolve) => {
+    const checkAnimation = () => {
+      const animation = animationData?.animations?.[animationName];
+
+      if (!animation || !Array.isArray(animation.frames) ||
+          currentAnimation !== animationName)
+      {
+        resolve();
+        return;
+      }
+
+      const frameDuration = animation.frameDuration ?? 250;
+      const isLastFrame = animationFrameIndex >= animation.frames.length - 1;
+      const hasDisplayedLastFrame =
+        millis() - lastAnimationFrameTime >= frameDuration;
+
+      if (animation.loop === false && isLastFrame && hasDisplayedLastFrame)
+      {
+        resolve();
+        return;
+      }
+
+      setTimeout(checkAnimation, 16);
+    };
+
+    checkAnimation();
+  });
 }
 
 // --------------------------------------------------

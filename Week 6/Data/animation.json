@@ -1,9 +1,14 @@
 {
   "animations": {
-    "idle": {
-      "frames": [0],
-      "frameDuration": 500,
+    "egg_idle": {
+      "frames": [0, 1],
+      "frameDuration": 1500,
       "loop": true
+    },
+    "egg_hatch": {
+      "frames": [2, 3, 2, 3],
+      "frameDuration": 500,
+      "loop": false
     },
     "walking": {
       "frames": [0, 1],
