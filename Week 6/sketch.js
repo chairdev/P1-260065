@@ -5,8 +5,8 @@ const SPRITE_SIZE = 16;
 const RENDER_SCALE = 8;
 const displayWidth = SPRITE_SIZE * RENDER_SCALE;
 
-const MONSTER_MARGIN = 40;
-const MONSTER_SPEED = 1;
+const MONSTER_MARGIN = 96;
+const MONSTER_SPEED = 0.4;
 const MONSTER_Y = CANVAS_HEIGHT / 2;
 
 let monsterX = 0;
@@ -246,36 +246,43 @@ function UpdatePoopAnimation() {
 function DrawPoop() {
   const animation = animationData?.animations?.poop;
 
-  if (!poopImage || !animation || !Array.isArray(animation.frames)) {
+  if (!poopImage || !animation || !Array.isArray(animation.frames) ||
+      gameState.poopCount <= 0) {
     return;
   }
 
   const frame = animation.frames[poopAnimationFrameIndex];
-  const poopWidth = SPRITE_SIZE * RENDER_SCALE;
-  const poopHeight = SPRITE_SIZE * RENDER_SCALE;
+  const defaultPoopSize = SPRITE_SIZE * RENDER_SCALE;
+  const rows = Math.ceil(gameState.poopCount / 2);
+  const poopSize = Math.min(
+    defaultPoopSize,
+    (height - 100) / rows
+  );
+  const edgeMargin = 10;
+  const verticalGap = Math.max(
+    4,
+    (height - 100 - rows * poopSize) / (rows + 1)
+  );
 
-  image(
-    poopImage,
-    0,
-    MONSTER_Y - poopHeight / 2,
-    poopWidth,
-    poopHeight,
-    frame * SPRITE_SIZE,
-    0,
-    SPRITE_SIZE,
-    SPRITE_SIZE
-  );
-  image(
-    poopImage,
-    width - poopWidth,
-    MONSTER_Y - poopHeight / 2,
-    poopWidth,
-    poopHeight,
-    frame * SPRITE_SIZE,
-    0,
-    SPRITE_SIZE,
-    SPRITE_SIZE
-  );
+  for (let poopIndex = 0; poopIndex < gameState.poopCount; poopIndex++) {
+    const row = Math.floor(poopIndex / 2);
+    const isRightEdge = poopIndex % 2 === 1;
+    const poopX = isRightEdge ? width - edgeMargin - poopSize : edgeMargin;
+    const poopY =
+      height - 50 - poopSize - verticalGap - row * (poopSize + verticalGap);
+
+    image(
+      poopImage,
+      poopX,
+      poopY,
+      poopSize,
+      poopSize,
+      frame * SPRITE_SIZE,
+      0,
+      SPRITE_SIZE,
+      SPRITE_SIZE
+    );
+  }
 }
 
 function DrawMonster() {
