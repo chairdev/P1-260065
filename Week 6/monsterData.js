@@ -10,6 +10,50 @@ const LIFE_STAGE = {
   ADULT: 3
 };
 
+const LIFE_STAGE_CONFIG = {
+    [LIFE_STAGE.EGG]: {
+        evolutionTick: 65,
+        needDecayInterval: 5,
+        poopInterval: 0,
+        sicknessChance: 0,
+        evolution: {
+            nextStage: LIFE_STAGE.BABY,
+            label: "egg",
+            action: "hatched",
+            animation: "egg_hatch",
+            setName: true
+        }
+    },
+    [LIFE_STAGE.BABY]: {
+        evolutionTick: 195,
+        needDecayInterval: 20,
+        poopInterval: 10,
+        sicknessChance: 80,
+        evolution: {
+            nextStage: LIFE_STAGE.TEEN,
+            label: "baby",
+            action: "evolved"
+        }
+    },
+    [LIFE_STAGE.TEEN]: {
+        evolutionTick: 295,
+        needDecayInterval: 30,
+        poopInterval: 30,
+        sicknessChance: 60,
+        evolution: {
+            nextStage: LIFE_STAGE.ADULT,
+            label: "teen",
+            action: "evolved"
+        }
+    },
+    [LIFE_STAGE.ADULT]: {
+        evolutionTick: 395,
+        needDecayInterval: 50,
+        poopInterval: 50,
+        sicknessChance: 40
+    }
+};
+
 const MAX_STAT_CAP = 4;
 
 // Game state object to hold the current state of the game

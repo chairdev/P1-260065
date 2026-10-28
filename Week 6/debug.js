@@ -38,7 +38,7 @@ function createDebugButtons() {
         GiveMedicine();
         }],
         ['Make Happy', () => {
-        gameState.happiness = 100;
+        gameState.happiness = MAX_STAT_CAP;
         }],
         ['Evolve', () => {
             gameState.elapsedTicks = LIFE_STAGE_CONFIG[gameState.currentLifeStage].evolutionTick - 1;
