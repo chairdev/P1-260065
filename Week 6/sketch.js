@@ -9,6 +9,8 @@ const displayWidth = SPRITE_SIZE * RENDER_SCALE;
 const MONSTER_MARGIN = 96;
 const MONSTER_SPEED = 0.4;
 const MONSTER_Y = CANVAS_HEIGHT / 2;
+const GAME_SAVE_KEY = "week-6-virtual-pet-save";
+const AUTO_SAVE_INTERVAL = 1000;
 
 let monsterX = 0;
 let monsterDirection = 1; // 1 = right, -1 = left
@@ -51,8 +53,13 @@ function setup() {
   noSmooth();
   textFont(fontRegular);
 
-  gameState.currentLifeStage = LIFE_STAGE.EGG;
-  gameState.currentMonsterIndex = MONSTER_ID.EGG1;
+  const hasSavedGame = LoadGameState();
+
+  if (!hasSavedGame) {
+    gameState.currentLifeStage = LIFE_STAGE.EGG;
+    gameState.currentMonsterIndex = MONSTER_ID.EGG1;
+  }
+
   gameState.monster = monsterData?.[gameState.currentMonsterIndex] || null;
 
   // Start the monster in the middle of the screen
@@ -70,8 +77,56 @@ function setup() {
   }
 }
 
+function LoadGameState() {
+  try {
+    const savedState = localStorage.getItem(GAME_SAVE_KEY);
+
+    if (!savedState) {
+      return false;
+    }
+
+    const parsedState = JSON.parse(savedState);
+
+    if (!parsedState || typeof parsedState !== "object" ||
+        Array.isArray(parsedState)) {
+      throw new Error("Saved game data is not an object.");
+    }
+
+    gameState = {
+      ...initGameState,
+      ...parsedState,
+      monster: null
+    };
+
+    return true;
+  } catch (error) {
+    console.error("Could not load the saved game:", error);
+
+    try {
+      localStorage.removeItem(GAME_SAVE_KEY);
+    } catch (removeError) {
+      console.error("Could not remove the invalid saved game:", removeError);
+    }
+
+    return false;
+  }
+}
+
+function SaveGameState() {
+  try {
+    const stateToSave = {
+      ...gameState,
+      monster: undefined
+    };
+
+    localStorage.setItem(GAME_SAVE_KEY, JSON.stringify(stateToSave));
+  } catch (error) {
+    console.error("Could not save the game:", error);
+  }
+}
+
 function windowResized() {
-  resizeCanvas(canvasWidth, canvasHeight);
+  resizeCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
 }
 
 function draw() {

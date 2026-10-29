@@ -19,7 +19,8 @@ function UpdateTickTime()
         gameState.currentTickTime = TICK_INTERVAL;
         console.log("Tick");
 
-        OnTick();
+        OnTick();   
+        SaveGameState();
     }
 }
 
@@ -57,6 +58,7 @@ function ResetGame()
 
     monsterX = (width - displayWidth) / 2;
     monsterDirection = 1;
+    SaveGameState();
 }
 
 function NeedDecay()

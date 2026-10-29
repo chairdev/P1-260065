@@ -28,6 +28,7 @@ function createActionButtons() {
     button.mousePressed(() => {
       ConfirmationBeep();
       action();
+      SaveGameState();
       updateActionButtonLabels();
     });
     button.style('flex', '1');
