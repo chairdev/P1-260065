@@ -48,6 +48,7 @@ function preload() {
   animationData = loadJSON('Data/animation.json');
   poopImage = loadImage('Graphics/Effects/poop.png');
   sicknessImage = loadImage('Graphics/Effects/sickness.png');
+  LoadBgMusic();
 
   InitMonsterData();
 }
@@ -79,6 +80,12 @@ function setup() {
   if (DEBUG_MODE) {
     createDebugButtons();
   }
+
+  StartBgMusic();
+}
+
+function mousePressed() {
+  StartBgMusic();
 }
 
 function LoadGameState() {

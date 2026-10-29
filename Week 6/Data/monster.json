@@ -1,6 +1,6 @@
 [
   {
-    "name": "EGG1",
+    "name": "EGG",
     "lifeStage": "EGG",
     "image_path": "Graphics/Monster/egg1_sheet.png",
     "evolutions": [
@@ -12,7 +12,7 @@
     ]
   },
   {
-    "name": "Totbit",
+    "name": "TOTBIT",
     "lifeStage": "BABY",
     "image_path": "Graphics/Monster/totling_sheet.png",
     "evolutions": [
@@ -27,7 +27,7 @@
     ]
   },
   {
-    "name": "Blobling",
+    "name": "BLOBLING",
     "lifeStage": "TEEN",
     "image_path": "Graphics/Monster/blobby_sheet.png",
     "evolutions": [
@@ -38,7 +38,7 @@
     ]
   },
   {
-    "name": "Puckmo",
+    "name": "PUCKMO",
     "lifeStage": "ADULT",
     "image_path": "Graphics/Monster/puckmo_sheet.png",
     "evolutions": [
@@ -51,7 +51,7 @@
     ]
   },
   {
-    "name": "Spokling",
+    "name": "SPOKLING",
     "lifeStage": "TEEN",
     "image_path": "Graphics/Monster/spokling_sheet.png",
     "evolutions": [
@@ -63,7 +63,7 @@
     ]
   },
   {
-    "name": "Boomo",
+    "name": "BOOMO",
     "lifeStage": "ADULT",
     "image_path": "Graphics/Monster/boomo_sheet.png",
     "evolutions": [

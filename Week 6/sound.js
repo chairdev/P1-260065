@@ -1,5 +1,36 @@
+let bgMusic;
+const BG_MUSIC_VOLUME = 0.5;
+let hasStartedBgMusic = false;
+
+function LoadBgMusic()
+{
+    bgMusic = loadSound('Sound/bg_music.mp3');
+}
+
+function StartBgMusic()
+{
+    if (hasStartedBgMusic || !bgMusic)
+    {
+        return;
+    }
+
+    userStartAudio().then(() => {
+        if (hasStartedBgMusic)
+        {
+            return;
+        }
+
+        bgMusic.setVolume(BG_MUSIC_VOLUME);
+        bgMusic.loop();
+        hasStartedBgMusic = true;
+    }).catch((error) => {
+        console.error("Could not start the background music:", error);
+    });
+}
+
 function PlayTone(frequency, duration = 0.12, volume = 0.04, waveform = 'square')
 {
+    StartBgMusic();
     userStartAudio();
 
     return new Promise((resolve) => {
