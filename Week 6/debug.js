@@ -31,15 +31,6 @@ function createDebugButtons() {
     updateDebugStateDisplay();
 
     const debugActions = [
-        ['Feed', () => {
-        FeedMonster();
-        }],
-        ['Cure', () => {
-        GiveMedicine();
-        }],
-        ['Toggle Light', () => {
-        gameState.isLightOn = !gameState.isLightOn;
-        }],
         ['Make Tired', () => {
         gameState.energy = 0;
         }],

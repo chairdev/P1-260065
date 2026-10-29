@@ -32,6 +32,11 @@ function PlayJingle(notes)
     })();
 }
 
+function ConfirmationBeep()
+{
+    PlayTone(1200, 0.045, 0.035, 'square');
+}
+
 function AttentionBeep()
 {
      const notes = [880, 1175, 880, 1175, 880, 1175];

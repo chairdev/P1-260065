@@ -61,6 +61,7 @@ function setup() {
   PlayAnimation("egg_idle");
   PlayPoopAnimation();
 
+  createActionButtons();
   createDebugButtons();
 }
 
@@ -386,32 +387,5 @@ function DrawMonster() {
     SPRITE_SIZE
   );
 
-  pop();
-}
-
-function DrawScreen() {
-  // Draw headers at the top and bottom of the screen
-  fill(100, 100, 100);
-  rect(0, 0, width, 50);
-  rect(0, height - 50, width, 50);
-
-  // Draw the attention signal when the monster needs attention
-  if (gameState.attentionSignal) {
-    textFont(fontCondensedBold);
-    textSize(48);
-    fill("black");
-    text("!", 16, height - 8);
-  }
-}
-
-function DrawLightingOverlay() {
-  if (gameState.isLightOn) {
-    return;
-  }
-
-  push();
-  noStroke();
-  fill(0, 0, 0, 140);
-  rect(0, 0, width, height);
   pop();
 }
