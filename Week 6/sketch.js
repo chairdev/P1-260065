@@ -109,6 +109,13 @@ function LoadGameState() {
       monster: null
     };
 
+    const savedAt = Number(gameState.lastSavedAt);
+    const elapsedOfflineTime = Date.now() - savedAt;
+
+    if (Number.isFinite(savedAt) && savedAt > 0 && elapsedOfflineTime > 0) {
+      AdvanceGameTime(elapsedOfflineTime);
+    }
+
     return true;
   } catch (error) {
     console.error("Could not load the saved game:", error);
@@ -125,6 +132,8 @@ function LoadGameState() {
 
 function SaveGameState() {
   try {
+    gameState.lastSavedAt = Date.now();
+
     const stateToSave = {
       ...gameState,
       monster: undefined

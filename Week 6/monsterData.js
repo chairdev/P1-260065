@@ -70,6 +70,7 @@ const initGameState = {
     isLightOn: true,
     isSick: false,
     currentTickTime: null,
+    lastSavedAt: null,
     elapsedTicks: 0,
     ticksUnfed: 0,
     ticksUnhappy: 0,

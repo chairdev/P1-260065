@@ -16,18 +16,46 @@ function GameLoop()
 
 function UpdateTickTime()
 {
-    // Update the tick time based on the frame rate
-    gameState.currentTickTime -= deltaTime;
+    const ticksProcessed = AdvanceGameTime(deltaTime);
 
-    if (gameState.currentTickTime <= 0) 
+    if (ticksProcessed > 0)
     {
-        gameState.elapsedTicks++;
-        gameState.currentTickTime = TICK_INTERVAL;
-        console.log("Tick");
-
-        OnTick();   
         SaveGameState();
     }
+}
+
+function AdvanceGameTime(elapsedMilliseconds)
+{
+    //Don't process ticks if the elapsed time is not a valid number n shi
+    if (!Number.isFinite(elapsedMilliseconds) || elapsedMilliseconds <= 0)
+    {
+        return 0;
+    }
+    
+    //if current tick time isn't a valid number, reset it to the default tick interval
+    if (!Number.isFinite(gameState.currentTickTime) ||
+        gameState.currentTickTime <= 0 ||
+        gameState.currentTickTime > TICK_INTERVAL)
+    {
+        gameState.currentTickTime = TICK_INTERVAL;
+    }
+
+    let remainingTime = elapsedMilliseconds;
+    let ticksProcessed = 0;
+
+    //
+    while (remainingTime >= gameState.currentTickTime)
+    {
+        remainingTime -= gameState.currentTickTime;
+        gameState.elapsedTicks++;
+        gameState.currentTickTime = TICK_INTERVAL;
+        ticksProcessed++;
+        console.log("Tick");
+        OnTick();
+    }
+
+    gameState.currentTickTime -= remainingTime;
+    return ticksProcessed;
 }
 
 function OnTick()
