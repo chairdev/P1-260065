@@ -20,6 +20,7 @@ let fontCondensedBold;
 // Animation data loaded from JSON
 let animationData = {};
 let poopImage;
+let sicknessImage;
 
 // Current animation state
 let currentAnimation = "idle";
@@ -27,6 +28,8 @@ let animationFrameIndex = 0;
 let lastAnimationFrameTime = 0;
 let poopAnimationFrameIndex = 0;
 let lastPoopAnimationFrameTime = 0;
+let sicknessAnimationFrameIndex = 0;
+let lastSicknessAnimationFrameTime = 0;
 
 function preload() {
   fontRegular = loadFont('Fonts/ari-w9500.ttf');
@@ -35,7 +38,8 @@ function preload() {
   fontCondensedBold = loadFont('Fonts/ari-w9500-condensed-bold.ttf');
 
   animationData = loadJSON('Data/animation.json');
-  poopImage = loadImage('Graphics/Monster/poop.png');
+  poopImage = loadImage('Graphics/Effects/poop.png');
+  sicknessImage = loadImage('Graphics/Effects/sickness.png');
 
   InitMonsterData();
 }
@@ -81,6 +85,8 @@ function draw() {
 
   UpdateAnimation();
   DrawMonster();
+  UpdateSicknessAnimation();
+  DrawSickness();
   UpdatePoopAnimation();
   DrawPoop();
 
@@ -283,6 +289,51 @@ function DrawPoop() {
       SPRITE_SIZE
     );
   }
+}
+
+function UpdateSicknessAnimation() {
+  const animation = animationData?.animations?.skull;
+
+  if (!gameState.isSick || !sicknessImage ||
+      !animation || !Array.isArray(animation.frames)) {
+    sicknessAnimationFrameIndex = 0;
+    lastSicknessAnimationFrameTime = millis();
+    return;
+  }
+
+  const frameDuration = animation.frameDuration ?? 250;
+
+  if (millis() - lastSicknessAnimationFrameTime >= frameDuration) {
+    sicknessAnimationFrameIndex =
+      (sicknessAnimationFrameIndex + 1) % animation.frames.length;
+    lastSicknessAnimationFrameTime = millis();
+  }
+}
+
+function DrawSickness() {
+  const animation = animationData?.animations?.skull;
+
+  if (!gameState.isSick || !sicknessImage ||
+      !animation || !Array.isArray(animation.frames)) {
+    return;
+  }
+
+  const sicknessSize = SPRITE_SIZE * RENDER_SCALE;
+  const sicknessX = monsterX + (displayWidth - sicknessSize) / 2;
+  const sicknessY = MONSTER_Y - displayWidth / 2 - sicknessSize;
+  const frame = animation.frames[sicknessAnimationFrameIndex];
+
+  image(
+    sicknessImage,
+    sicknessX,
+    sicknessY,
+    sicknessSize,
+    sicknessSize,
+    frame * SPRITE_SIZE,
+    0,
+    SPRITE_SIZE,
+    SPRITE_SIZE
+  );
 }
 
 function DrawMonster() {

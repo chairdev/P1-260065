@@ -62,7 +62,6 @@ const initGameState = {
     monster: null,
     nickname: "",
     currentMonsterIndex: MONSTER_ID.EGG1,
-    age: 0,
     physicalCareMistakes: 0,
     mentalCareMistakes: 0,
     currentLifeStage: LIFE_STAGE.EGG,

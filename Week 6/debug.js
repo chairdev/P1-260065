@@ -98,7 +98,6 @@ function updateDebugStateDisplay()
         `poopCount: ${gameState.poopCount}`,
         `ticksPooped: ${gameState.ticksPooped}`,
         `attention: ${gameState.attentionSignal}`,
-        `age: ${gameState.age}`,
         `stage: ${gameState.currentLifeStage}`,
         `elapsed: ${gameState.elapsedTicks}`
     ];

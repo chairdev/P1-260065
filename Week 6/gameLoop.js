@@ -26,11 +26,6 @@ function UpdateTickTime()
 function OnTick()
 {
     CheckEvolution();
-    if(gameState.elapsedTicks % 24 === 0) // Every 24 ticks
-    {
-        gameState.age++;
-        console.log("Monster aged! Current age: " + gameState.age);
-    }
 
     // An egg's needs do not decay, so we only do it if the monster is not an egg.
     if(gameState.currentLifeStage !== LIFE_STAGE.EGG)

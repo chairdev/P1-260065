@@ -29,6 +29,11 @@
       "frames": [0, 1],
       "frameDuration": 250,
       "loop": true
+    },
+    "skull": {
+      "frames": [0, 1],
+      "frameDuration": 250,
+      "loop": true
     }
   }
 }
