@@ -54,7 +54,7 @@ const LIFE_STAGE_CONFIG = {
     }
 };
 
-const MAX_STAT_CAP = 4;
+const MAX_STAT_CAP = 5;
 
 // Game state object to hold the current state of the game
 // We on that OBJECT  object oriented programming cuh

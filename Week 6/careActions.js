@@ -1,5 +1,17 @@
 function FeedMonster()
 {
+    if(!gameState.isLightOn)
+    {
+        alert("Your monster cannot be fed while the lights are off!");
+        return;
+    }
+    if(gameState.isSick)
+    {
+        alert("Your monster is sick and cannot be fed!");
+        return;
+    }
+
+
     if(gameState.hunger < MAX_STAT_CAP)
     {
         //Increase hunger by 2 units when fed
@@ -29,5 +41,18 @@ function CleanPoop()
         gameState.poopCount = 0;
         gameState.ticksPooped = 0;
         gameState.happiness = constrain(gameState.happiness + 1, 0, MAX_STAT_CAP); // Increase happiness when cleaned
+    }
+}
+
+function ToggleLights()
+{
+    //only allow the lights to be turned off if energy is 0
+    if(gameState.isLightOn)
+    {
+        if(gameState.energy > 0)
+        {
+            alert("You cannot turn off the lights while your monster has energy!");
+        }
+        return;
     }
 }

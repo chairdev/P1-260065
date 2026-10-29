@@ -103,6 +103,7 @@ function RecoverEnergy()
     if (gameState.energy >= MAX_STAT_CAP)
     {
         gameState.ticksTired = 0;
+        gameState.isLightsOn = true;
     }
 }
 
