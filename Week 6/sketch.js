@@ -75,7 +75,7 @@ function draw() {
   SetAnimationState();
 
   // Update movement and animation
-  if (gameState.currentLifeStage !== LIFE_STAGE.EGG && !gameState.isSick) {
+  if (gameState.currentLifeStage !== LIFE_STAGE.EGG && !gameState.isSick && gameState.isLightOn) {
     UpdateMonsterMovement();
   }
   else
