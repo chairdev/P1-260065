@@ -326,11 +326,6 @@ function CheckEvolution()
         gameState.currentLifeStage = evolutionStage.nextStage;
         SetMonsterID(evolution.to);
 
-        if (evolutionStage.setName)
-        {
-            SetMonsterName();
-        }
-
         gameState.isJinglePlaying = false;
         alert("Your " + evolutionStage.label + " has " + evolutionStage.action + " into " + GetMonsterName() + "!");
         console.log(

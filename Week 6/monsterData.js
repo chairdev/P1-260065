@@ -20,8 +20,7 @@ const LIFE_STAGE_CONFIG = {
             nextStage: LIFE_STAGE.BABY,
             label: "egg",
             action: "hatched",
-            animation: "egg_hatch",
-            setName: true
+            animation: "egg_hatch"
         }
     },
     [LIFE_STAGE.BABY]: {

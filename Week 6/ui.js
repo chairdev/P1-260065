@@ -1,18 +1,11 @@
 let actionButtons = {};
 let menuButtons = {};
 let actionPanel;
+let statusActionPanel;
 
 function createActionButtons() {
   actionPanel = createDiv();
-  actionPanel.position(0, 0);
-  actionPanel.style('display', 'flex');
-  actionPanel.style('gap', '0');
-  actionPanel.style('width', `${CANVAS_WIDTH}px`);
-  actionPanel.style('height', '50px');
-  actionPanel.style('box-sizing', 'border-box');
-  actionPanel.style('margin', '0');
-  actionPanel.style('padding', '0');
-  actionPanel.style('z-index', '1');
+  setupActionPanel(actionPanel);
 
   const actions = [
     ['feed', 'Feed', FeedMonster],
@@ -23,9 +16,35 @@ function createActionButtons() {
     }]
   ];
 
+  createButtons(actionPanel, actions);
+
+  statusActionPanel = createDiv();
+  setupActionPanel(statusActionPanel);
+
+  const statusActions = [
+    ['changeName', 'Change Name', SetMonsterName],
+    ['reset', 'Reset', ResetGame]
+  ];
+
+  createButtons(statusActionPanel, statusActions);
+}
+
+function setupActionPanel(panel) {
+  panel.position(0, 0);
+  panel.style('display', 'flex');
+  panel.style('gap', '0');
+  panel.style('width', `${CANVAS_WIDTH}px`);
+  panel.style('height', '50px');
+  panel.style('box-sizing', 'border-box');
+  panel.style('margin', '0');
+  panel.style('padding', '0');
+  panel.style('z-index', '1');
+}
+
+function createButtons(panel, actions) {
   actions.forEach(([key, label, action]) => {
     const button = createButton(label);
-    button.parent(actionPanel);
+    button.parent(panel);
     button.attribute('aria-label', label);
     button.mousePressed(() => {
       ConfirmationBeep();
@@ -57,7 +76,9 @@ function createActionButtons() {
       button.style('font-size', '15px');
     });
 
-    actionButtons[key] = button;
+    if (panel === actionPanel) {
+      actionButtons[key] = button;
+    }
   });
 }
 
@@ -130,13 +151,17 @@ function createMenuButtons() {
 }
 
 function updateMenuVisibility() {
-  if (!actionPanel) {
+  if (!actionPanel || !statusActionPanel) {
     return;
   }
 
   actionPanel.style(
     'display',
     currentMenu === MENU_OPTIONS.ROOM ? 'flex' : 'none'
+  );
+  statusActionPanel.style(
+    'display',
+    currentMenu === MENU_OPTIONS.STATUS ? 'flex' : 'none'
   );
 }
 
