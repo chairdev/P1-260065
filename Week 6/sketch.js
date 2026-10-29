@@ -90,6 +90,8 @@ function draw() {
   UpdatePoopAnimation();
   DrawPoop();
 
+  DrawLightingOverlay();
+
   updateDebugStateDisplay();
 }
 
@@ -400,4 +402,16 @@ function DrawScreen() {
     fill("black");
     text("!", 16, height - 8);
   }
+}
+
+function DrawLightingOverlay() {
+  if (gameState.isLightOn) {
+    return;
+  }
+
+  push();
+  noStroke();
+  fill(0, 0, 0, 140);
+  rect(0, 0, width, height);
+  pop();
 }

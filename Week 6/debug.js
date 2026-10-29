@@ -37,6 +37,12 @@ function createDebugButtons() {
         ['Cure', () => {
         GiveMedicine();
         }],
+        ['Toggle Light', () => {
+        gameState.isLightOn = !gameState.isLightOn;
+        }],
+        ['Make Tired', () => {
+        gameState.energy = 0;
+        }],
         ['Make Happy', () => {
         gameState.happiness = MAX_STAT_CAP;
         }],
@@ -51,9 +57,6 @@ function createDebugButtons() {
         }],
         ['Unhappy', () => {
         gameState.happiness = 0;
-        }],
-        ['Ignore Attention Sign', () => {
-        IgnoreAttentionSignal();
         }],
         ['Make Sick', () => {
         gameState.isSick = true;
@@ -91,9 +94,11 @@ function updateDebugStateDisplay()
     let stateValues = [
         `hunger: ${gameState.hunger}`,
         `happiness: ${gameState.happiness}`,
+        `energy: ${gameState.energy}`,
         `isSick: ${gameState.isSick}`,
         `ticksUnfed: ${gameState.ticksUnfed}`,
         `ticksUnhappy: ${gameState.ticksUnhappy}`,
+        `ticksTired: ${gameState.ticksTired}`,
         `ticksSick: ${gameState.ticksSick}`,
         `poopCount: ${gameState.poopCount}`,
         `ticksPooped: ${gameState.ticksPooped}`,
@@ -103,20 +108,4 @@ function updateDebugStateDisplay()
     ];
 
     debugStateDisplay.html(stateValues.join('<br>'));
-}
-
-function IgnoreAttentionSignal() 
-{
-    if(gameState.isSick)
-    {
-        gameState.ticksSick = NEGLECT_TICK_THRESHOLD;
-    }
-    if(gameState.hunger <= 0)
-    {
-        gameState.ticksUnfed = NEGLECT_TICK_THRESHOLD;
-    }
-    if(gameState.happiness <= 0)
-    {
-        gameState.ticksUnhappy = NEGLECT_TICK_THRESHOLD;
-    }
 }

@@ -1,4 +1,4 @@
-const TICK_INTERVAL = 3 * 1000 // Seconds to milliseconds
+const TICK_INTERVAL = 1 * 1000 // Seconds to milliseconds
 const NEGLECT_TICK_THRESHOLD = 15;
 
 gameState.currentTickTime = TICK_INTERVAL;
@@ -30,14 +30,20 @@ function OnTick()
     // An egg's needs do not decay, so we only do it if the monster is not an egg.
     if(gameState.currentLifeStage !== LIFE_STAGE.EGG)
     {
-        NeedDecay();
-        CheckPoop();
-        CheckHunger();
-        CheckHappiness();
+        if(gameState.isLightOn)
+        {
+            NeedDecay();
+            CheckPoop();
+            CheckEnergy();
+            CheckHunger();
+            CheckHappiness();
+        }
+        else
+        {
+            RecoverEnergy();
+        }
     }
 
-    //Maybe they should become feverish (like in mother 3) if theyre close to evolving 
-    CheckEvolution();
     CheckSickness();
     CheckDeath();
 
@@ -71,6 +77,32 @@ function NeedDecay()
     if(gameState.happiness > 0)
     {
         gameState.happiness = constrain(gameState.happiness - 1, 0, MAX_STAT_CAP);
+    }
+
+    if(gameState.energy > 0)
+    {
+        gameState.energy = constrain(gameState.energy - 1, 0, MAX_STAT_CAP);
+    }
+    else
+    {
+        gameState.ticksTired++;
+    }
+}
+
+function RecoverEnergy()
+{
+    if (gameState.energy >= MAX_STAT_CAP)
+    {
+        gameState.energy = MAX_STAT_CAP;
+        gameState.ticksTired = 0;
+        return;
+    }
+
+    gameState.energy = constrain(gameState.energy + 1, 0, MAX_STAT_CAP);
+
+    if (gameState.energy >= MAX_STAT_CAP)
+    {
+        gameState.ticksTired = 0;
     }
 }
 
@@ -138,6 +170,20 @@ function CheckPoop()
     gameState.hunger = constrain(gameState.hunger - 1, 0, MAX_STAT_CAP); // Decrease hunger by 1 unit when the monster poops
 
     console.log("Monster pooped! Total poop count: " + gameState.poopCount);
+}
+
+function CheckEnergy()
+{
+    if(gameState.energy <= 0)
+    {
+        gameState.ticksTired++;
+
+        if(gameState.ticksTired % NEGLECT_TICK_THRESHOLD === 0)
+        {
+            gameState.physicalCareMistakes++;
+            console.log("Your monster is tired! Rest it soon or it will die!");
+        }
+    }
 }
 
 function CheckHunger()
