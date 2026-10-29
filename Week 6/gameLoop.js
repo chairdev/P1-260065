@@ -5,6 +5,12 @@ gameState.currentTickTime = TICK_INTERVAL;
 
 function GameLoop()
 {
+    // If the jingle is playing or the status menu is open, we don't want any ticks to occur
+    if(gameState.isJinglePlaying || currentMenu === MENU_OPTIONS.STATUS)
+    {
+        return;
+    }
+
     UpdateTickTime();
 }
 
