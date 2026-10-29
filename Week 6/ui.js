@@ -63,7 +63,7 @@ function updateActionButtonLabels() {
     return;
   }
 
-  actionButtons.sleep.html(gameState.isLightOn ? 'Sleep' : 'Wake');
+  actionButtons.sleep.html(gameState.isLightOn ? 'Sleep' : 'Wake Up');
   actionButtons.sleep.attribute(
     'aria-label',
     gameState.isLightOn ? 'Put monster to sleep' : 'Wake monster'

@@ -1,13 +1,9 @@
 function FeedMonster()
 {
-    if(!gameState.isLightOn)
+    //only allow feeding if the monster is awake, not sick, not at max hunger, and not in the egg stage
+    if(!gameState.isLightOn || gameState.isSick || gameState.hunger >= MAX_STAT_CAP || gameState.currentLifeStage === LIFE_STAGE.EGG)
     {
-        alert("Your monster cannot be fed while the lights are off!");
-        return;
-    }
-    if(gameState.isSick)
-    {
-        alert("Your monster is sick and cannot be fed!");
+        ErrorBeep();
         return;
     }
 
@@ -24,24 +20,30 @@ function FeedMonster()
 
 function GiveMedicine()
 {
-    if(gameState.isSick)
+    if(!gameState.isLightOn|| !gameState.isSick)
     {
-        gameState.isSick = false;
-        gameState.happiness = constrain(gameState.happiness + 1, 0, MAX_STAT_CAP); // Increase happiness when cured
-        gameState.ticksSick = 0;
-
-        alert("Your monster has been cured!");
+        ErrorBeep();
+        return;
     }
+
+    gameState.isSick = false;
+    gameState.happiness = constrain(gameState.happiness + 1, 0, MAX_STAT_CAP); // Increase happiness when cured
+    gameState.ticksSick = 0;
+
+    alert("Your monster has been cured!");
 }
 
 function CleanPoop()
 {
-    if(gameState.poopCount > 0)
+    if(!gameState.isLightOn || gameState.poopCount <= 0)
     {
-        gameState.poopCount = 0;
-        gameState.ticksPooped = 0;
-        gameState.happiness = constrain(gameState.happiness + 1, 0, MAX_STAT_CAP); // Increase happiness when cleaned
+        ErrorBeep();
+        return;
     }
+
+    gameState.poopCount = 0;
+    gameState.ticksPooped = 0;
+    gameState.happiness = constrain(gameState.happiness + 1, 0, MAX_STAT_CAP); // Increase happiness when cleaned
 }
 
 function ToggleLights()
@@ -49,10 +51,10 @@ function ToggleLights()
     //only allow the lights to be turned off if energy is 0
     if(gameState.isLightOn)
     {
-        if(gameState.energy > 0)
+        if(gameState.energy > 0 || gameState.currentLifeStage === LIFE_STAGE.EGG)
         {
-            alert("You cannot turn off the lights while your monster has energy!");
+            ErrorBeep();
+            return;
         }
-        return;
     }
 }

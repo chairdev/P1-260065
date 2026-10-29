@@ -37,6 +37,11 @@ function ConfirmationBeep()
     PlayTone(1200, 0.045, 0.035, 'square');
 }
 
+function ErrorBeep()
+{
+    PlayTone(400, 0.09, 0.04, 'square');
+}
+
 function AttentionBeep()
 {
      const notes = [880, 1175, 880, 1175, 880, 1175];

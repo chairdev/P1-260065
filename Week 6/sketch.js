@@ -65,6 +65,10 @@ function setup() {
   createDebugButtons();
 }
 
+function windowResized() {
+  resizeCanvas(canvasWidth, canvasHeight);
+}
+
 function draw() {
   background(220);
 
