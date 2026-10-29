@@ -1,3 +1,4 @@
+const DEBUG_MODE = false;
 const CANVAS_WIDTH = 400;
 const CANVAS_HEIGHT = 400;
 
@@ -62,7 +63,11 @@ function setup() {
   PlayPoopAnimation();
 
   createActionButtons();
-  createDebugButtons();
+
+  if(DEBUG_MODE)
+  {
+    createDebugButtons();
+  }
 }
 
 function windowResized() {
