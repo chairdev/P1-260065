@@ -290,21 +290,26 @@ function CheckDeath()
 
 function CheckEvolution()
 {
-    const evolutionCandidates = GetEvolutionCandidates();
     const stageConfig = LIFE_STAGE_CONFIG[gameState.currentLifeStage];
     const evolutionStage = stageConfig?.evolution;
 
-    if (evolutionCandidates.length === 0 ||
-        !evolutionStage ||
+    if (!evolutionStage ||
         gameState.isJinglePlaying ||
         gameState.elapsedTicks < stageConfig.evolutionTick)
     {
         return;
     }
 
+    const evolutionCandidates = GetEvolutionCandidates();
     const evolution = evolutionCandidates.find(candidate => MeetsEvolutionRequirements(candidate));
     if (!evolution)
     {
+        return;
+    }
+
+    if (!monsterData?.[evolution.to])
+    {
+        console.error("Cannot evolve: target monster data is missing for ID " + evolution.to);
         return;
     }
 

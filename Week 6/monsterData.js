@@ -198,8 +198,9 @@ function MeetsEvolutionRequirements(candidate)
 
 function GetEvolutionCandidates()
 {
-    // Return the evolution candidates for the current monster based on its data.
-    // If the monster data or its evolutions are missing, return an empty array.
-    const evolutionData = gameState.monster?.evolutions ?? gameState.monster?.evolution ?? [];
+    // Resolve the current monster from the index as well as the cached state.
+    // This keeps evolution working after loading a save before monster data is attached.
+    const currentMonster = gameState.monster ?? monsterData?.[gameState.currentMonsterIndex];
+    const evolutionData = currentMonster?.evolutions ?? currentMonster?.evolution ?? [];
     return Array.isArray(evolutionData) ? evolutionData : [];
 }
