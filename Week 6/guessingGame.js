@@ -44,6 +44,7 @@ function SubmitGuess() {
   }
 
   gameState.hunger = constrain(gameState.hunger - 1, 0, MAX_STAT_CAP); // Decrease hunger when the game is played
+  gameState.energy = constrain(gameState.energy - 1, 0, MAX_STAT_CAP); // Decrease energy when the game is played
 
   setTimeout(() => {
     currentMenu = MENU_OPTIONS.ROOM;

@@ -43,8 +43,7 @@ function createActionButtons() {
   guessInput.attribute('placeholder', '1-10');
   guessInput.attribute('aria-label', 'Your guess');
   guessInput.style('width', '75px');
-  guessInput.style('height', '32px');
-  guessInput.style('box-sizing', 'border-box');
+  setupInputStyle(guessInput);
   guessInput.style('margin', '0 4px');
   guessInput.parent(playPanel);
 
@@ -54,8 +53,9 @@ function createActionButtons() {
     ConfirmationBeep();
     SubmitGuess();
   });
-  guessButton.style('height', '32px');
+  guessButton.style('height', '50px');
   guessButton.style('margin', '0 4px');
+  setupButtonStyle(guessButton, '10px 20px');
   guessButton.parent(playPanel);
 
   const backButton = createButton('Back');
@@ -65,8 +65,9 @@ function createActionButtons() {
     currentMenu = MENU_OPTIONS.ROOM;
     updateMenuVisibility();
   });
-  backButton.style('height', '32px');
+  backButton.style('height', '50px');
   backButton.style('margin', '0 4px');
+  setupButtonStyle(backButton, '10px 20px');
   backButton.parent(playPanel);
 }
 
@@ -80,6 +81,42 @@ function setupActionPanel(panel) {
   panel.style('margin', '0');
   panel.style('padding', '0');
   panel.style('z-index', '1');
+}
+
+function setupInputStyle(input) {
+  input.style('height', '50px');
+  input.style('box-sizing', 'border-box');
+  input.style('padding', '10px 12px');
+  input.style('border', '1px solid rgba(255, 255, 255, 0.35)');
+  input.style('border-radius', '0');
+  input.style('background', 'transparent');
+  input.style('color', 'black');
+  input.style('font-family', '"Ari W9500", sans-serif');
+  input.style('font-size', '15px');
+  input.style('font-weight', '700');
+  input.style('box-shadow', 'none');
+}
+
+function setupButtonStyle(button, padding = '0') {
+  button.style('box-sizing', 'border-box');
+  button.style('padding', padding);
+  button.style('border', '1px solid rgba(255, 255, 255, 0.35)');
+  button.style('border-radius', '0');
+  button.style('background', 'transparent');
+  button.style('color', 'black');
+  button.style('font-family', '"Ari W9500", sans-serif');
+  button.style('font-size', '15px');
+  button.style('font-weight', '700');
+  button.style('cursor', 'pointer');
+  button.style('box-shadow', 'none');
+  button.mouseOver(() => {
+    button.style('color', 'white');
+    button.style('font-size', '18px');
+  });
+  button.mouseOut(() => {
+    button.style('color', 'black');
+    button.style('font-size', '15px');
+  });
 }
 
 function createButtons(panel, actions) {
@@ -96,26 +133,8 @@ function createButtons(panel, actions) {
     button.style('flex', '1');
     button.style('min-width', '0');
     button.style('height', '50px');
-    button.style('box-sizing', 'border-box');
     button.style('margin', '0');
-    button.style('padding', '0');
-    button.style('border', '1px solid rgba(255, 255, 255, 0.35)');
-    button.style('border-radius', '0');
-    button.style('background', 'transparent');
-    button.style('color', 'black');
-    button.style('font-family', '"Ari W9500", sans-serif');
-    button.style('font-size', '15px');
-    button.style('font-weight', '700');
-    button.style('cursor', 'pointer');
-    button.style('box-shadow', 'none');
-    button.mouseOver(() => {
-      button.style('color', 'white');
-      button.style('font-size', '18px');
-    });
-    button.mouseOut(() => {
-      button.style('color', 'black');
-      button.style('font-size', '15px');
-    });
+    setupButtonStyle(button);
 
     if (panel === actionPanel) {
       actionButtons[key] = button;
@@ -164,26 +183,8 @@ function createMenuButtons() {
     });
     button.style('width', '100px');
     button.style('height', '50px');
-    button.style('box-sizing', 'border-box');
     button.style('margin', '0');
-    button.style('padding', '0');
-    button.style('border', '1px solid rgba(255, 255, 255, 0.35)');
-    button.style('border-radius', '0');
-    button.style('background', 'transparent');
-    button.style('color', 'black');
-    button.style('font-family', '"Ari W9500", sans-serif');
-    button.style('font-size', '15px');
-    button.style('font-weight', '700');
-    button.style('cursor', 'pointer');
-    button.style('box-shadow', 'none');
-    button.mouseOver(() => {
-      button.style('color', 'white');
-      button.style('font-size', '18px');
-    });
-    button.mouseOut(() => {
-      button.style('color', 'black');
-      button.style('font-size', '15px');
-    });
+    setupButtonStyle(button);
 
     menuButtons[key] = button;
   });
