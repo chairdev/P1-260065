@@ -15,6 +15,7 @@ const AUTO_SAVE_INTERVAL = 1000;
 const MENU_OPTIONS = {
   ROOM: 0,
   STATUS: 1,
+  PLAY: 2,
 };
 
 let currentMenu = MENU_OPTIONS.ROOM;
@@ -165,6 +166,8 @@ function draw() {
     DrawLightingOverlay();
   } else if (currentMenu === MENU_OPTIONS.STATUS) {
     DrawStatus();
+  } else if (currentMenu === MENU_OPTIONS.PLAY) {
+    DrawGuessingGame();
   }
 
   DrawCleaningSweep();

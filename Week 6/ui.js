@@ -2,6 +2,8 @@ let actionButtons = {};
 let menuButtons = {};
 let actionPanel;
 let statusActionPanel;
+let playPanel;
+let guessInput;
 
 function createActionButtons() {
   actionPanel = createDiv();
@@ -11,6 +13,7 @@ function createActionButtons() {
     ['feed', 'Feed', FeedMonster],
     ['clean', 'Clean', CleanPoop],
     ['cure', 'Cure', GiveMedicine],
+    ['play', 'Play', PlayGuessingGame],
     ['sleep', 'Sleep', () => {
       gameState.isLightOn = !gameState.isLightOn;
     }]
@@ -27,6 +30,44 @@ function createActionButtons() {
   ];
 
   createButtons(statusActionPanel, statusActions);
+
+  playPanel = createDiv();
+  setupActionPanel(playPanel);
+  playPanel.style('justify-content', 'center');
+  playPanel.style('align-items', 'center');
+
+  guessInput = createInput('');
+  guessInput.attribute('type', 'number');
+  guessInput.attribute('min', '1');
+  guessInput.attribute('max', '10');
+  guessInput.attribute('placeholder', '1-10');
+  guessInput.attribute('aria-label', 'Your guess');
+  guessInput.style('width', '75px');
+  guessInput.style('height', '32px');
+  guessInput.style('box-sizing', 'border-box');
+  guessInput.style('margin', '0 4px');
+  guessInput.parent(playPanel);
+
+  const guessButton = createButton('Guess');
+  guessButton.attribute('aria-label', 'Submit guess');
+  guessButton.mousePressed(() => {
+    ConfirmationBeep();
+    SubmitGuess();
+  });
+  guessButton.style('height', '32px');
+  guessButton.style('margin', '0 4px');
+  guessButton.parent(playPanel);
+
+  const backButton = createButton('Back');
+  backButton.attribute('aria-label', 'Back to room');
+  backButton.mousePressed(() => {
+    ConfirmationBeep();
+    currentMenu = MENU_OPTIONS.ROOM;
+    updateMenuVisibility();
+  });
+  backButton.style('height', '32px');
+  backButton.style('margin', '0 4px');
+  backButton.parent(playPanel);
 }
 
 function setupActionPanel(panel) {
@@ -162,6 +203,10 @@ function updateMenuVisibility() {
   statusActionPanel.style(
     'display',
     currentMenu === MENU_OPTIONS.STATUS ? 'flex' : 'none'
+  );
+  playPanel.style(
+    'display',
+    currentMenu === MENU_OPTIONS.PLAY ? 'flex' : 'none'
   );
 }
 

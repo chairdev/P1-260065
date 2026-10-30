@@ -86,6 +86,18 @@ function CleanPoop()
     StartCleaningSweep();
 }
 
+function PlayGuessingGame()
+{
+    //only allow the guessing game to be played if the monster is awake, not sick, not hungry, there's no poop, and not in the egg stage
+    if(!gameState.isLightOn || gameState.isSick || gameState.currentLifeStage === LIFE_STAGE.EGG || gameState.hunger <= 0 || gameState.poopCount > 0)
+    {
+        ErrorBeep();
+        return;
+    }
+    
+    StartGuessingGame();
+}
+
 function ToggleLights()
 {
     //only allow the lights to be turned off if energy is 0
