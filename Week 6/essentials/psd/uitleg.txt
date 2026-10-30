@@ -1,1 +1,2 @@
-Ik heb Aseprite gebruikt om mijn assets te teken, transparent te maken en om ze te splitten into spritesheets
+Ik heb Aseprite gebruikt om mijn assets te teken, 
+transparent te maken en om ze te splitten into spritesheets
