@@ -40,8 +40,8 @@ function createDebugButtons() {
         ['Evolve', () => {
             gameState.elapsedTicks = LIFE_STAGE_CONFIG[gameState.currentLifeStage].evolutionTick - 1;
         }],
-        ['Clean Poop', () => {
-            CleanPoop();
+        ['Make Poop', () => {
+        gameState.poopCount++;
         }],
         ['Starve', () => {
         gameState.hunger = 0;

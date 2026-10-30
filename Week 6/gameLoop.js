@@ -1,4 +1,4 @@
-const TICK_INTERVAL = 1 * 1000 // Seconds to milliseconds
+const TICK_INTERVAL = 2 * 1000 // Seconds to milliseconds
 const NEGLECT_TICK_THRESHOLD = 15;
 
 gameState.currentTickTime = TICK_INTERVAL;

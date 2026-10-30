@@ -90,6 +90,7 @@ function mousePressed() {
 
 function LoadGameState() {
   try {
+    // Attempt to load the saved game state from localStorage
     const savedState = localStorage.getItem(GAME_SAVE_KEY);
 
     if (!savedState) {
@@ -98,11 +99,13 @@ function LoadGameState() {
 
     const parsedState = JSON.parse(savedState);
 
+    // Validate the parsed state to ensure it has the right structure
     if (!parsedState || typeof parsedState !== "object" ||
         Array.isArray(parsedState)) {
       throw new Error("Saved game data is not an object.");
     }
 
+    //Set the game state to the loaded one
     gameState = {
       ...initGameState,
       ...parsedState,
@@ -112,6 +115,7 @@ function LoadGameState() {
     const savedAt = Number(gameState.lastSavedAt);
     const elapsedOfflineTime = Date.now() - savedAt;
 
+    // Make up for the time that has passed since the game was last saved
     if (Number.isFinite(savedAt) && savedAt > 0 && elapsedOfflineTime > 0) {
       AdvanceGameTime(elapsedOfflineTime / 100);
     }
@@ -139,6 +143,7 @@ function SaveGameState() {
       monster: undefined
     };
 
+    // Save the game state to localStorage
     localStorage.setItem(GAME_SAVE_KEY, JSON.stringify(stateToSave));
   } catch (error) {
     console.error("Could not save the game:", error);
