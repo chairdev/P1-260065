@@ -33,24 +33,22 @@ function AdvanceGameTime(elapsedMilliseconds)
     }
     
     //if current tick time isn't a valid number, reset it to the default tick interval
-    if (!Number.isFinite(gameState.currentTickTime) ||
-        gameState.currentTickTime <= 0 ||
-        gameState.currentTickTime > TICK_INTERVAL)
+    if (!Number.isFinite(gameState.currentTickTime) || gameState.currentTickTime <= 0 || gameState.currentTickTime > TICK_INTERVAL)
     {
         gameState.currentTickTime = TICK_INTERVAL;
     }
 
-    let remainingTime = elapsedMilliseconds;
+    let remainingTime = elapsedMilliseconds / 10; // Time dilation!!
     let ticksProcessed = 0;
 
-    //
+    // Process ticks while the remaining time is greater than or equal to the current tick time
     while (remainingTime >= gameState.currentTickTime)
     {
         remainingTime -= gameState.currentTickTime;
         gameState.elapsedTicks++;
         gameState.currentTickTime = TICK_INTERVAL;
         ticksProcessed++;
-        console.log("Tick");
+        console.log("Remaining Time: " + remainingTime + " seconds, Elapsed Ticks: " + gameState.elapsedTicks);
         OnTick();
     }
 
