@@ -162,5 +162,6 @@ function draw() {
     DrawStatus();
   }
 
+  DrawCleaningSweep();
   updateDebugStateDisplay();
 }
