@@ -1,16 +1,19 @@
 let guessingGame = {
   secretNumber: 0,
   message: "Guess a number from 1 to 10.",
-  finished: false
+  finished: false,
+  tries: 0
 };
 
 const GUESSING_GAME_RESULT_DELAY = 1500;
+const MAX_GUESSING_GAME_TRIES = 3;
 
 function StartGuessingGame() {
   //Generate a random number between 1 and 10 for the player to guess
   guessingGame.secretNumber = Math.floor(Math.random() * 10) + 1;
   guessingGame.message = "Guess a number from 1 to 10.";
   guessingGame.finished = false;
+  guessingGame.tries = 0;
   guessInput.value('');
   currentMenu = MENU_OPTIONS.PLAY;
   updateMenuVisibility();
@@ -29,6 +32,8 @@ function SubmitGuess() {
     return;
   }
 
+  guessingGame.tries++;
+
   guessingGame.finished = true;
 
   if (guessedNumber === guessingGame.secretNumber) {
@@ -41,6 +46,16 @@ function SubmitGuess() {
   else 
   {
     gameState.happiness = constrain(gameState.happiness + 1, 0, MAX_STAT_CAP); 
+    if (guessingGame.tries < MAX_GUESSING_GAME_TRIES) {
+      guessingGame.finished = false;
+      const direction = guessedNumber < guessingGame.secretNumber
+        ? "Higher!"
+        : "Lower!";
+      guessingGame.message =
+        `Wrong! ${direction}\n (${MAX_GUESSING_GAME_TRIES - guessingGame.tries} tries left)`;
+      return;
+    }
+
     guessingGame.message = `Too bad!\nThe number was ${guessingGame.secretNumber}.`;
     LoseJingle();
   }
