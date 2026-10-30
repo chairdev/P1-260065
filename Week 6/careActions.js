@@ -88,8 +88,10 @@ function CleanPoop()
 
 function PlayGuessingGame()
 {
-    //only allow the guessing game to be played if the monster is awake, not sick, not hungry, there's no poop, and not in the egg stage
-    if(!gameState.isLightOn || gameState.isSick || gameState.currentLifeStage === LIFE_STAGE.EGG || gameState.hunger <= 0 || gameState.poopCount > 0)
+    //only allow the guessing game to be played if the monster is awake, not sick, not hungry, 
+    // there's no poop, it has energy and not in the egg stage
+    if(!gameState.isLightOn || gameState.isSick || gameState.currentLifeStage === LIFE_STAGE.EGG || 
+        gameState.hunger <= 0 || gameState.poopCount > 0 && gameState.energy <= 0)
     {
         ErrorBeep();
         return;

@@ -101,6 +101,30 @@ function CleanBeep()
     })();
 }
 
+function WinJingle()
+{
+    const notes = [
+        [784, 0.10],
+        [988, 0.10],
+        [1175, 0.10],
+        [1568, 0.22]
+    ];
+
+    return PlayJingle(notes);
+}
+
+function LoseJingle()
+{
+    const notes = [
+        [1175, 0.12],
+        [988, 0.12],
+        [784, 0.12],
+        [587, 0.25]
+    ];
+
+    return PlayJingle(notes);
+}
+
 function EvolutionJingle()
 {
     const notes = [

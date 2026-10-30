@@ -34,13 +34,15 @@ function SubmitGuess() {
   if (guessedNumber === guessingGame.secretNumber) {
     // Correct guess
     guessingGame.message = "Correct!\nYou guessed the number.";
-    
+    WinJingle();
+
     gameState.happiness = constrain(gameState.happiness + 2, 0, MAX_STAT_CAP); // Increase happiness when guessed correctly
   } 
   else 
   {
     gameState.happiness = constrain(gameState.happiness + 1, 0, MAX_STAT_CAP); 
     guessingGame.message = `Too bad!\nThe number was ${guessingGame.secretNumber}.`;
+    LoseJingle();
   }
 
   gameState.hunger = constrain(gameState.hunger - 1, 0, MAX_STAT_CAP); // Decrease hunger when the game is played
