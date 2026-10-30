@@ -84,6 +84,23 @@ function AttentionBeep()
     });
 }
 
+function CleanBeep()
+{
+    return (async () => {
+        const notes = [
+            [500, 0.04],
+            [700, 0.04],
+            [950, 0.05],
+            [1250, 0.07]
+        ];
+
+        for (const [frequency, duration] of notes)
+        {
+            await PlayTone(frequency, duration, 0.035, 'square');
+        }
+    })();
+}
+
 function EvolutionJingle()
 {
     const notes = [

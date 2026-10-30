@@ -113,7 +113,7 @@ function LoadGameState() {
     const elapsedOfflineTime = Date.now() - savedAt;
 
     if (Number.isFinite(savedAt) && savedAt > 0 && elapsedOfflineTime > 0) {
-      AdvanceGameTime(elapsedOfflineTime);
+      AdvanceGameTime(elapsedOfflineTime / 100);
     }
 
     return true;

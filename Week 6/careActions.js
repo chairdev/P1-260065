@@ -82,6 +82,7 @@ function CleanPoop()
     gameState.poopCount = 0;
     gameState.ticksPooped = 0;
     gameState.happiness = constrain(gameState.happiness + 1, 0, MAX_STAT_CAP); // Increase happiness when cleaned
+    CleanBeep();
     StartCleaningSweep();
 }
 

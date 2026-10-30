@@ -38,7 +38,7 @@ function AdvanceGameTime(elapsedMilliseconds)
         gameState.currentTickTime = TICK_INTERVAL;
     }
 
-    let remainingTime = elapsedMilliseconds / 10; // Time dilation!!
+    let remainingTime = elapsedMilliseconds; // Time dilation!!
     let ticksProcessed = 0;
 
     // Process ticks while the remaining time is greater than or equal to the current tick time
